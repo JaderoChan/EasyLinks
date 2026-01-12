@@ -14,4 +14,6 @@ find_package(global_hotkey REQUIRED)
 find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+include(GNUInstallDirs)
+
 add_subdirectory(easylink)

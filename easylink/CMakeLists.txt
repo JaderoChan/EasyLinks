@@ -25,5 +25,4 @@ set_target_properties(
     # WIN32_EXECUTABLE ON
 )
 
-include(GNUInstallDirs)
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/languages DESTINATION ${CMAKE_INSTALL_BINDIR})
