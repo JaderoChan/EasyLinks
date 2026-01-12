@@ -46,9 +46,7 @@ ProgressDialog::ProgressDialog(
     pageToMainWidget();
 
     speedRemainingTimeUpdateTimer_.setInterval(1000);
-    connect(
-        &speedRemainingTimeUpdateTimer_, &QTimer::timeout,
-        this, &ProgressDialog::updateSpeedRemainingTimeDisplay);
+    connect(&speedRemainingTimeUpdateTimer_, &QTimer::timeout, this, &ProgressDialog::updateSpeedRemainingTimeDisplay);
     speedRemainingTimeUpdateTimer_.start();
 
     connect(ui.pauseResumeBtn, &QPushButton::clicked, this, &ProgressDialog::onPauseResumeBtnPressed);

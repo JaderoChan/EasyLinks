@@ -23,11 +23,7 @@ public:
     Qt::ItemFlags flags(const QModelIndex& index) const override;
 
     bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::DisplayRole) override;
-    bool setHeaderData(
-        int section,
-        Qt::Orientation orientation,
-        const QVariant& value,
-        int role = Qt::DisplayRole) override;
+    bool setHeaderData(int section, Qt::Orientation orientation, const QVariant& value, int role = Qt::DisplayRole) override;
 
 private:
     static EntryConflictStrategy getECSByCheckState(Qt::CheckState source, Qt::CheckState target);

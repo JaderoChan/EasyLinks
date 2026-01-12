@@ -119,10 +119,7 @@ void FileLinkWorker::run()
     emit finished();
 }
 
-void FileLinkWorker::setParameters(
-    LinkType linkType,
-    const QStringList& sourcePaths,
-    const QString& targetDir)
+void FileLinkWorker::setParameters(LinkType linkType, const QStringList& sourcePaths, const QString& targetDir)
 {
     linkType_ = linkType;
     sourcePaths_ = sourcePaths;
@@ -180,11 +177,7 @@ void FileLinkWorker::addTask(LinkType linkType, QFileInfo sourceEntry, QFileInfo
     tryUpdateProgress();
 }
 
-bool FileLinkWorker::createLink(
-    LinkType linkType,
-    QFileInfo source,
-    QFileInfo target,
-    EntryConflictStrategy ecs)
+bool FileLinkWorker::createLink(LinkType linkType, QFileInfo source, QFileInfo target, EntryConflictStrategy ecs)
 {
     source.refresh();
     target.refresh();
@@ -255,13 +248,7 @@ LinkTasks FileLinkWorker::processTasks()
         currentEntryPair_ = task.entryPair;
         try
         {
-            bool isConflict = createLink(
-                task.linkType,
-                task.entryPair.source,
-                task.entryPair.target,
-                task.ecs
-            );
-
+            bool isConflict = createLink(task.linkType, task.entryPair.source, task.entryPair.target, task.ecs);
             if (isConflict)
             {
                 stats_.conflicts++;
@@ -319,9 +306,7 @@ void FileLinkWorker::collectEntriesForSymlink()
     }
 }
 
-void FileLinkWorker::collectEntriesForHardlinkHelper(
-    const QString& sourcePath,
-    const QString& targetDir)
+void FileLinkWorker::collectEntriesForHardlinkHelper(const QString& sourcePath, const QString& targetDir)
 {
     if (processPauseAndCancel())
         return;
@@ -340,15 +325,9 @@ void FileLinkWorker::collectEntriesForHardlinkHelper(
 
             QFileInfo targetEntry(targetDir + "/" + sourceEntry.fileName());
             if (sourceEntry.isDir())
-            {
-                collectEntriesForHardlinkHelper(
-                    sourceEntry.absoluteFilePath(),
-                    targetEntry.absoluteFilePath());
-            }
+                collectEntriesForHardlinkHelper(sourceEntry.absoluteFilePath(), targetEntry.absoluteFilePath());
             else
-            {
                 addTask(LT_HARDLINK, sourceEntry, targetEntry);
-            }
         }
     }
     else

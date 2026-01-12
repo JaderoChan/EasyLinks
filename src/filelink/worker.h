@@ -53,11 +53,7 @@ protected:
     // 根据参数构建一个任务并将其添加至任务队列。(冲突处理策略使用None，意味着由用户决定)
     void addTask(LinkType linkType, QFileInfo sourceEntry, QFileInfo targetEntry);
     // 仅当Conflict Policy是None且发生冲突时返回true（意味着等待用户决定），否则返回false。
-    bool createLink(
-        LinkType linkType,
-        QFileInfo source,
-        QFileInfo target,
-        EntryConflictStrategy ecs);
+    bool createLink(LinkType linkType, QFileInfo source, QFileInfo target, EntryConflictStrategy ecs);
     // 处理任务队列，返回待用户确认的任务列表。
     LinkTasks processTasks();
     // 尝试发射进度更新信号。

@@ -16,4 +16,4 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 include(GNUInstallDirs)
 
-add_subdirectory(easylink)
+add_subdirectory(src)

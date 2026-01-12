@@ -36,21 +36,15 @@ void FileLinkManager::createLinks(LinkType linkType, const QStringList& sourcePa
     connect(worker_, &FileLinkWorker::finished, dlg_, &ProgressDialog::onWorkFinished);
     connect(worker_, &FileLinkWorker::finished, &workerThread_, &QThread::quit);
 
-    connect(dlg_, &ProgressDialog::pauseTriggered,
-        worker_, &FileLinkWorker::pause, Qt::DirectConnection);
-    connect(dlg_, &ProgressDialog::resumeTriggered,
-        worker_, &FileLinkWorker::resume, Qt::DirectConnection);
-    connect(dlg_, &ProgressDialog::cancelTriggered,
-        worker_, &FileLinkWorker::cancel, Qt::DirectConnection);
+    connect(dlg_, &ProgressDialog::pauseTriggered, worker_, &FileLinkWorker::pause, Qt::DirectConnection);
+    connect(dlg_, &ProgressDialog::resumeTriggered, worker_, &FileLinkWorker::resume, Qt::DirectConnection);
+    connect(dlg_, &ProgressDialog::cancelTriggered, worker_, &FileLinkWorker::cancel, Qt::DirectConnection);
 
-    connect(dlg_, &ProgressDialog::conflictsDecided,
-        worker_, &FileLinkWorker::setConflictsDecision, Qt::DirectConnection);
-    connect(dlg_, &ProgressDialog::allConflictsDecided,
-        worker_, &FileLinkWorker::setConflictsDecisionForAll, Qt::DirectConnection);
+    connect(dlg_, &ProgressDialog::conflictsDecided, worker_, &FileLinkWorker::setConflictsDecision, Qt::DirectConnection);
+    connect(dlg_, &ProgressDialog::allConflictsDecided, worker_, &FileLinkWorker::setConflictsDecisionForAll, Qt::DirectConnection);
 
     connect(this, &FileLinkManager::operate, worker_, &FileLinkWorker::run);
-    connect(this, &FileLinkManager::cancel, worker_,
-        &FileLinkWorker::cancel, Qt::DirectConnection);
+    connect(this, &FileLinkManager::cancel, worker_, &FileLinkWorker::cancel, Qt::DirectConnection);
     connect(&workerThread_, &QThread::finished, worker_, &QObject::deleteLater);
 
     dlg_->show();    // for dev
