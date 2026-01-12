@@ -1,0 +1,369 @@
+#include "progress_dialog.h"
+
+#include <qdir.h>
+
+#include <easy_translate.hpp>
+
+#include "conflict_decision_dialog.h"
+
+#define CLSNAME "ProgressDialog"
+
+// todo: 按钮快捷键不生效
+// todo: 禁用ESC关闭窗口
+// todo：添加按钮图标
+// todo：添加任务栏图标显示进度
+// todo：过长的currentEntry优先显示右边
+
+ProgressDialog::ProgressDialog(
+    LinkType linkType,
+    const QString& sourceDir,
+    const QString& targetDir,
+    QWidget* parent)
+    : QDialog(parent),
+    errorLogDlg_(new ErrorLogDialog(this)),
+    linkType_(linkType)
+{
+    ui.setupUi(this);
+    setFixedSize(width(), height());
+
+    ui.sourcePathText->setText(
+        QString("<html><head/><body><p><a href='%1'>"
+            "<span style='color:rgba(0, 100, 180, 216); text-decoration:none;'>"
+            "%2</span></a></p></body></html>")
+        .arg(sourceDir, QDir(sourceDir).isRoot() ? sourceDir : QDir(sourceDir).dirName())
+    );
+    ui.targetPathText->setText(
+        QString("<html><head/><body><p><a href='%1'>"
+            "<span style='color:rgba(0, 100, 180, 216); text-decoration:none;'>"
+            "%2</span></a></p></body></html>")
+        .arg(targetDir, QDir(targetDir).isRoot() ? targetDir : QDir(targetDir).dirName())
+    );
+
+    ui.errorWgt->setEnabled(false);
+    errorLogDlg_->hide();
+    pageToMainWidget();
+
+    speedRemainingTimeUpdateTimer_.setInterval(1000);
+    connect(
+        &speedRemainingTimeUpdateTimer_, &QTimer::timeout,
+        this, &ProgressDialog::updateSpeedRemainingTimeDisplay);
+    speedRemainingTimeUpdateTimer_.start();
+
+    connect(ui.pauseResumeBtn, &QPushButton::clicked, this, &ProgressDialog::onPauseResumeBtnPressed);
+    connect(ui.cancelBtn, &QPushButton::clicked, this, &ProgressDialog::onCancelBtnPressed);
+    connect(ui.detailsBtn, &QPushButton::clicked, this, &ProgressDialog::onDetailsBtnPressed);
+    connect(ui.skipAllBtn, &QPushButton::clicked, this, &ProgressDialog::onSkipAllBtnPressed);
+    connect(ui.replaceAllBtn, &QPushButton::clicked, this, &ProgressDialog::onReplaceAllBtnPressed);
+    connect(ui.keepAllBtn, &QPushButton::clicked, this, &ProgressDialog::onKeepAllBtnPressed);
+    connect(ui.decideAllBtn, &QPushButton::clicked, this, &ProgressDialog::onDecideAllBtnPressed);
+
+    updatePauseResumeBtnIcon();
+    updateSpeedRemainingTimeDisplay();
+    updateCurrentEntryDisplay(EntryPair());
+    updateText();
+}
+
+ProgressDialog::~ProgressDialog()
+{
+    qDebug() << "~ProgressDialog";
+    cancel();
+}
+
+void ProgressDialog::pause()
+{
+    paused_ = true;
+    updatePauseResumeBtnIcon();
+    emit pauseTriggered();
+}
+
+void ProgressDialog::resume()
+{
+    paused_ = false;
+    updatePauseResumeBtnIcon();
+    emit resumeTriggered();
+}
+
+void ProgressDialog::cancel()
+{
+    emit cancelTriggered();
+}
+
+void ProgressDialog::updateProgress(const EntryPair& currentEntryPair, const LinkStats& stats)
+{
+    stats_ = stats;
+    updateCurrentEntryDisplay(currentEntryPair);
+    updateStatsDisplay();
+}
+
+void ProgressDialog::appendErrorLog(LinkType linkType, const EntryPair& entryPair, const QString& errorMsg)
+{
+    errorLogDlg_->appendLog(linkType, entryPair, errorMsg);
+}
+
+void ProgressDialog::decideConflicts(const LinkTasks& conflicts)
+{
+    conflicts_ = conflicts;
+    pageToECSWidget();
+}
+
+void ProgressDialog::onWorkFinished()
+{
+    qDebug() << "ProgressDialog::onWorkFinished";
+
+    // todo: user decide
+    if (stats_.failedEntries == 0)
+    {
+        close();
+        return;
+    }
+
+    lastProcessedEntries_ = stats_.processedEntries;
+    speedRemainingTimeUpdateTimer_.stop();
+    ui.pauseResumeBtn->setDisabled(true);
+    ui.cancelBtn->setDisabled(true);
+    updateCurrentEntryDisplay(EntryPair());
+    updateSpeedRemainingTimeDisplay();
+}
+
+void ProgressDialog::laterShow(int ms)
+{
+    auto timer = new QTimer(this);
+    timer->setInterval(ms);
+    connect(timer, &QTimer::timeout, this, &QDialog::show);
+    connect(timer, &QTimer::timeout, timer, &QObject::deleteLater);
+}
+
+void ProgressDialog::updateText()
+{
+    // setWindowTitle(EASYTR(CLSNAME ".WindowTitle"));
+    // updateHeaderText1();
+    // ui.headerText2->setText(EASYTR(CLSNAME ".Label.HeaderText2"));
+    // ui.speedText->setText(EASYTR(CLSNAME ".Label.Speed"));
+    // ui.speedUnitText->setText(EASYTR(CLSNAME ".Label.SpeedUnit"));
+    // ui.currentEntryText->setText(EASYTR(CLSNAME ".Label.CurrentEntry"));
+    // updateCurrentEntryTypeText();
+    // ui.remainingTimeText->setText(EASYTR(CLSNAME ".Label.RemainingTime"));
+    // ui.approximatelyText->setText(EASYTR(CLSNAME ".Label.Approximately"));
+    // ui.hourUnitText->setText(EASYTR(CLSNAME ".Label.Hour"));
+    // ui.minUnitText->setText(EASYTR(CLSNAME ".Label.Min"));
+    // ui.secUnitText->setText(EASYTR(CLSNAME ".Label.Sec"));
+    // ui.remainingEntryText->setText(EASYTR(CLSNAME ".Label.RemainingEntries"));
+    // ui.failedEntryText->setText(EASYTR(CLSNAME ".Label.FailedEntries"));
+    // ui.detailsBtn->setText(EASYTR(CLSNAME ".Button.Details"));
+    // updateECSWidgetTipText();
+    // ui.skipAllBtn->setText(EASYTR(CLSNAME ".Button.SkipAll"));
+    // ui.replaceAllBtn->setText(EASYTR(CLSNAME ".Button.ReplaceAll"));
+    // ui.keepAllBtn->setText(EASYTR(CLSNAME ".Button.KeepAll"));
+    // ui.decideAllBtn->setText(EASYTR(CLSNAME ".Button.DecideAll"));
+    setWindowTitle(EASYTR("Easy Link"));
+    updateHeaderText1();
+    ui.headerText2->setText(EASYTR("to"));
+    ui.speedText->setText(EASYTR("Speed:"));
+    ui.speedUnitText->setText(EASYTR("entries/s"));
+    ui.currentEntryText->setText(EASYTR("Current Entry:"));
+    updateCurrentEntryTypeText();
+    ui.remainingTimeText->setText(EASYTR("Remaining Time:"));
+    ui.approximatelyText->setText(EASYTR("Approximately"));
+    ui.hourUnitText->setText(EASYTR("hour"));
+    ui.minUnitText->setText(EASYTR("min"));
+    ui.secUnitText->setText(EASYTR("sec"));
+    ui.remainingEntriesText->setText(EASYTR("Remaining Entries:"));
+    ui.failedEntriesText->setText(EASYTR("Failed Entries:"));
+    ui.detailsBtn->setText(EASYTR("Details"));
+    updateECSWidgetTipText();
+    ui.skipAllBtn->setText(EASYTR("Skip All"));
+    ui.replaceAllBtn->setText(EASYTR("Replace All"));
+    ui.keepAllBtn->setText(EASYTR("Keep All"));
+    ui.decideAllBtn->setText(EASYTR("Decide All"));
+}
+
+void ProgressDialog::onPauseResumeBtnPressed()
+{
+    paused_ ? resume() : pause();
+}
+
+void ProgressDialog::onCancelBtnPressed()
+{
+    cancel();
+}
+
+void ProgressDialog::onDetailsBtnPressed()
+{
+    if (!errorLogDlg_->isVisible())
+        errorLogDlg_->show();
+    errorLogDlg_->activateWindow();
+    errorLogDlg_->raise();
+}
+
+void ProgressDialog::onReplaceAllBtnPressed()
+{
+    pageToMainWidget();
+    emit allConflictsDecided(ECS_REPLACE);
+}
+
+void ProgressDialog::onSkipAllBtnPressed()
+{
+    pageToMainWidget();
+    emit allConflictsDecided(ECS_SKIP);
+}
+
+void ProgressDialog::onKeepAllBtnPressed()
+{
+    pageToMainWidget();
+    emit allConflictsDecided(ECS_KEEP);
+}
+
+void ProgressDialog::onDecideAllBtnPressed()
+{
+    pageToMainWidget();
+    ConflictDecisionDialog dlg(conflicts_, this);
+    int ret = dlg.exec();
+    if (ret == QDialog::Accepted)
+    {
+        normalizeECS(conflicts_);
+        emit conflictsDecided(conflicts_);
+    }
+    else
+    {
+        emit allConflictsDecided(ECS_SKIP);
+    }
+}
+
+// todo: 是否有性能更好的解决办法？
+void ProgressDialog::normalizeECS(LinkTasks& tasks)
+{
+    for (auto& task : tasks)
+    {
+        if (task.ecs == ECS_NONE)
+            task.ecs = ECS_SKIP;
+    }
+}
+
+void ProgressDialog::updateStatsDisplay()
+{
+    updateProgressDisplay();
+    updateRemainingEntriesDisplay();
+    updateFailedCountDisplay();
+    if (lastTotalEntries_ != stats_.totalEntries)
+    {
+        lastTotalEntries_ = stats_.totalEntries;
+        updateHeaderText1();
+    }
+}
+
+void ProgressDialog::updateProgressDisplay()
+{
+    ui.progressBar->setValue(stats_.progress());
+}
+
+void ProgressDialog::updateSpeedRemainingTimeDisplay()
+{
+    speed_ = (stats_.processedEntries - lastProcessedEntries_);
+    lastProcessedEntries_ = stats_.processedEntries;
+    ui.speedValue->setText(QString::number(speed_));
+
+    static auto formatNumberString = [](int num) -> QString
+    { return (num < 10 ? "0" : "") + QString::number(num); };
+
+    int remainingTime = (speed_ == 0 ? 0 : (stats_.totalEntries - stats_.processedEntries) / speed_);
+    if (speed_ == 0)
+    {
+        ui.remainingTimeHourValue->setText("-");
+        ui.remainingTimeMinValue->setText("-");
+        ui.remainingTimeSecValue->setText("-");
+    }
+    else
+    {
+        int sec = remainingTime % 60;
+        int min = ((remainingTime - sec) / 60) % 60;
+        int hour = remainingTime / 3600;
+        ui.remainingTimeHourValue->setText(formatNumberString(hour));
+        ui.remainingTimeMinValue->setText(formatNumberString(min));
+        ui.remainingTimeSecValue->setText(formatNumberString(sec));
+    }
+}
+
+void ProgressDialog::updateCurrentEntryDisplay(const EntryPair& currentEntryPair)
+{
+    const auto& source = currentEntryPair.source;
+    ui.currentEntryValue->setText(source.absoluteFilePath());
+
+    ui.fileText->hide();
+    ui.directoryText->hide();
+    ui.symbolText->hide();
+
+    if (source.isFile())                ui.fileText->show();
+    else if (source.isDir())            ui.directoryText->show();
+    else if (source.isSymbolicLink())   ui.symbolText->show();
+    else ; // pass
+}
+
+void ProgressDialog::updateRemainingEntriesDisplay()
+{
+    ui.remainingEntriesValue->setText(QString::number(stats_.totalEntries - stats_.processedEntries));
+}
+
+void ProgressDialog::updateFailedCountDisplay()
+{
+    ui.failedEntriesValue->setText(QString::number(stats_.failedEntries));
+    if (stats_.failedEntries > 0 && !ui.errorWgt->isEnabled())
+        ui.errorWgt->setEnabled(true);
+}
+
+void ProgressDialog::pageToMainWidget()
+{
+    ui.stackedWidget->setCurrentIndex(0);
+}
+
+void ProgressDialog::pageToECSWidget()
+{
+    ui.stackedWidget->setCurrentIndex(1);
+    qApp->alert(this);
+}
+
+QString ProgressDialog::linkTypeStr() const
+{
+    switch (linkType_)
+    {
+        // case LT_HARDLINK:    return EASYTR("LinkType.Hardlink");
+        // case LT_SYMLINK:     return EASYTR("LinkType.Symlink");
+        case LT_HARDLINK:    return EASYTR("Hardlink");
+        case LT_SYMLINK:     return EASYTR("Symlink");
+        default: return "";
+    }
+}
+
+void ProgressDialog::updateHeaderText1()
+{
+    ui.headerText1->setText(
+        QString("%1 %2 %3").arg(linkTypeStr(), QString::number(stats_.totalEntries), "entries from")
+    );
+        // .arg(EASYTR(CLSNAME ".Label.HeaderText1")));
+}
+
+void ProgressDialog::updatePauseResumeBtnIcon()
+{
+    if (paused_)
+        ui.pauseResumeBtn->setIcon(QIcon(":/resources/icon/play.ico"));
+    else
+        ui.pauseResumeBtn->setIcon(QIcon(":/resources/icon/pause.ico"));
+}
+
+void ProgressDialog::updateCurrentEntryTypeText()
+{
+    // ui.fileText->setText(EASYTR(CLSNAME ".EntryType.File"));
+    // ui.directoryText->setText(EASYTR(CLSNAME ".EntryType.Dir"));
+    // ui.symbolText->setText(EASYTR(CLSNAME ".EntryType.Symbol"));
+    ui.fileText->setText(EASYTR("File"));
+    ui.directoryText->setText(EASYTR("Dir"));
+    ui.symbolText->setText(EASYTR("Symbol"));
+}
+
+void ProgressDialog::updateECSWidgetTipText()
+{
+    ui.ecsTipText->setText(
+        // QString(EASYTR(CLSNAME ".Label.ECSTipText"))
+        QString(EASYTR("The target contains - entries with the same name"))
+            // .arg(stats_.conflicts)
+    );
+}

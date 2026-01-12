@@ -1,0 +1,13 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+  <qresource prefix="/">
+    <file>resources/icon/cancel.ico</file>
+    <file>resources/icon/decide.ico</file>
+    <file>resources/icon/keep.ico</file>
+    <file>resources/icon/play.ico</file>
+    <file>resources/icon/replace.ico</file>
+    <file>resources/icon/skip.ico</file>
+    <file>resources/icon/pause.ico</file>
+    <file>resources/icon/details.png</file>
+  </qresource>
+</RCC>
