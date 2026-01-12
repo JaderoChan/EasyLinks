@@ -12,7 +12,6 @@
   </property>
   <property name="font">
    <font>
-    <family>Segoe UI</family>
     <stylestrategy>PreferAntialias</stylestrategy>
    </font>
   </property>
@@ -42,8 +41,7 @@
        <widget class="QLabel" name="headerText1">
         <property name="font">
          <font>
-          <family>Segoe UI</family>
-          <pointsize>13</pointsize>
+          <pointsize>11</pointsize>
           <bold>true</bold>
           <stylestrategy>PreferAntialias</stylestrategy>
          </font>
@@ -131,6 +129,13 @@ QTableView::item:focus {
       </property>
       <item>
        <widget class="QCheckBox" name="skipSameDateSizeCb">
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>10</pointsize>
+          <stylestrategy>PreferAntialias</stylestrategy>
+         </font>
+        </property>
         <property name="text">
          <string>Skip 0 files with the same date and size (S̲)</string>
         </property>
@@ -154,6 +159,13 @@ QTableView::item:focus {
       </item>
       <item>
        <widget class="QPushButton" name="okBtn">
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>10</pointsize>
+          <stylestrategy>PreferAntialias</stylestrategy>
+         </font>
+        </property>
         <property name="text">
          <string>Ok (O̲)</string>
         </property>
@@ -164,6 +176,13 @@ QTableView::item:focus {
       </item>
       <item>
        <widget class="QPushButton" name="cancelBtn">
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>10</pointsize>
+          <stylestrategy>PreferAntialias</stylestrategy>
+         </font>
+        </property>
         <property name="text">
          <string>Cancel (C̲)</string>
         </property>

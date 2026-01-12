@@ -9,8 +9,16 @@ set(PROJECT_SOURCE ${HEADER} ${SRC} ${UI} ${QRC})
 qt_standard_project_setup()
 qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCE})
 
+configure_file(
+    ${CMAKE_SOURCE_DIR}/cmake/template/config.h.in
+    ${CMAKE_BINARY_DIR}/include/config.h
+)
+
 target_include_directories(${PROJECT_NAME} PRIVATE "E:/05_Data/Libs/OnlyHeader")
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/include
+)
 target_link_libraries(
     ${PROJECT_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets

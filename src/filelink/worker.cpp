@@ -183,8 +183,7 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo source, QFileInfo t
     target.refresh();
 
     if (!isOnSameDriver(source.absoluteFilePath(), target.absoluteFilePath()))
-        THROW_RTERR("The specified original file and the target are "
-                    "located on different devices or file systems.");
+        THROW_RTERR("The specified original file and the target are located on different devices or file systems.");
 
     if (source.exists())
     {
@@ -224,8 +223,7 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo source, QFileInfo t
         }
         else
         {
-            THROW_RTERR("There are nonregular file entities with the "
-                        "same name in the target directory.");
+            THROW_RTERR("There are nonregular file entities with the same name in the target directory.");
         }
     }
     else
@@ -378,9 +376,7 @@ QFileInfo FileLinkWorker::generateNewPath(QFileInfo file)
 
     do
     {
-        file.setFile(
-            QString("%1/%2 (%3).%4").arg(path, baseName, QString::number(counter++), suffix)
-        );
+        file.setFile(QString("%1/%2 (%3).%4").arg(path, baseName, QString::number(counter++), suffix));
     } while (file.exists());
 
     return file;

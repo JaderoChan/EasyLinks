@@ -28,18 +28,12 @@ ConflictDecisionDialog::ConflictDecisionDialog(LinkTasks& conflicts, QWidget* pa
 
 void ConflictDecisionDialog::updateText()
 {
-    // setWindowTitle(EASYTR(CLSNAME ".WindowTitle"));
-    // ui.headerText1->setText(EASYTR(CLSNAME ".Label.HeaderText1"));
-    // ui.headerText2->setText(EASYTR(CLSNAME ".Label.HeaderText2"));
-    // ui.skipSameDateSizeCb->setText(EASYTR(CLSNAME ".CheckBox.SkipSameDateSize"));
-    // ui.okBtn->setText(EASYTR("CommonButton.Ok"));
-    // ui.cancelBtn->setText(EASYTR("CommonButton.Cancel"));
-    setWindowTitle(EASYTR("Which files do you want to keep?"));
-    ui.headerText1->setText(EASYTR("Which files do you want to keep?"));
-    ui.headerText2->setText(EASYTR("If you select two files, a number will be added to the name of the copied file."));
-    ui.skipSameDateSizeCb->setText(EASYTR("Skip 0 files with the same date and size (S̲)"));
-    ui.okBtn->setText(EASYTR("Ok"));
-    ui.cancelBtn->setText(EASYTR("Cancel"));
+    setWindowTitle(EASYTR(CLSNAME ".WindowTitle"));
+    ui.headerText1->setText(EASYTR(CLSNAME ".Label.HeaderText1"));
+    ui.headerText2->setText(EASYTR(CLSNAME ".Label.HeaderText2"));
+    ui.skipSameDateSizeCb->setText(QString(EASYTR(CLSNAME ".CheckBox.SkipSameDateSize")).arg(skipEntries_));
+    ui.okBtn->setText(EASYTR("CommonButton.Ok"));
+    ui.cancelBtn->setText(EASYTR("CommonButton.Cancel"));
 }
 
 void ConflictDecisionDialog::onSkipSameDateSizeCbToggled()

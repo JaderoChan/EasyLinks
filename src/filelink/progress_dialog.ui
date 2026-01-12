@@ -24,7 +24,6 @@
   </property>
   <property name="font">
    <font>
-    <family>Segoe UI</family>
     <stylestrategy>PreferAntialias</stylestrategy>
    </font>
   </property>
@@ -249,6 +248,9 @@
              <item>
               <widget class="QWidget" name="widget_10" native="true">
                <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
                 <property name="leftMargin">
                  <number>0</number>
                 </property>
@@ -264,7 +266,7 @@
                 <item>
                  <widget class="QLabel" name="speedText">
                   <property name="text">
-                   <string>Speed:</string>
+                   <string>Speed: </string>
                   </property>
                   <property name="textInteractionFlags">
                    <set>Qt::NoTextInteraction</set>
@@ -273,17 +275,8 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="speedValue">
-                  <property name="minimumSize">
-                   <size>
-                    <width>32</width>
-                    <height>0</height>
-                   </size>
-                  </property>
                   <property name="text">
                    <string>-</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
                   </property>
                   <property name="textInteractionFlags">
                    <set>Qt::NoTextInteraction</set>
@@ -373,7 +366,7 @@ QPushButton:pressed
 }</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="../easylink.qrc">
+                   <iconset resource="filelink.qrc">
                     <normaloff>:/icons/pause.ico</normaloff>:/icons/pause.ico</iconset>
                   </property>
                   <property name="autoDefault">
@@ -423,7 +416,7 @@ QPushButton:pressed
 }</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="../easylink.qrc">
+                   <iconset resource="filelink.qrc">
                     <normaloff>:/icons/cancel.ico</normaloff>:/icons/cancel.ico</iconset>
                   </property>
                   <property name="autoDefault">
@@ -476,6 +469,9 @@ QPushButton:pressed
                 <item>
                  <widget class="QWidget" name="widget_13" native="true">
                   <layout class="QHBoxLayout" name="horizontalLayout_11">
+                   <property name="spacing">
+                    <number>2</number>
+                   </property>
                    <property name="leftMargin">
                     <number>0</number>
                    </property>
@@ -491,7 +487,7 @@ QPushButton:pressed
                    <item>
                     <widget class="QLabel" name="currentEntryText">
                      <property name="text">
-                      <string>Current entry:</string>
+                      <string>Current entry: </string>
                      </property>
                      <property name="textInteractionFlags">
                       <set>Qt::NoTextInteraction</set>
@@ -555,14 +551,13 @@ QPushButton:pressed
                      </property>
                      <property name="font">
                       <font>
-                       <family>Segoe UI</family>
-                       <bold>true</bold>
                        <stylestrategy>PreferAntialias</stylestrategy>
                       </font>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">background-color: rgb(0, 200, 0);
-color: rgb(255, 255, 255);</string>
+                      <string notr="true">background-color: rgba(0, 255, 0, 128);
+color: rgb(0, 0, 0);
+border-radius: 10;</string>
                      </property>
                      <property name="text">
                       <string>File</string>
@@ -591,14 +586,13 @@ color: rgb(255, 255, 255);</string>
                      </property>
                      <property name="font">
                       <font>
-                       <family>Segoe UI</family>
-                       <bold>true</bold>
                        <stylestrategy>PreferAntialias</stylestrategy>
                       </font>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">background-color: rgb(200, 200, 0);
-color: rgb(255, 255, 255);</string>
+                      <string notr="true">background-color: rgba(255, 255, 0, 128);
+color: rgb(0, 0, 0);
+border-radius: 10;</string>
                      </property>
                      <property name="text">
                       <string>Directory</string>
@@ -627,14 +621,13 @@ color: rgb(255, 255, 255);</string>
                      </property>
                      <property name="font">
                       <font>
-                       <family>Segoe UI</family>
-                       <bold>true</bold>
                        <stylestrategy>PreferAntialias</stylestrategy>
                       </font>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">background-color: rgb(0, 0, 200);
-color: rgb(255, 255, 255);</string>
+                      <string notr="true">background-color: rgba(0, 0, 255, 128);
+color: rgb(0, 0, 0);
+border-radius: 10;</string>
                      </property>
                      <property name="text">
                       <string>Symbol</string>
@@ -656,6 +649,9 @@ color: rgb(255, 255, 255);</string>
              <item>
               <widget class="QWidget" name="widget_6" native="true">
                <layout class="QHBoxLayout" name="horizontalLayout_8">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
                 <property name="leftMargin">
                  <number>0</number>
                 </property>
@@ -671,6 +667,9 @@ color: rgb(255, 255, 255);</string>
                 <item>
                  <widget class="QWidget" name="widget_14" native="true">
                   <layout class="QHBoxLayout" name="horizontalLayout_13">
+                   <property name="spacing">
+                    <number>2</number>
+                   </property>
                    <property name="leftMargin">
                     <number>0</number>
                    </property>
@@ -686,7 +685,7 @@ color: rgb(255, 255, 255);</string>
                    <item>
                     <widget class="QLabel" name="remainingTimeText">
                      <property name="text">
-                      <string>Remaining time:</string>
+                      <string>Remaining time: </string>
                      </property>
                      <property name="textInteractionFlags">
                       <set>Qt::NoTextInteraction</set>
@@ -726,17 +725,8 @@ color: rgb(255, 255, 255);</string>
                    </property>
                    <item>
                     <widget class="QLabel" name="remainingTimeHourValue">
-                     <property name="minimumSize">
-                      <size>
-                       <width>16</width>
-                       <height>0</height>
-                      </size>
-                     </property>
                      <property name="text">
                       <string>-</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
                      </property>
                      <property name="textInteractionFlags">
                       <set>Qt::NoTextInteraction</set>
@@ -758,17 +748,8 @@ color: rgb(255, 255, 255);</string>
                    </item>
                    <item>
                     <widget class="QLabel" name="remainingTimeMinValue">
-                     <property name="minimumSize">
-                      <size>
-                       <width>16</width>
-                       <height>0</height>
-                      </size>
-                     </property>
                      <property name="text">
                       <string>-</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
                      </property>
                      <property name="textInteractionFlags">
                       <set>Qt::NoTextInteraction</set>
@@ -790,17 +771,8 @@ color: rgb(255, 255, 255);</string>
                    </item>
                    <item>
                     <widget class="QLabel" name="remainingTimeSecValue">
-                     <property name="minimumSize">
-                      <size>
-                       <width>16</width>
-                       <height>0</height>
-                      </size>
-                     </property>
                      <property name="text">
                       <string>-</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
                      </property>
                      <property name="textInteractionFlags">
                       <set>Qt::NoTextInteraction</set>
@@ -857,6 +829,9 @@ color: rgb(255, 255, 255);</string>
                 <item>
                  <widget class="QWidget" name="widget_15" native="true">
                   <layout class="QHBoxLayout" name="horizontalLayout_14">
+                   <property name="spacing">
+                    <number>2</number>
+                   </property>
                    <property name="leftMargin">
                     <number>0</number>
                    </property>
@@ -872,7 +847,7 @@ color: rgb(255, 255, 255);</string>
                    <item>
                     <widget class="QLabel" name="remainingEntriesText">
                      <property name="text">
-                      <string>Remaining entries:</string>
+                      <string>Remaining entries: </string>
                      </property>
                      <property name="textInteractionFlags">
                       <set>Qt::NoTextInteraction</set>
@@ -881,17 +856,8 @@ color: rgb(255, 255, 255);</string>
                    </item>
                    <item>
                     <widget class="QLabel" name="remainingEntriesValue">
-                     <property name="minimumSize">
-                      <size>
-                       <width>32</width>
-                       <height>0</height>
-                      </size>
-                     </property>
                      <property name="text">
                       <string>-</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
                      </property>
                      <property name="textInteractionFlags">
                       <set>Qt::NoTextInteraction</set>
@@ -1017,6 +983,7 @@ color: rgb(255, 255, 255);</string>
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
+                 <pointsize>11</pointsize>
                  <stylestrategy>PreferAntialias</stylestrategy>
                 </font>
                </property>
@@ -1048,7 +1015,7 @@ QPushButton:pressed
                 <string>Replace All (R̲)</string>
                </property>
                <property name="icon">
-                <iconset resource="../easylink.qrc">
+                <iconset resource="filelink.qrc">
                  <normaloff>:/icons/replace.ico</normaloff>:/icons/replace.ico</iconset>
                </property>
                <property name="shortcut">
@@ -1081,6 +1048,7 @@ color: rgb(204, 204, 204);</string>
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
+                 <pointsize>11</pointsize>
                  <stylestrategy>PreferAntialias</stylestrategy>
                 </font>
                </property>
@@ -1112,7 +1080,7 @@ QPushButton:pressed
                 <string>Skip All (S̲)</string>
                </property>
                <property name="icon">
-                <iconset resource="../easylink.qrc">
+                <iconset resource="filelink.qrc">
                  <normaloff>:/icons/skip.ico</normaloff>:/icons/skip.ico</iconset>
                </property>
                <property name="shortcut">
@@ -1145,8 +1113,12 @@ color: rgb(204, 204, 204);</string>
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
+                 <pointsize>11</pointsize>
                  <stylestrategy>PreferAntialias</stylestrategy>
                 </font>
+               </property>
+               <property name="toolTip">
+                <string>All will be retained. Conflicting entries will have a numerical sequence number added after the target file name.</string>
                </property>
                <property name="styleSheet">
                 <string notr="true">QPushButton
@@ -1176,7 +1148,7 @@ QPushButton:pressed
                 <string>Keep All (K̲)</string>
                </property>
                <property name="icon">
-                <iconset resource="../easylink.qrc">
+                <iconset resource="filelink.qrc">
                  <normaloff>:/icons/keep.ico</normaloff>:/icons/keep.ico</iconset>
                </property>
                <property name="shortcut">
@@ -1209,6 +1181,7 @@ color: rgb(204, 204, 204);</string>
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
+                 <pointsize>11</pointsize>
                  <stylestrategy>PreferAntialias</stylestrategy>
                 </font>
                </property>
@@ -1240,7 +1213,7 @@ QPushButton:pressed
                 <string>Decide All (D̲)</string>
                </property>
                <property name="icon">
-                <iconset resource="../easylink.qrc">
+                <iconset resource="filelink.qrc">
                  <normaloff>:/icons/decide.ico</normaloff>:/icons/decide.ico</iconset>
                </property>
                <property name="shortcut">
@@ -1260,9 +1233,6 @@ QPushButton:pressed
    </item>
    <item>
     <widget class="QWidget" name="errorWgt" native="true">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
      <property name="styleSheet">
       <string notr="true">QLabel {
 	color: #cc0000;
@@ -1345,6 +1315,9 @@ QPushButton:disabled {
             <item>
              <widget class="QWidget" name="widget_18" native="true">
               <layout class="QHBoxLayout" name="horizontalLayout_18">
+               <property name="spacing">
+                <number>2</number>
+               </property>
                <property name="leftMargin">
                 <number>0</number>
                </property>
@@ -1361,12 +1334,11 @@ QPushButton:disabled {
                 <widget class="QLabel" name="failedEntriesText">
                  <property name="font">
                   <font>
-                   <family>Segoe UI</family>
                    <stylestrategy>PreferAntialias</stylestrategy>
                   </font>
                  </property>
                  <property name="text">
-                  <string>Failed entries:</string>
+                  <string>Failed entries: </string>
                  </property>
                  <property name="textInteractionFlags">
                   <set>Qt::NoTextInteraction</set>
@@ -1375,23 +1347,13 @@ QPushButton:disabled {
                </item>
                <item>
                 <widget class="QLabel" name="failedEntriesValue">
-                 <property name="minimumSize">
-                  <size>
-                   <width>48</width>
-                   <height>0</height>
-                  </size>
-                 </property>
                  <property name="font">
                   <font>
-                   <family>Segoe UI</family>
                    <stylestrategy>PreferAntialias</stylestrategy>
                   </font>
                  </property>
                  <property name="text">
                   <string>0</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
                  </property>
                  <property name="textInteractionFlags">
                   <set>Qt::NoTextInteraction</set>
@@ -1451,7 +1413,6 @@ QPushButton:disabled {
                 <widget class="QPushButton" name="detailsBtn">
                  <property name="font">
                   <font>
-                   <family>Segoe UI</family>
                    <stylestrategy>PreferAntialias</stylestrategy>
                   </font>
                  </property>
@@ -1514,7 +1475,7 @@ QPushButton:pressed
   </layout>
  </widget>
  <resources>
-  <include location="../easylink.qrc"/>
+  <include location="filelink.qrc"/>
  </resources>
  <connections/>
 </ui>

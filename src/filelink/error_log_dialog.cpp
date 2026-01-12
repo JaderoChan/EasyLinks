@@ -4,7 +4,7 @@
 
 #include <easy_translate.hpp>
 
-#define CLSNAME "LogDialog"
+#define CLSNAME "ErrorLogDialog"
 
 ErrorLogDialog::ErrorLogDialog(QWidget* parent)
     : QDialog(parent)
@@ -52,12 +52,13 @@ QString ErrorLogDialog::currentTimeString()
     { return (num < 10 ? "0" : "") + QString::number(num); };
 
     auto dt = QDateTime::currentDateTime();
-    return QString("%1-%2-%3 %4:%5:%6.%7")
-        .arg(formatNumberString(dt.date().year()))
-        .arg(formatNumberString(dt.date().month()))
-        .arg(formatNumberString(dt.date().day()))
-        .arg(formatNumberString(dt.time().hour()))
-        .arg(formatNumberString(dt.time().minute()))
-        .arg(formatNumberString(dt.time().second()))
-        .arg(formatNumberString(dt.time().msec()));
+    return QString("%1-%2-%3 %4:%5:%6.%7").arg(
+        formatNumberString(dt.date().year()),
+        formatNumberString(dt.date().month()),
+        formatNumberString(dt.date().day()),
+        formatNumberString(dt.time().hour()),
+        formatNumberString(dt.time().minute()),
+        formatNumberString(dt.time().second()),
+        formatNumberString(dt.time().msec())
+    );
 }

@@ -17,4 +17,5 @@ protected:
 
 private:
     Ui::ConflictDecisionDialog ui;
+    int skipEntries_ = 0;
 };

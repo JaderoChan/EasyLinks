@@ -12,7 +12,6 @@
   </property>
   <property name="font">
    <font>
-    <family>Segoe UI</family>
     <stylestrategy>PreferAntialias</stylestrategy>
    </font>
   </property>

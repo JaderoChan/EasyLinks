@@ -1,0 +1,9 @@
+#pragma once
+
+#define APP_VERSION         "@PROJECT_VERSION@"
+#define APP_VERSION_MAJOR   @PROJECT_VERSION_MAJOR@
+#define APP_VERSION_MINOR   @PROJECT_VERSION_MINOR@
+#define APP_VERSION_PATCH   @PROJECT_VERSION_PATCH@
+
+#define APP_LANG_LIST_FILENAME  "languages/languages.json"
+#define APP_LOCK_FILENAME       ".Lock-@PROJECT_NAME@-555ca8ab-0fb1-4921-b379-6b977c4ea9cd"

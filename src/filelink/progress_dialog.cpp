@@ -135,46 +135,27 @@ void ProgressDialog::laterShow(int ms)
 
 void ProgressDialog::updateText()
 {
-    // setWindowTitle(EASYTR(CLSNAME ".WindowTitle"));
-    // updateHeaderText1();
-    // ui.headerText2->setText(EASYTR(CLSNAME ".Label.HeaderText2"));
-    // ui.speedText->setText(EASYTR(CLSNAME ".Label.Speed"));
-    // ui.speedUnitText->setText(EASYTR(CLSNAME ".Label.SpeedUnit"));
-    // ui.currentEntryText->setText(EASYTR(CLSNAME ".Label.CurrentEntry"));
-    // updateCurrentEntryTypeText();
-    // ui.remainingTimeText->setText(EASYTR(CLSNAME ".Label.RemainingTime"));
-    // ui.approximatelyText->setText(EASYTR(CLSNAME ".Label.Approximately"));
-    // ui.hourUnitText->setText(EASYTR(CLSNAME ".Label.Hour"));
-    // ui.minUnitText->setText(EASYTR(CLSNAME ".Label.Min"));
-    // ui.secUnitText->setText(EASYTR(CLSNAME ".Label.Sec"));
-    // ui.remainingEntryText->setText(EASYTR(CLSNAME ".Label.RemainingEntries"));
-    // ui.failedEntryText->setText(EASYTR(CLSNAME ".Label.FailedEntries"));
-    // ui.detailsBtn->setText(EASYTR(CLSNAME ".Button.Details"));
-    // updateECSWidgetTipText();
-    // ui.skipAllBtn->setText(EASYTR(CLSNAME ".Button.SkipAll"));
-    // ui.replaceAllBtn->setText(EASYTR(CLSNAME ".Button.ReplaceAll"));
-    // ui.keepAllBtn->setText(EASYTR(CLSNAME ".Button.KeepAll"));
-    // ui.decideAllBtn->setText(EASYTR(CLSNAME ".Button.DecideAll"));
-    setWindowTitle(EASYTR("Easy Link"));
+    setWindowTitle(EASYTR(CLSNAME ".WindowTitle"));
     updateHeaderText1();
-    ui.headerText2->setText(EASYTR("to"));
-    ui.speedText->setText(EASYTR("Speed:"));
-    ui.speedUnitText->setText(EASYTR("entries/s"));
-    ui.currentEntryText->setText(EASYTR("Current Entry:"));
+    ui.headerText2->setText(EASYTR(CLSNAME ".Label.HeaderText2"));
+    ui.speedText->setText(EASYTR(CLSNAME ".Label.Speed"));
+    ui.speedUnitText->setText(EASYTR(CLSNAME ".Label.SpeedUnit"));
+    ui.currentEntryText->setText(EASYTR(CLSNAME ".Label.CurrentEntry"));
     updateCurrentEntryTypeText();
-    ui.remainingTimeText->setText(EASYTR("Remaining Time:"));
-    ui.approximatelyText->setText(EASYTR("Approximately"));
-    ui.hourUnitText->setText(EASYTR("hour"));
-    ui.minUnitText->setText(EASYTR("min"));
-    ui.secUnitText->setText(EASYTR("sec"));
-    ui.remainingEntriesText->setText(EASYTR("Remaining Entries:"));
-    ui.failedEntriesText->setText(EASYTR("Failed Entries:"));
-    ui.detailsBtn->setText(EASYTR("Details"));
+    ui.remainingTimeText->setText(EASYTR(CLSNAME ".Label.RemainingTime"));
+    ui.approximatelyText->setText(EASYTR(CLSNAME ".Label.Approximately"));
+    ui.hourUnitText->setText(EASYTR(CLSNAME ".Label.Hour"));
+    ui.minUnitText->setText(EASYTR(CLSNAME ".Label.Min"));
+    ui.secUnitText->setText(EASYTR(CLSNAME ".Label.Sec"));
+    ui.remainingEntriesText->setText(EASYTR(CLSNAME ".Label.RemainingEntries"));
+    ui.failedEntriesText->setText(EASYTR(CLSNAME ".Label.FailedEntries"));
+    ui.detailsBtn->setText(EASYTR(CLSNAME ".Button.Details"));
     updateECSWidgetTipText();
-    ui.skipAllBtn->setText(EASYTR("Skip All"));
-    ui.replaceAllBtn->setText(EASYTR("Replace All"));
-    ui.keepAllBtn->setText(EASYTR("Keep All"));
-    ui.decideAllBtn->setText(EASYTR("Decide All"));
+    ui.skipAllBtn->setText(EASYTR(CLSNAME ".Button.SkipAll"));
+    ui.replaceAllBtn->setText(EASYTR(CLSNAME ".Button.ReplaceAll"));
+    ui.replaceAllBtn->setToolTip(EASYTR(CLSNAME ".Button.ReplaceAll.ToolTip"));
+    ui.keepAllBtn->setText(EASYTR(CLSNAME ".Button.KeepAll"));
+    ui.decideAllBtn->setText(EASYTR(CLSNAME ".Button.DecideAll"));
 }
 
 void ProgressDialog::onPauseResumeBtnPressed()
@@ -325,10 +306,8 @@ QString ProgressDialog::linkTypeStr() const
 {
     switch (linkType_)
     {
-        // case LT_HARDLINK:    return EASYTR("LinkType.Hardlink");
-        // case LT_SYMLINK:     return EASYTR("LinkType.Symlink");
-        case LT_HARDLINK:    return EASYTR("Hardlink");
-        case LT_SYMLINK:     return EASYTR("Symlink");
+        case LT_HARDLINK:    return EASYTR("LinkType.Hardlink");
+        case LT_SYMLINK:     return EASYTR("LinkType.Symlink");
         default: return "";
     }
 }
@@ -336,9 +315,12 @@ QString ProgressDialog::linkTypeStr() const
 void ProgressDialog::updateHeaderText1()
 {
     ui.headerText1->setText(
-        QString("%1 %2 %3").arg(linkTypeStr(), QString::number(stats_.totalEntries), "entries from")
+        QString("%1 %2 %3").arg(
+            linkTypeStr(),
+            QString::number(stats_.totalEntries),
+            EASYTR(CLSNAME ".Label.HeaderText1")
+        )
     );
-        // .arg(EASYTR(CLSNAME ".Label.HeaderText1")));
 }
 
 void ProgressDialog::updatePauseResumeBtnIcon()
@@ -351,19 +333,12 @@ void ProgressDialog::updatePauseResumeBtnIcon()
 
 void ProgressDialog::updateCurrentEntryTypeText()
 {
-    // ui.fileText->setText(EASYTR(CLSNAME ".EntryType.File"));
-    // ui.directoryText->setText(EASYTR(CLSNAME ".EntryType.Dir"));
-    // ui.symbolText->setText(EASYTR(CLSNAME ".EntryType.Symbol"));
-    ui.fileText->setText(EASYTR("File"));
-    ui.directoryText->setText(EASYTR("Dir"));
-    ui.symbolText->setText(EASYTR("Symbol"));
+    ui.fileText->setText(EASYTR(CLSNAME ".EntryType.File"));
+    ui.directoryText->setText(EASYTR(CLSNAME ".EntryType.Dir"));
+    ui.symbolText->setText(EASYTR(CLSNAME ".EntryType.Symbol"));
 }
 
 void ProgressDialog::updateECSWidgetTipText()
 {
-    ui.ecsTipText->setText(
-        // QString(EASYTR(CLSNAME ".Label.ECSTipText"))
-        QString(EASYTR("The target contains - entries with the same name"))
-            // .arg(stats_.conflicts)
-    );
+    ui.ecsTipText->setText(QString(EASYTR(CLSNAME ".Label.ECSTipText")).arg(stats_.conflicts));
 }
