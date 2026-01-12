@@ -9,7 +9,6 @@ FileLinkManager::FileLinkManager(QObject* parent)
 
 FileLinkManager::~FileLinkManager()
 {
-    qDebug() << "~FileLinkManager";
     emit cancel();
     workerThread_.quit();
     workerThread_.wait();

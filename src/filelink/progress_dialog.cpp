@@ -65,7 +65,6 @@ ProgressDialog::ProgressDialog(
 
 ProgressDialog::~ProgressDialog()
 {
-    qDebug() << "~ProgressDialog";
     cancel();
 }
 
@@ -108,8 +107,6 @@ void ProgressDialog::decideConflicts(const LinkTasks& conflicts)
 
 void ProgressDialog::onWorkFinished()
 {
-    qDebug() << "ProgressDialog::onWorkFinished";
-
     // todo: user decide
     if (stats_.failedEntries == 0)
     {

@@ -18,7 +18,6 @@ FileLinkWorker::FileLinkWorker(QObject* parent)
 
 FileLinkWorker::~FileLinkWorker()
 {
-    qDebug() << "~FileLinkWorker";
     cancel();
 }
 
@@ -82,7 +81,6 @@ void FileLinkWorker::run()
     collectEntries();
     tryUpdateProgress(true);
 
-    qDebug() << "Collect finished";
     if (processPauseAndCancel())
     {
         emit finished();
@@ -90,7 +88,6 @@ void FileLinkWorker::run()
     }
 
     tasks_ = processTasks();
-    qDebug() << "Process finished 1";
     tryUpdateProgress(true);
 
     if (processPauseAndCancel())
@@ -105,7 +102,6 @@ void FileLinkWorker::run()
         return;
     }
 
-    qDebug() << "Wait conflict decision";
     waitConflictsDecision();
     if (processPauseAndCancel())
     {
@@ -114,7 +110,6 @@ void FileLinkWorker::run()
     }
 
     processTasks();
-    qDebug() << "Process finished 2";
     tryUpdateProgress(true);
     emit finished();
 }
