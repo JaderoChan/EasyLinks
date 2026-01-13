@@ -19,6 +19,18 @@
    <string>ErrorLogDialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>3</number>
+   </property>
+   <property name="topMargin">
+    <number>3</number>
+   </property>
+   <property name="rightMargin">
+    <number>3</number>
+   </property>
+   <property name="bottomMargin">
+    <number>3</number>
+   </property>
    <item>
     <widget class="QTextBrowser" name="log">
      <property name="minimumSize">
