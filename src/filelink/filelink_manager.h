@@ -25,5 +25,5 @@ signals:
 private:
     QThread workerThread_;
     FileLinkWorker* worker_ = nullptr;
-    ProgressWidget* dlg_ = nullptr;
+    ProgressWidget* progress_ = nullptr;
 };
