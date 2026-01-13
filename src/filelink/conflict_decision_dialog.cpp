@@ -1,5 +1,7 @@
 #include "conflict_decision_dialog.h"
 
+#include <qsortfilterproxymodel.h>
+
 #include <easy_translate.hpp>
 
 #include "conflict_decision_table_model.h"
@@ -7,17 +9,19 @@
 #define CLSNAME "ConflictDecisionDialog"
 
 ConflictDecisionDialog::ConflictDecisionDialog(LinkTasks& conflicts, QWidget* parent)
-    : QDialog(parent)
+    : QDialog(parent), model_(new ConflictDecisionTableModel(conflicts, this))
 {
     ui.setupUi(this);
 
-    auto* model = new ConflictDecisionTableModel(conflicts, this);
-    ui.tableView->setModel(model);
+    ui.tableView->setModel(model_);
     ui.tableView->verticalHeader()->setMinimumSectionSize(36);
     ui.tableView->verticalHeader()->setMaximumSectionSize(36);
     ui.tableView->verticalHeader()->setSectionsClickable(false);
     ui.tableView->horizontalHeader()->setSectionsClickable(false);
     ui.tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    for (int i = 0; i < model_->rowCount(); ++i)
+        sameDateSizeEntries_ += model_->index(i, 0).data(SAME_DATE_SIZE_ROLE).toBool() ? 1 : 0;
 
     connect(ui.okBtn, &QPushButton::clicked, this, &QDialog::accept);
     connect(ui.cancelBtn, &QPushButton::clicked, this, &QDialog::reject);

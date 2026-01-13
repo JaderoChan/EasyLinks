@@ -20,5 +20,6 @@ protected:
 
 private:
     Ui::ConflictDecisionDialog ui;
+    QAbstractTableModel* model_ = nullptr;
     int sameDateSizeEntries_ = 0;
 };
