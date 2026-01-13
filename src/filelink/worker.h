@@ -3,6 +3,7 @@
 #include <atomic>
 #include <condition_variable>
 
+#include <qfileinfo.h>
 #include <qstringlist.h>
 #include <qobject.h>
 #include <qelapsedtimer.h>

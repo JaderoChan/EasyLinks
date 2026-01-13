@@ -1,6 +1,8 @@
 #pragma once
 
-#include <qfileinfo.h>
+// #include <qfileinfo.h>
+#include <qdatetime.h>
+#include <qstring.h>
 #include <qqueue.h>
 
 enum LinkType : char
@@ -18,10 +20,20 @@ enum EntryConflictStrategy : char
     ECS_KEEP        // 均保留（通过重命名）
 };
 
+struct Entry
+{
+    QString path;
+    QString filename;
+    QString parentPath;
+    QDateTime lastModified;
+    qint64 size;
+};
+
+// todo: rename
 struct EntryPair
 {
-    QFileInfo source;
-    QFileInfo target;
+    Entry source;
+    Entry target;
 };
 
 struct LinkTask

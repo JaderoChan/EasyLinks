@@ -13,6 +13,8 @@ ConflictDecisionDialog::ConflictDecisionDialog(LinkTasks& conflicts, QWidget* pa
     model_(new ConflictDecisionTableModel(conflicts, this)),
     proxyModel_(new QSortFilterProxyModel(this))
 {
+    QElapsedTimer timer0;
+    timer0.start();
     ui.setupUi(this);
 
     proxyModel_->setSourceModel(model_);
@@ -25,13 +27,17 @@ ConflictDecisionDialog::ConflictDecisionDialog(LinkTasks& conflicts, QWidget* pa
     ui.tableView->horizontalHeader()->setSectionsClickable(false);
     ui.tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
+    QElapsedTimer timer;
+    timer.start();
     sameDateSizeEntries_ = model_->match(model_->index(0, 0), SAME_DATE_SIZE_ROLE, true, -1).size();
+    qDebug() << timer.elapsed() << "ms";
 
     connect(ui.okBtn, &QPushButton::clicked, this, &QDialog::accept);
     connect(ui.cancelBtn, &QPushButton::clicked, this, &QDialog::reject);
     connect(ui.skipSameDateSizeCb, &QCheckBox::toggled, this, &ConflictDecisionDialog::onSkipSameDateSizeCbToggled);
 
     updateText();
+    qDebug() << timer0.elapsed() << "ms";
 }
 
 void ConflictDecisionDialog::updateText()
