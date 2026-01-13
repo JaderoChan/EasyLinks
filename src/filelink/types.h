@@ -1,6 +1,7 @@
 #pragma once
 
 #include <qfileinfo.h>
+#include <qdatetime.h>
 #include <qqueue.h>
 
 enum LinkType : char
@@ -18,10 +19,17 @@ enum EntryConflictStrategy : char
     ECS_KEEP        // 均保留（通过重命名）
 };
 
+struct Entry
+{
+    QFileInfo fileinfo;
+    QDateTime lastModified; // 存储于此，提升ConflictDecisionDialog界面的表格显示性能。
+    qint64 size;
+};
+
 struct EntryPair
 {
-    QFileInfo source;
-    QFileInfo target;
+    Entry source;
+    Entry target;
 };
 
 struct LinkTask

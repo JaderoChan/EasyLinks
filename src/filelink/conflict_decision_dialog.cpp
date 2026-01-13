@@ -1,7 +1,5 @@
 #include "conflict_decision_dialog.h"
 
-#include <qelapsedtimer.h>
-
 #include <easy_translate.hpp>
 
 #include "conflict_decision_table_model.h"
@@ -19,8 +17,6 @@ ConflictDecisionDialog::ConflictDecisionDialog(LinkTasks& conflicts, QWidget* pa
     proxyModel_->setFilterRole(SAME_DATE_SIZE_ROLE);
     proxyModel_->setFilterKeyColumn(0);
     ui.tableView->setModel(proxyModel_);
-    ui.tableView->verticalHeader()->setMinimumSectionSize(36);
-    ui.tableView->verticalHeader()->setMaximumSectionSize(36);
     ui.tableView->verticalHeader()->setSectionsClickable(false);
     ui.tableView->horizontalHeader()->setSectionsClickable(false);
     ui.tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);

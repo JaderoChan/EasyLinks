@@ -34,14 +34,13 @@ QVariant ConflictDecisionTableModel::data(const QModelIndex& index, int role) co
         return QVariant();
 
     const auto& conflict = conflicts_[row];
-    const auto& fileinfo = (col == 0 ? conflict.entryPair.source : conflict.entryPair.target);
+    const auto& entry = (col == 0 ? conflict.entryPair.source : conflict.entryPair.target);
     switch (role)
     {
         case Qt::DisplayRole:
-            return fileinfo.fileName();
+            return entry.fileinfo.fileName();
         case Qt::ToolTipRole:   // Fallthrough
-        case FILENAME_ROLE:
-            return fileinfo.absoluteFilePath();
+            return entry.fileinfo.absoluteFilePath();
         case Qt::CheckStateRole:
         {
             switch (conflict.ecs)
@@ -55,12 +54,12 @@ QVariant ConflictDecisionTableModel::data(const QModelIndex& index, int role) co
             break;
         }
         case Qt::DecorationRole:
-            return getFileIcon(fileinfo);
+            return getFileIcon(entry.fileinfo);
         case URL_ROLE:
-            return fileinfo.absolutePath();
+            return entry.fileinfo.absolutePath();
         case SAME_DATE_SIZE_ROLE:
-            return (conflict.entryPair.source.size() == conflict.entryPair.target.size()) &&
-                (conflict.entryPair.source.lastModified() == conflict.entryPair.target.lastModified());
+            return (conflict.entryPair.source.size == conflict.entryPair.target.size) &&
+                (conflict.entryPair.source.lastModified == conflict.entryPair.target.lastModified);
         default:
             break;
     }
@@ -77,11 +76,11 @@ QVariant ConflictDecisionTableModel::headerData(int section, Qt::Orientation ori
         return QVariant();
 
     const auto& aConflict = conflicts_.front();
-    const auto& fileinfo = (section == 0 ? aConflict.entryPair.source : aConflict.entryPair.target);
+    const auto& entry = (section == 0 ? aConflict.entryPair.source : aConflict.entryPair.target);
     switch (role)
     {
         case Qt::DisplayRole:
-            return fileinfo.absoluteDir().dirName();
+            return entry.fileinfo.absoluteDir().dirName();
         case Qt::CheckStateRole:
         {
             auto checkeds = match(createIndex(0, 0), Qt::CheckStateRole, Qt::Checked, -1);
@@ -94,7 +93,7 @@ QVariant ConflictDecisionTableModel::headerData(int section, Qt::Orientation ori
         }
         case Qt::ToolTipRole:   // Fallthrough
         case URL_ROLE:
-            return fileinfo.absolutePath();
+            return entry.fileinfo.absolutePath();
         default:
             break;
     }

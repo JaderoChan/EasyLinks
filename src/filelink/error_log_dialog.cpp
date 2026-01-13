@@ -28,8 +28,8 @@ void ErrorLogDialog::appendLog(LinkType linkType, const EntryPair& entryPair, co
     ).arg(
         currentTimeString(),
         linkType == LT_SYMLINK ? "Symlink" : "Hardlink",
-        entryPair.source.absolutePath(),
-        entryPair.target.absolutePath(),
+        entryPair.source.fileinfo.absolutePath(),
+        entryPair.target.fileinfo.absolutePath(),
         errorMsg
     );
     ui.log->append(log);

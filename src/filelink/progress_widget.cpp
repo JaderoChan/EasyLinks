@@ -273,18 +273,19 @@ void ProgressWidget::updateSpeedRemainingTimeDisplay()
 void ProgressWidget::updateCurrentEntryDisplay(const EntryPair& currentEntryPair)
 {
     const auto& source = currentEntryPair.source;
-    ui.currentEntryValue->setText(source.absoluteFilePath());
-    ui.currentEntryValue->setToolTip(source.absoluteFilePath());
+    ui.currentEntryValue->setText(source.fileinfo.absoluteFilePath());
+    ui.currentEntryValue->setToolTip(source.fileinfo.absoluteFilePath());
 
     ui.fileText->hide();
     ui.directoryText->hide();
     ui.symbolText->hide();
 
-    if (source.isSymbolicLink() || source.isShortcut() || source.isBundle() || source.isJunction())
+    const auto& fileinfo = source.fileinfo;
+    if (fileinfo.isSymbolicLink() || fileinfo.isShortcut() || fileinfo.isBundle() || fileinfo.isJunction())
         ui.symbolText->show();
-    else if (source.isFile())
+    else if (fileinfo.isFile())
         ui.fileText->show();
-    else if (source.isDir())
+    else if (fileinfo.isDir())
         ui.directoryText->show();
     else ; // pass
 }

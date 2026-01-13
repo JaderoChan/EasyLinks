@@ -7,8 +7,7 @@
 #include "types.h"
 
 #define URL_ROLE (Qt::UserRole + 1)
-#define FILENAME_ROLE (Qt::UserRole + 2)
-#define SAME_DATE_SIZE_ROLE (Qt::UserRole + 3)
+#define SAME_DATE_SIZE_ROLE (Qt::UserRole + 2)
 
 class ConflictDecisionTableModel : public QAbstractTableModel
 {
