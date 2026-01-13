@@ -54,8 +54,8 @@ protected:
     void onDecideAllBtnPressed();
 
 private:
-    // 更改tasks中所有None策略的条目为Skip策略。
-    // 如果所有task均为None或Skip则返回true，否则返回false。
+    // 更改所有None策略的冲突项为Skip策略。
+    // 如果所有冲突项均为None或Skip策略则返回true，否则返回false。
     bool normalizeECS(LinkTasks& tasks);
 
     void updateStatsDisplay();

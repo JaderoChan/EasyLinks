@@ -108,11 +108,11 @@ void ProgressDialog::onWorkFinished()
         return;
     }
 
-    lastProcessedEntries_ = stats_.processedEntries;
     speedRemainingTimeUpdateTimer_.stop();
     ui.pauseResumeBtn->setDisabled(true);
     ui.cancelBtn->setDisabled(true);
     updateCurrentEntryDisplay(EntryPair());
+    lastProcessedEntries_ = stats_.processedEntries;
     updateSpeedRemainingTimeDisplay();
 }
 
@@ -212,7 +212,7 @@ void ProgressDialog::onDecideAllBtnPressed()
     int ret = dlg.exec();
     if (ret == QDialog::Accepted)
     {
-        // 如果所有冲突条目最终都使用Skip策略则直接发送针对所有冲突项的Skip策略信号，以进行优化。
+        // 如果所有冲突条目最终都使用Skip策略则直接发送“对所有冲突项采用Skip策略”信号，以进行优化。
         if (normalizeECS(conflicts_))
             emit allConflictsDecided(ECS_SKIP);
         else
@@ -220,6 +220,7 @@ void ProgressDialog::onDecideAllBtnPressed()
     }
     else
     {
+        // 默认对所有冲突项采用Skip策略。
         emit allConflictsDecided(ECS_SKIP);
     }
 }
@@ -261,6 +262,7 @@ void ProgressDialog::updateSpeedRemainingTimeDisplay()
     lastProcessedEntries_ = stats_.processedEntries;
     ui.speedValue->setText(QString::number(speed_));
 
+    // 保证数字具有两位，使用0进行补位。
     static auto formatNumberString = [](int num) -> QString
     { return (num < 10 ? "0" : "") + QString::number(num); };
 
@@ -306,6 +308,7 @@ void ProgressDialog::updateRemainingEntriesDisplay()
 void ProgressDialog::updateFailedCountDisplay()
 {
     ui.failedEntriesValue->setText(QString::number(stats_.failedEntries));
+    // 如果失败项数量不为0则启用errorWgt，用以提醒用户与打开错误日志窗口。
     if (stats_.failedEntries > 0 && !ui.errorWgt->isEnabled())
         ui.errorWgt->setEnabled(true);
 }
