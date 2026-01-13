@@ -78,6 +78,11 @@
       </property>
       <item>
        <widget class="QTableView" name="tableView">
+        <property name="font">
+         <font>
+          <stylestrategy>PreferAntialias</stylestrategy>
+         </font>
+        </property>
         <property name="focusPolicy">
          <enum>Qt::ClickFocus</enum>
         </property>
@@ -132,18 +137,8 @@ QTableView::item:focus {
       </property>
       <item>
        <widget class="QCheckBox" name="skipSameDateSizeCb">
-        <property name="font">
-         <font>
-          <family>Segoe UI</family>
-          <pointsize>10</pointsize>
-          <stylestrategy>PreferAntialias</stylestrategy>
-         </font>
-        </property>
         <property name="text">
-         <string>Skip 0 files with the same date and size (S̲)</string>
-        </property>
-        <property name="shortcut">
-         <string>S</string>
+         <string>Skip 0 files with the same date and size</string>
         </property>
        </widget>
       </item>
@@ -162,35 +157,15 @@ QTableView::item:focus {
       </item>
       <item>
        <widget class="QPushButton" name="okBtn">
-        <property name="font">
-         <font>
-          <family>Segoe UI</family>
-          <pointsize>10</pointsize>
-          <stylestrategy>PreferAntialias</stylestrategy>
-         </font>
-        </property>
         <property name="text">
-         <string>Ok (O̲)</string>
-        </property>
-        <property name="shortcut">
-         <string>O</string>
+         <string>Ok</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="cancelBtn">
-        <property name="font">
-         <font>
-          <family>Segoe UI</family>
-          <pointsize>10</pointsize>
-          <stylestrategy>PreferAntialias</stylestrategy>
-         </font>
-        </property>
         <property name="text">
-         <string>Cancel (C̲)</string>
-        </property>
-        <property name="shortcut">
-         <string>C</string>
+         <string>Cancel</string>
         </property>
        </widget>
       </item>

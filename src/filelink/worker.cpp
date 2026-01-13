@@ -109,7 +109,16 @@ void FileLinkWorker::run()
         return;
     }
 
-    processTasks();
+    if (ecsApplyToAll_ && ecsOfAll == ECS_SKIP)
+    {
+        stats_.processedEntries += stats_.conflicts;
+        stats_.successfulEntries += stats_.conflicts;
+    }
+    else
+    {
+        processTasks();
+    }
+
     tryUpdateProgress(true);
     emit finished();
 }
@@ -123,8 +132,8 @@ void FileLinkWorker::setParameters(LinkType linkType, const QStringList& sourceP
 
 void FileLinkWorker::setConflictsDecisionForAll(EntryConflictStrategy ecs)
 {
-    ECSOfAll = ecs;
-    ECSApplyToAll_ = true;
+    ecsOfAll = ecs;
+    ecsApplyToAll_ = true;
     resume();
 }
 
@@ -188,7 +197,7 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo source, QFileInfo t
         }
         else if (target.isFile())
         {
-            ecs = ECSApplyToAll_ ? ECSOfAll.load() : ecs;
+            ecs = ecsApplyToAll_ ? ecsOfAll.load() : ecs;
             switch (ecs)
             {
                 case ECS_NONE:

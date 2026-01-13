@@ -63,6 +63,12 @@
       </property>
       <item>
        <widget class="QWidget" name="widget_11" native="true">
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+          <stylestrategy>PreferAntialias</stylestrategy>
+         </font>
+        </property>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <property name="leftMargin">
           <number>0</number>
@@ -502,6 +508,11 @@ QPushButton:pressed
                    </item>
                    <item>
                     <widget class="QLabel" name="currentEntryValue">
+                     <property name="font">
+                      <font>
+                       <stylestrategy>PreferAntialias</stylestrategy>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>-</string>
                      </property>

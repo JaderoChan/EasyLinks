@@ -8,12 +8,6 @@
 
 #define CLSNAME "ProgressDialog"
 
-// todo: 按钮快捷键不生效
-// todo: 禁用ESC关闭窗口
-// todo：添加按钮图标
-// todo：添加任务栏图标显示进度
-// todo：过长的currentEntry优先显示右边
-
 ProgressDialog::ProgressDialog(
     LinkType linkType,
     const QString& sourceDir,
@@ -162,6 +156,19 @@ void ProgressDialog::changeEvent(QEvent* event)
     QDialog::changeEvent(event);
 }
 
+void ProgressDialog::keyPressEvent(QKeyEvent* event)
+{
+    switch (event->key())
+    {
+        // 禁用键入ESC关闭对话框功能。
+        case Qt::Key_Escape:
+            break;
+        default:
+            QDialog::keyPressEvent(event);
+            break;
+    }
+}
+
 void ProgressDialog::onPauseResumeBtnPressed()
 {
     paused_ ? resume() : pause();
@@ -205,8 +212,11 @@ void ProgressDialog::onDecideAllBtnPressed()
     int ret = dlg.exec();
     if (ret == QDialog::Accepted)
     {
-        normalizeECS(conflicts_);
-        emit conflictsDecided(conflicts_);
+        // 如果所有冲突条目最终都使用Skip策略则直接发送针对所有冲突项的Skip策略信号，以进行优化。
+        if (normalizeECS(conflicts_))
+            emit allConflictsDecided(ECS_SKIP);
+        else
+            emit conflictsDecided(conflicts_);
     }
     else
     {
@@ -214,14 +224,18 @@ void ProgressDialog::onDecideAllBtnPressed()
     }
 }
 
-// todo: 是否有性能更好的解决办法？
-void ProgressDialog::normalizeECS(LinkTasks& tasks)
+bool ProgressDialog::normalizeECS(LinkTasks& tasks)
 {
+    int counter = 0;
     for (auto& task : tasks)
     {
-        if (task.ecs == ECS_NONE)
+        if (task.ecs == ECS_NONE || task.ecs == ECS_SKIP)
+        {
             task.ecs = ECS_SKIP;
+            counter++;
+        }
     }
+    return counter == stats_.conflicts;
 }
 
 void ProgressDialog::updateStatsDisplay()
@@ -272,6 +286,7 @@ void ProgressDialog::updateCurrentEntryDisplay(const EntryPair& currentEntryPair
 {
     const auto& source = currentEntryPair.source;
     ui.currentEntryValue->setText(source.absoluteFilePath());
+    ui.currentEntryValue->setToolTip(source.absoluteFilePath());
 
     ui.fileText->hide();
     ui.directoryText->hide();
@@ -303,15 +318,16 @@ void ProgressDialog::pageToMainWidget()
 void ProgressDialog::pageToECSWidget()
 {
     ui.stackedWidget->setCurrentIndex(1);
+    updateECSWidgetTipText();   // 由于Tip文本中包含了冲突数量，需要显式更新文本。
     ui.replaceAllBtn->setFocus();
     ui.replaceAllBtn->setShortcut(QKeySequence::fromString("R"));
     ui.skipAllBtn->setShortcut(QKeySequence::fromString("S"));
     ui.keepAllBtn->setShortcut(QKeySequence::fromString("K"));
     ui.decideAllBtn->setShortcut(QKeySequence::fromString("D"));
-    qApp->alert(this);
+    qApp->alert(this);          // 通过任务栏提醒用户需要抉择。
 }
 
-QString ProgressDialog::linkTypeStr() const
+QString ProgressDialog::linkTypeString() const
 {
     switch (linkType_)
     {
@@ -325,7 +341,7 @@ void ProgressDialog::updateHeaderText1()
 {
     ui.headerText1->setText(
         QString("%1 %2 %3").arg(
-            linkTypeStr(),
+            linkTypeString(),
             QString::number(stats_.totalEntries),
             EASYTR(CLSNAME ".Label.HeaderText1")
         )

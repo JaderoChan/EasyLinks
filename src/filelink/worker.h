@@ -86,8 +86,8 @@ private:
     std::condition_variable pausedCondition_;
     std::atomic<bool> paused_{false};
     std::atomic<bool> cancelled_{false};
-    std::atomic<bool> ECSApplyToAll_{false};
-    std::atomic<EntryConflictStrategy> ECSOfAll{ECS_NONE};
+    std::atomic<bool> ecsApplyToAll_{false};
+    std::atomic<EntryConflictStrategy> ecsOfAll{ECS_NONE};
 
     std::atomic<bool> removeToTrash_{false};
 

@@ -19,10 +19,6 @@ ConflictDecisionDialog::ConflictDecisionDialog(LinkTasks& conflicts, QWidget* pa
     ui.tableView->horizontalHeader()->setSectionsClickable(false);
     ui.tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    ui.skipSameDateSizeCb->setShortcut(QKeySequence::fromString("S"));
-    ui.okBtn->setShortcut(QKeySequence::fromString("O"));
-    ui.cancelBtn->setShortcut(QKeySequence::fromString("C"));
-
     connect(ui.okBtn, &QPushButton::clicked, this, &QDialog::accept);
     connect(ui.cancelBtn, &QPushButton::clicked, this, &QDialog::reject);
     connect(ui.skipSameDateSizeCb, &QCheckBox::toggled, this, &ConflictDecisionDialog::onSkipSameDateSizeCbToggled);

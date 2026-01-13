@@ -1,10 +1,10 @@
 {
-    "CommonButton.Ok": "Ok (O̲)",
-    "CommonButton.Cancel": "Cancel (C̲)",
+    "CommonButton.Ok": "Ok",
+    "CommonButton.Cancel": "Cancel",
     "ConflictDecisionDialog.WindowTitle": "Which entries do you want to keep?",
     "ConflictDecisionDialog.Label.HeaderText1": "Which entries do you want to keep?",
     "ConflictDecisionDialog.Label.HeaderText2": "If you select two entries, a numerical sequence will be added to the name of the target file.",
-    "ConflictDecisionDialog.CheckBox.SkipSameDateSize": "Skip %1 entries with the same date and size (S̲)",
+    "ConflictDecisionDialog.CheckBox.SkipSameDateSize": "Skip %1 entries with the same date and size",
     "ErrorLogDialog.WindowTitle": "Error Log",
     "ProgressDialog.WindowTitle": "Easy Link",
     "ProgressDialog.Label.HeaderText1": "entries from",

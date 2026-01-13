@@ -84,9 +84,12 @@ QVariant ConflictDecisionTableviewModel::headerData(int section, Qt::Orientation
         case Qt::CheckStateRole:
         {
             auto checkeds = match(createIndex(0, 0), Qt::CheckStateRole, Qt::Checked, -1);
-            if (checkeds.size() == conflicts_.size())   return Qt::Checked;
-            else if (checkeds.size() == 0)              return Qt::Unchecked;
-            else                                        return Qt::PartiallyChecked;
+            if (checkeds.size() == conflicts_.size())
+                return Qt::Checked;
+            else if (checkeds.size() == 0)
+                return Qt::Unchecked;
+            else
+                return Qt::PartiallyChecked;
         }
         case Qt::ToolTipRole:   // Fallthrough
         case URL_ROLE:

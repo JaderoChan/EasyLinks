@@ -43,6 +43,7 @@ protected:
     virtual void updateText();
 
     void changeEvent(QEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
     void onPauseResumeBtnPressed();
     void onCancelBtnPressed();
@@ -54,7 +55,8 @@ protected:
 
 private:
     // 更改tasks中所有None策略的条目为Skip策略。
-    static void normalizeECS(LinkTasks& tasks);
+    // 如果所有task均为None或Skip则返回true，否则返回false。
+    bool normalizeECS(LinkTasks& tasks);
 
     void updateStatsDisplay();
 
@@ -67,7 +69,7 @@ private:
     void pageToMainWidget();
     void pageToECSWidget();
 
-    QString linkTypeStr() const;
+    QString linkTypeString() const;
     void updateHeaderText1();
     void updatePauseResumeBtnIcon();
     void updateCurrentEntryTypeText();

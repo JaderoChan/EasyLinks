@@ -1,10 +1,10 @@
 {
-    "CommonButton.Ok": "确认 (O̲)",
-    "CommonButton.Cancel": "取消 (C̲)",
+    "CommonButton.Ok": "确认",
+    "CommonButton.Cancel": "取消",
     "ConflictDecisionDialog.WindowTitle": "你想保留哪些条目？",
     "ConflictDecisionDialog.Label.HeaderText1": "你想保留哪些条目？",
     "ConflictDecisionDialog.Label.HeaderText2": "如果你选择了两个条目，目标文件将在名称后加上数字序号。",
-    "ConflictDecisionDialog.CheckBox.SkipSameDateSize": "跳过 %1 个具有相同日期与大小的条目 (S̲)",
+    "ConflictDecisionDialog.CheckBox.SkipSameDateSize": "跳过 %1 个具有相同日期与大小的条目",
     "ErrorLogDialog.WindowTitle": "错误日志",
     "ProgressDialog.WindowTitle": "随心链接",
     "ProgressDialog.Label.HeaderText1": "个条目从",
