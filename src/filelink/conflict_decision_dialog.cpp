@@ -46,5 +46,4 @@ void ConflictDecisionDialog::changeEvent(QEvent* event)
 void ConflictDecisionDialog::onSkipSameDateSizeCbToggled()
 {
     // todo
-    // ui.tableView.
 }

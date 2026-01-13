@@ -3,9 +3,6 @@
 #include <qdir.h>
 #include <qfileiconprovider.h>
 
-// todo：表头全选功能
-// todo：表头打开外部链接功能
-
 ConflictDecisionTableviewModel::ConflictDecisionTableviewModel(LinkTasks& conflicts, QObject* parent)
     : QAbstractTableModel(parent), conflicts_(conflicts)
 {}

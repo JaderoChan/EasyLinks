@@ -101,7 +101,6 @@ void ProgressDialog::decideConflicts(const LinkTasks& conflicts)
 
 void ProgressDialog::onWorkFinished()
 {
-    // todo: user decide
     if (stats_.failedEntries == 0)
     {
         close();
