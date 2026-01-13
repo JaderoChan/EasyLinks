@@ -14,7 +14,6 @@ configure_file(
     ${CMAKE_BINARY_DIR}/include/config.h
 )
 
-target_include_directories(${PROJECT_NAME} PRIVATE "E:/05_Data/Libs/OnlyHeader")
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/include
@@ -23,6 +22,7 @@ target_link_libraries(
     ${PROJECT_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     global_hotkey::global_hotkey
+    easy_translate::easy_translate
 )
 
 set_target_properties(
@@ -31,6 +31,13 @@ set_target_properties(
     AUTOUIC ON
     AUTORCC ON
     # WIN32_EXECUTABLE ON
+)
+
+option(UPDATE_TRANSLATIONS_FILES ON)
+
+target_compile_definitions(
+    ${PROJECT_NAME} PRIVATE
+    $<$<BOOL:${UPDATE_TRANSLATIONS_FILES}>:EASY_TRANSLATE_UPDATE_TRANSLATIONS_FILES>
 )
 
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/languages DESTINATION ${CMAKE_INSTALL_BINDIR})
