@@ -5,3 +5,4 @@
 - 完成功能：ConflictDecisionDialog，“跳过相同日期与大小”可选框逻辑。
 - 完成功能：ConflictDecisionDialog，表头可选框与表头打开外部链接逻辑。
 - 完成功能：FileLinkWorker::isOnSameDriver，其他平台的逻辑实现。
+- 优化功能：增加Windows平台下长路径支持。
