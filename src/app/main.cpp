@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
         qDebug() << "Failed set the language";
 
     // test
-    QString source("E:/05_Data/GameSaveBackups/My Games/Terraria/tModLoader");
+    QString source("E:/05_Data");
     QString target("E:/06_TMP/Test");
     FileLinkManager m;
     m.createLinks(LT_HARDLINK, {source}, target);

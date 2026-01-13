@@ -41,6 +41,7 @@ void FileLinkWorker::createLink(LinkType linkType, const QFileInfo& source, cons
 {
     namespace fs = std::filesystem;
 
+    // 尝试创建目标文件的父路径。
     QDir targetDir(target.absolutePath());
     if (!targetDir.exists())
     {
@@ -48,6 +49,7 @@ void FileLinkWorker::createLink(LinkType linkType, const QFileInfo& source, cons
             THROW_RTERR("The target path cannot be created.");
     }
 
+    // 如果原文件与目标文件是同一个文件实体则抛出异常。
     auto sourcePath = source.filesystemAbsoluteFilePath();
     auto targetPath = target.filesystemAbsoluteFilePath();
     if (fs::exists(sourcePath) && fs::exists(targetPath) && fs::equivalent(sourcePath, targetPath))
@@ -133,11 +135,16 @@ void FileLinkWorker::run()
     emit finished();
 }
 
-void FileLinkWorker::setParameters(LinkType linkType, const QStringList& sourcePaths, const QString& targetDir)
+void FileLinkWorker::setParameters(
+    LinkType linkType,
+    const QStringList& sourcePaths,
+    const QString& targetDir,
+    bool removeToTrash)
 {
     linkType_ = linkType;
     sourcePaths_ = sourcePaths;
     targetDir_ = targetDir;
+    removeToTrash_ = removeToTrash;
 }
 
 void FileLinkWorker::setConflictsDecisionForAll(EntryConflictStrategy ecs)
@@ -183,9 +190,9 @@ bool FileLinkWorker::processPauseAndCancel()
     return cancelled_;
 }
 
-void FileLinkWorker::addTask(LinkType linkType, const QFileInfo& sourceEntry, const QFileInfo& targetEntry)
+void FileLinkWorker::addTask(LinkType linkType, const QFileInfo& source, const QFileInfo& target)
 {
-    currentEntryPair_ = {sourceEntry, targetEntry};
+    currentEntryPair_ = {source, target};
     tasks_.enqueue({linkType, currentEntryPair_, ECS_NONE});
     stats_.totalEntries++;
     tryUpdateProgress();
@@ -196,6 +203,8 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo& source, QFileInfo&
     source.refresh();
     target.refresh();
 
+    // 如果创建的是硬链接且原文件与目标文件处于不同驱动器上则抛出错误。
+    // （此情况在绝大多数时候一定会链接失败，为了防止目标文件已存在且用户决定替换目标文件而导致目标文件被无端删除）
     if (linkType == LT_HARDLINK && !isOnSameDriver(source.absoluteFilePath(), target.absoluteFilePath()))
         THROW_RTERR("The specified original file and the target are located on different devices or file systems.");
 
@@ -250,11 +259,11 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo& source, QFileInfo&
 
 LinkTasks FileLinkWorker::processTasks()
 {
-    LinkTasks conflictTasks;
+    LinkTasks conflicts;
     while (!tasks_.isEmpty())
     {
         if (processPauseAndCancel())
-            return conflictTasks;
+            return conflicts;
 
         auto task = tasks_.dequeue();
         currentEntryPair_ = task.entryPair;
@@ -264,7 +273,7 @@ LinkTasks FileLinkWorker::processTasks()
             if (isConflict)
             {
                 stats_.conflicts++;
-                conflictTasks.append(task);
+                conflicts.append(task);
             }
             else
             {
@@ -282,7 +291,7 @@ LinkTasks FileLinkWorker::processTasks()
             tryUpdateProgress();
         }
     }
-    return conflictTasks;
+    return conflicts;
 }
 
 void FileLinkWorker::tryUpdateProgress(bool forced)
@@ -290,10 +299,8 @@ void FileLinkWorker::tryUpdateProgress(bool forced)
     if (forced)
     {
         emit progressUpdated(currentEntryPair_, stats_);
-        return;
     }
-
-    if (progressUpdateTimer_.elapsed() > ProgressUpdateInterval)
+    else if (progressUpdateTimer_.elapsed() > ProgressUpdateInterval)
     {
         progressUpdateTimer_.restart();
         emit progressUpdated(currentEntryPair_, stats_);
@@ -312,9 +319,9 @@ void FileLinkWorker::collectEntriesForSymlink()
     {
         if (processPauseAndCancel())
             return;
-        QFileInfo sourceEntry(sourcePath);
-        QFileInfo targetEntry(targetDir_ + "/" + sourceEntry.fileName());
-        addTask(LT_SYMLINK, sourceEntry, targetEntry);
+        QFileInfo source(sourcePath);
+        QFileInfo target(targetDir_ + "/" + source.fileName());
+        addTask(LT_SYMLINK, source, target);
     }
 }
 
@@ -323,13 +330,13 @@ void FileLinkWorker::collectEntriesForHardlinkHelper(const QString& sourcePath, 
     if (processPauseAndCancel())
         return;
 
-    QFileInfo sourceEntry(sourcePath);
-    if (sourceEntry.isFile() || isWindowsSymlink(sourceEntry))
+    QFileInfo source(sourcePath);
+    if (source.isFile() || isWindowsSymlink(source))
     {
-        QFileInfo targetEntry(targetDir + "/" + sourceEntry.fileName());
-        addTask(LT_HARDLINK, sourceEntry, targetEntry);
+        QFileInfo target(targetDir + "/" + source.fileName());
+        addTask(LT_HARDLINK, source, target);
     }
-    else if (sourceEntry.isDir())
+    else if (source.isDir())
     {
         QDir sourceDir(sourcePath);
         QFileInfoList entries = sourceDir.entryInfoList(
@@ -341,11 +348,11 @@ void FileLinkWorker::collectEntriesForHardlinkHelper(const QString& sourcePath, 
             if (processPauseAndCancel())
                 return;
 
-            QFileInfo targetEntry(targetDir + "/" + entry.fileName());
+            QFileInfo target(targetDir + "/" + entry.fileName());
             if (entry.isFile() || isWindowsSymlink(entry))
-                addTask(LT_HARDLINK, entry, targetEntry);
+                addTask(LT_HARDLINK, entry, target);
             else
-                collectEntriesForHardlinkHelper(entry.absoluteFilePath(), targetEntry.absoluteFilePath());
+                collectEntriesForHardlinkHelper(entry.absoluteFilePath(), target.absoluteFilePath());
         }
     }
 }
@@ -380,7 +387,6 @@ void FileLinkWorker::collectEntries()
     }
 }
 
-// todo: 支持用户自定义重命名规则。
 void FileLinkWorker::generateNewPath(QFileInfo& file)
 {
     auto baseName = file.completeBaseName();

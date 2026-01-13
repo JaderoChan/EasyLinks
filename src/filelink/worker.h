@@ -28,7 +28,11 @@ public:
     static void createLink(LinkType linkType, const QFileInfo& source, const QFileInfo& target);
 
     void run();
-    void setParameters(LinkType linkType, const QStringList& sourcePaths, const QString& targetDir);
+    void setParameters(
+        LinkType linkType,
+        const QStringList& sourcePaths,
+        const QString& targetDir,
+        bool removeToTrash = false);
 
     // - 必须在工作线程处于暂停状态时调用。
     // - 设置冲突策略并应用至全部项。
@@ -55,7 +59,7 @@ protected:
     // - 对于情况2而言，如果暂停的解除是由取消操作产生的则返回true，否则返回false（暂停的解除由用户恢复）。
     bool processPauseAndCancel();
     // 创建一个链接任务并将其添加至任务队列。(冲突处理策略使用None，即实际的冲突处理策略将由用户决定)
-    void addTask(LinkType linkType, const QFileInfo& sourceEntry, const QFileInfo& targetEntry);
+    void addTask(LinkType linkType, const QFileInfo& source, const QFileInfo& target);
     // - 仅当冲突处理策略是None且发生冲突时返回false，否则返回true。
     // - 传入的source/target可能发生改变。
     bool createLink(LinkType linkType, QFileInfo& source, QFileInfo& target, EntryConflictStrategy ecs);
@@ -94,7 +98,7 @@ private:
     std::atomic<bool> ecsApplyToAll_{false};
     std::atomic<EntryConflictStrategy> ecsOfAll{ECS_NONE};
 
-    std::atomic<bool> removeToTrash_{false};
+    bool removeToTrash_ = false;
 
     EntryPair currentEntryPair_;
     QElapsedTimer progressUpdateTimer_;
