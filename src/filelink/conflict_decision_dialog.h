@@ -20,5 +20,5 @@ protected:
 
 private:
     Ui::ConflictDecisionDialog ui;
-    int skipEntries_ = 0;
+    int sameDateAndSizeEntries_ = 0;
 };
