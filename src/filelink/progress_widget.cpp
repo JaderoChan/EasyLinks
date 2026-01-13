@@ -7,6 +7,9 @@
 #include "conflict_decision_dialog.h"
 
 #define CLSNAME "ProgressDialog"
+#define PATH_TEXT_FORMAT_STRING \
+    "<html><head/><body><p><a href='%1'><span style='color:rgba(0, 100, 180, 216); text-decoration:none;'>" \
+    "%2</span></a></p></body></html>"
 
 ProgressWidget::ProgressWidget(
     LinkType linkType,
@@ -20,17 +23,10 @@ ProgressWidget::ProgressWidget(
     ui.setupUi(this);
     setFixedSize(width(), height());
 
-    ui.sourcePathText->setText(
-        QString(
-            "<html><head/><body><p><a href='%1'><span style='color:rgba(0, 100, 180, 216); text-decoration:none;'>"
-            "%2</span></a></p></body></html>")
+    ui.sourcePathText->setText(QString(PATH_TEXT_FORMAT_STRING)
         .arg(sourceDir, QDir(sourceDir).isRoot() ? sourceDir : QDir(sourceDir).dirName()));
-    ui.targetPathText->setText(
-        QString(
-            "<html><head/><body><p><a href='%1'><span style='color:rgba(0, 100, 180, 216); text-decoration:none;'>"
-            "%2</span></a></p></body></html>")
-        .arg(targetDir, QDir(targetDir).isRoot() ? targetDir : QDir(targetDir).dirName())
-    );
+    ui.targetPathText->setText(QString(PATH_TEXT_FORMAT_STRING)
+        .arg(targetDir, QDir(targetDir).isRoot() ? targetDir : QDir(targetDir).dirName()));
 
     ui.errorWgt->setEnabled(false);
     errorLogDlg_->hide();

@@ -5,6 +5,16 @@
 #include <easy_translate.hpp>
 
 #define CLSNAME "ErrorLogDialog"
+#define ERROR_LOG_FORMAT_STRING \
+    "<div style='margin: 1px 0; line-height: 1.2;'>" \
+    "<span style='color:gray;'>[%1]</span><br>" \
+    "Failed to %2 the<br>" \
+    "<a href='folder://%3' style='color:blue;text-decoration:underline;'>%3</a> " \
+    "<br>to<br>" \
+    "<a href='folder://%4' style='color:blue;text-decoration:underline;'>%4</a>" \
+    "<br>" \
+    "Error message: <span style='color:red;'>%5</span>" \
+    "</div><br>"
 
 ErrorLogDialog::ErrorLogDialog(QWidget* parent)
     : QDialog(parent)
@@ -15,23 +25,12 @@ ErrorLogDialog::ErrorLogDialog(QWidget* parent)
 
 void ErrorLogDialog::appendLog(LinkType linkType, const EntryPair& entryPair, const QString& errorMsg)
 {
-    auto log = QString(
-        "<div style='margin: 1px 0; line-height: 1.2;'>"
-        "<span style='color:gray;'>[%1]</span><br>"
-        "Failed to %2 the<br>"
-        "<a href='folder://%3' style='color:blue;text-decoration:underline;'>%3</a> "
-        "<br>to<br>"
-        "<a href='folder://%4' style='color:blue;text-decoration:underline;'>%4</a>"
-        "<br>"
-        "Error message: <span style='color:red;'>%5</span>"
-        "</div><br>"
-    ).arg(
+    auto log = QString(ERROR_LOG_FORMAT_STRING).arg(
         currentTimeString(),
         linkType == LT_SYMLINK ? "Symlink" : "Hardlink",
         entryPair.source.fileinfo.absolutePath(),
         entryPair.target.fileinfo.absolutePath(),
-        errorMsg
-    );
+        errorMsg);
     ui.log->append(log);
 }
 
