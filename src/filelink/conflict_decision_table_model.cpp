@@ -26,11 +26,11 @@ int ConflictDecisionTableModel::columnCount(const QModelIndex& parent) const
     return 2;
 }
 
-QVariant ConflictDecisionTableModel::data(const QModelIndex& index, int role) const
+QVariant ConflictDecisionTableModel::data(const QModelIndex& idx, int role) const
 {
-    int row = index.row();
-    int col = index.column();
-    if (!index.isValid() || row >= conflicts_.size() || col >= columnCount())
+    int row = idx.row();
+    int col = idx.column();
+    if (!idx.isValid() || row >= conflicts_.size() || col >= columnCount())
         return QVariant();
 
     const auto& conflict = conflicts_[row];
@@ -67,39 +67,39 @@ QVariant ConflictDecisionTableModel::data(const QModelIndex& index, int role) co
     return QVariant();
 }
 
-Qt::ItemFlags ConflictDecisionTableModel::flags(const QModelIndex& index) const
+Qt::ItemFlags ConflictDecisionTableModel::flags(const QModelIndex& idx) const
 {
-    int row = index.row();
-    int col = index.column();
-    if (!index.isValid() || row >= conflicts_.size() || col >= columnCount())
+    int row = idx.row();
+    int col = idx.column();
+    if (!idx.isValid() || row >= conflicts_.size() || col >= columnCount())
         return Qt::ItemFlags();
 
-    Qt::ItemFlags flag = QAbstractTableModel::flags(index);
+    Qt::ItemFlags flag = QAbstractTableModel::flags(idx);
     flag |= Qt::ItemIsUserCheckable;
     return flag;
 }
 
-bool ConflictDecisionTableModel::setData(const QModelIndex& index, const QVariant& value, int role)
+bool ConflictDecisionTableModel::setData(const QModelIndex& idx, const QVariant& value, int role)
 {
-    int row = index.row();
-    int col = index.column();
-    if (!index.isValid() || row >= conflicts_.size() || col >= columnCount())
+    int row = idx.row();
+    int col = idx.column();
+    if (!idx.isValid() || row >= conflicts_.size() || col >= columnCount())
         return false;
 
     if (role != Qt::CheckStateRole)
         return false;
 
-    auto left = createIndex(row, 0);
+    auto left = index(row, 0);
     auto source = (col == 0 ?
         value.value<Qt::CheckState>() :
         data(left, Qt::CheckStateRole).value<Qt::CheckState>());
-    auto right = createIndex(row, 1);
+    auto right = index(row, 1);
     auto target = (col == 1 ?
         value.value<Qt::CheckState>() :
         data(right, Qt::CheckStateRole).value<Qt::CheckState>());
     conflicts_[row].ecs = getEcsByCheckState(source, target);
 
-    emit dataCheckStateToggled(index, value.toBool());
+    emit dataCheckStateToggled(idx, value.toBool());
     emit dataChanged(left, right, {Qt::CheckStateRole});
 
     return true;
@@ -111,11 +111,11 @@ void ConflictDecisionTableModel::setAllSourceChecked(bool checked)
     {
         auto& conflict = conflicts_[row];
         Qt::CheckState source = checked ? Qt::Checked : Qt::Unchecked;
-        auto target = data(createIndex(row, 1), Qt::CheckStateRole).value<Qt::CheckState>();
+        auto target = data(index(row, 1), Qt::CheckStateRole).value<Qt::CheckState>();
         conflicts_[row].ecs = getEcsByCheckState(source, target);
     }
 
-    emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, columnCount() - 1), {Qt::CheckStateRole});
+    emit dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1), {Qt::CheckStateRole});
 }
 
 void ConflictDecisionTableModel::setAllTargetChecked(bool checked)
@@ -124,11 +124,11 @@ void ConflictDecisionTableModel::setAllTargetChecked(bool checked)
     {
         auto& conflict = conflicts_[row];
         Qt::CheckState target = checked ? Qt::Checked : Qt::Unchecked;
-        auto source = data(createIndex(row, 0), Qt::CheckStateRole).value<Qt::CheckState>();
+        auto source = data(index(row, 0), Qt::CheckStateRole).value<Qt::CheckState>();
         conflicts_[row].ecs = getEcsByCheckState(source, target);
     }
 
-    emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, columnCount() - 1), {Qt::CheckStateRole});
+    emit dataChanged(index(0, 0), index(rowCount() - 1, columnCount() - 1), {Qt::CheckStateRole});
 }
 
 EntryConflictStrategy ConflictDecisionTableModel::getEcsByCheckState(Qt::CheckState source, Qt::CheckState target)
