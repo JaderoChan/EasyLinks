@@ -1,7 +1,9 @@
 {
     "CommonButton.Ok": "Ok",
     "CommonButton.Cancel": "Cancel",
-    "ConflictDecisionDialog.WindowTitle": "Which entries do you want to keep?",
+    "ConflictDecisionDialog.WindowTitle": "There are %1 conflicting entries in total",
+    "ConflictDecisionDialog.Label.SourceHeaderText": "Entries from",
+    "ConflictDecisionDialog.Label.TargetHeaderText": "Entries exists in",
     "ConflictDecisionDialog.Label.HeaderText1": "Which entries do you want to keep?",
     "ConflictDecisionDialog.Label.HeaderText2": "If you select two entries, a numerical sequence will be added to the name of the target file.",
     "ConflictDecisionDialog.CheckBox.SkipSameDateSize": "Skip %1 entries with the same date and size",

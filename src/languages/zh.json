@@ -1,7 +1,9 @@
 {
     "CommonButton.Ok": "确认",
     "CommonButton.Cancel": "取消",
-    "ConflictDecisionDialog.WindowTitle": "你想保留哪些条目？",
+    "ConflictDecisionDialog.WindowTitle": "共 %1 个冲突条目",
+    "ConflictDecisionDialog.Label.SourceHeaderText": "条目来自于",
+    "ConflictDecisionDialog.Label.TargetHeaderText": "条目存在于",
     "ConflictDecisionDialog.Label.HeaderText1": "你想保留哪些条目？",
     "ConflictDecisionDialog.Label.HeaderText2": "如果你选择了两个条目，目标文件将在名称后加上数字序号。",
     "ConflictDecisionDialog.CheckBox.SkipSameDateSize": "跳过 %1 个具有相同日期与大小的条目",
