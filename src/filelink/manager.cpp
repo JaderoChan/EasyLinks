@@ -4,7 +4,7 @@
 #include <qfileinfo.h>
 
 FileLinkManager::FileLinkManager(QObject* parent)
-    : QObject(parent), worker_(new FileLinkWorker())
+    : QObject(parent)
 {}
 
 FileLinkManager::~FileLinkManager()

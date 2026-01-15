@@ -76,7 +76,7 @@ private:
 
 private:
     Ui::ProgressWidget ui;
-    ErrorLogDialog* errorLogDlg_ = nullptr;
+    ErrorLogDialog errorLogDlg_;
 
     LinkType linkType_;
     LinkStats stats_;

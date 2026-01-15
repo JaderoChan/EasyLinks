@@ -17,7 +17,7 @@ ProgressWidget::ProgressWidget(
     const QString& targetDir,
     QWidget* parent)
     : QWidget(parent),
-    errorLogDlg_(new ErrorLogDialog(this)),
+    errorLogDlg_(this),
     linkType_(linkType)
 {
     ui.setupUi(this);
@@ -29,7 +29,7 @@ ProgressWidget::ProgressWidget(
         .arg(targetDir, QDir(targetDir).isRoot() ? targetDir : QDir(targetDir).dirName()));
 
     ui.errorWgt->setEnabled(false);
-    errorLogDlg_->hide();
+    errorLogDlg_.hide();
     pageToMainWidget();
 
     speedRemainingTimeUpdateTimer_.setInterval(1000);
@@ -83,7 +83,7 @@ void ProgressWidget::updateProgress(const EntryPair& currentEntryPair, const Lin
 
 void ProgressWidget::appendErrorLog(LinkType linkType, const EntryPair& entryPair, const QString& errorMsg)
 {
-    errorLogDlg_->appendLog(linkType, entryPair, errorMsg);
+    errorLogDlg_.appendLog(linkType, entryPair, errorMsg);
 }
 
 void ProgressWidget::decideConflicts(const LinkTasks& conflicts)
@@ -160,10 +160,10 @@ void ProgressWidget::onCancelBtnPressed()
 
 void ProgressWidget::onDetailsBtnPressed()
 {
-    if (!errorLogDlg_->isVisible())
-        errorLogDlg_->show();
-    errorLogDlg_->activateWindow();
-    errorLogDlg_->raise();
+    if (!errorLogDlg_.isVisible())
+        errorLogDlg_.show();
+    errorLogDlg_.activateWindow();
+    errorLogDlg_.raise();
 }
 
 void ProgressWidget::onReplaceAllBtnPressed()
