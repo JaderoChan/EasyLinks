@@ -184,6 +184,7 @@ void ConflictDecisionTableWidget::setupUi()
         }
     }
 
+    // 待优化：对齐表格单元格的左内边距，暂时没有找到其他解决办法，所以目前只能硬编码。
     sourceHeader_.setContentsMargins(3, 0, 0, 0);
     targetHeader_.setContentsMargins(3, 0, 0, 0);
 
