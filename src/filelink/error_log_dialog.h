@@ -16,7 +16,6 @@ public:
 
 protected:
     virtual void updateText();
-
     void changeEvent(QEvent* event) override;
 
 private:

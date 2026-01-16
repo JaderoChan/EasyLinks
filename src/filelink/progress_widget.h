@@ -41,7 +41,6 @@ signals:
 
 protected:
     virtual void updateText();
-
     void changeEvent(QEvent* event) override;
 
     void onPauseResumeBtnPressed();
