@@ -192,18 +192,7 @@ bool FileLinkWorker::processPauseAndCancel()
 
 void FileLinkWorker::addTask(LinkType linkType, const QFileInfo& source, const QFileInfo& target)
 {
-    currentEntryPair_ = {
-        {
-            source,
-            source.lastModified(),
-            source.size()
-        },
-        {
-            target,
-            target.lastModified(),
-            target.size()
-        }
-    };
+    currentEntryPair_ = {{source}, {target}};
     tasks_.enqueue({linkType, currentEntryPair_, CES_NONE});
     stats_.totalEntries++;
     tryUpdateProgress();
@@ -286,6 +275,8 @@ LinkTasks FileLinkWorker::processTasks()
             if (isConflict)
             {
                 stats_.conflicts++;
+                currentEntryPair_.source.updatePreInfo();
+                currentEntryPair_.target.updatePreInfo();
                 conflicts.append(task);
             }
             else

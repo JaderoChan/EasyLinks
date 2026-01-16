@@ -22,8 +22,18 @@ enum ConflictingEntryStrategy : char
 struct Entry
 {
     QFileInfo fileinfo;
-    QDateTime lastModified; // 存储于此，提升ConflictDecisionDialog界面的表格显示性能。
-    qint64 size;
+    struct {
+        QDateTime lastModified;
+        qint64 size;
+    } preInfo; // 用于ConflictDecision相关界面显示的预获取信息，用于提升ConflictDecisionDialog界面的表格显示性能。
+
+    void updatePreInfo()
+    {
+        preInfo = {
+            fileinfo.lastModified(),
+            fileinfo.size()
+        };
+    }
 };
 
 struct EntryPair

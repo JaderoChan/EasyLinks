@@ -69,8 +69,12 @@ QVariant ConflictDecisionTableModel::data(const QModelIndex& idx, int role) cons
         case Qt::DecorationRole:
             return getFileIcon(entry.fileinfo);
         case SAME_DATE_SIZE_ROLE:
-            return (conflict.entryPair.source.size == conflict.entryPair.target.size) &&
-                (conflict.entryPair.source.lastModified == conflict.entryPair.target.lastModified);
+        {
+            auto sourcePreInfo = conflict.entryPair.source.preInfo;
+            auto targetPreInfo = conflict.entryPair.target.preInfo;
+            return sourcePreInfo.size == targetPreInfo.size &&
+                sourcePreInfo.lastModified == targetPreInfo.lastModified;
+        }
         default:
             break;
     }
