@@ -15,16 +15,10 @@ int main(int argc, char* argv[])
         return 0;
 
     QApplication a(argc, argv);
-    // a.setQuitOnLastWindowClosed(false);
+    a.setQuitOnLastWindowClosed(false);
 
     if (!setLanguage(APPLANG_ZH))
         qDebug() << "Failed set the language";
-
-    // test
-    QString source("E:/05_Data");
-    QString target("E:/06_TMP/Test");
-    FileLinkManager m;
-    m.createLinks(LT_HARDLINK, {source}, target);
 
     int ret = a.exec();
 
