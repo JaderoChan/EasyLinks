@@ -11,12 +11,12 @@ qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCE})
 
 configure_file(
     ${CMAKE_SOURCE_DIR}/cmake/template/config.h.in
-    ${CMAKE_BINARY_DIR}/include/config.h
+    ${CMAKE_CURRENT_BINARY_DIR}/include/config.h
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}/include
+    ${CMAKE_CURRENT_BINARY_DIR}/include
 )
 target_link_libraries(
     ${PROJECT_NAME} PRIVATE
