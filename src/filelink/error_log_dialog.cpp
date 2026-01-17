@@ -9,9 +9,9 @@
     "<div style='margin: 1px 0; line-height: 1.2;'>" \
     "<span style='color:gray;'>[%1]</span><br>" \
     "Failed to %2 the<br>" \
-    "<a href='folder://%3' style='color:blue;text-decoration:underline;'>%3</a> " \
+    "<a href='folder://%3' style='color:blue;text-decoration:underline;'>%4</a> " \
     "<br>to<br>" \
-    "<a href='folder://%4' style='color:blue;text-decoration:underline;'>%4</a>" \
+    "<a href='folder://%5' style='color:blue;text-decoration:underline;'>%6</a>" \
     "<br>" \
     "Error message: <span style='color:red;'>%5</span>" \
     "</div><br>"
@@ -29,7 +29,9 @@ void ErrorLogDialog::appendLog(LinkType linkType, const EntryPair& entryPair, co
         currentTimeString(),
         linkType == LT_SYMLINK ? "Symlink" : "Hardlink",
         entryPair.source.fileinfo.absolutePath(),
+        entryPair.source.fileinfo.absoluteFilePath(),
         entryPair.target.fileinfo.absolutePath(),
+        entryPair.target.fileinfo.absoluteFilePath(),
         errorMsg);
     ui.log->append(log);
 }
