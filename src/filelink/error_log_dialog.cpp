@@ -9,9 +9,9 @@
     "<div style='margin: 1px 0; line-height: 1.2;'>" \
     "<span style='color:gray;'>[%1]</span><br>" \
     "Failed to %2 the<br>" \
-    "<a href='folder://%3' style='color:rgba(0, 100, 180, 216);text-decoration:none;'>%4</a> " \
+    "<a href='%3' style='color:rgba(0, 100, 180, 216);text-decoration:none;'>%4</a> " \
     "<br>to<br>" \
-    "<a href='folder://%5' style='color:rgba(0, 100, 180, 216);text-decoration:none;'>%6</a>" \
+    "<a href='%5' style='color:rgba(0, 100, 180, 216);text-decoration:none;'>%6</a>" \
     "<br>" \
     "Error message: <span style='color:red;'>%7</span>" \
     "</div><br>"
