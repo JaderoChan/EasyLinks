@@ -6,6 +6,7 @@
 
 #include "worker.h"
 #include "progress_widget.h"
+#include "link_config.h"
 #include "types.h"
 
 class FileLinkManager : public QObject
@@ -13,10 +14,15 @@ class FileLinkManager : public QObject
     Q_OBJECT
 
 public:
-    explicit FileLinkManager(QObject* parent = nullptr);
+    explicit FileLinkManager(
+        LinkType linkType,
+        const QStringList& sourcePaths,
+        const QString& targetDir,
+        const LinkConfig& config = LinkConfig(),
+        QObject* parent = nullptr);
     ~FileLinkManager();
 
-    void createLinks(LinkType linkType, const QStringList& sourcePaths, const QString& targetDir);
+    void start();
 
 signals:
     void cancel();
@@ -24,6 +30,7 @@ signals:
 
 private:
     QThread workerThread_;
+    LinkConfig config_;
     FileLinkWorker* worker_ = nullptr;
     ProgressWidget* progress_ = nullptr;
 };

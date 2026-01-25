@@ -5,13 +5,12 @@
 
 #include <global_hotkey/key_combination.hpp>
 
+#include "filelink/link_config.h"
+
 struct Settings
 {
-    // 如果为真，意味着当链接操作出现错误时，所有任务处理完成之后仍然显示进度对话框。
-    bool keepDialogWhenErrorOccurred    = false;
-    // 如果为真，执行替换操作时，旧项目会被移动至回收站而不是直接删除。
-    bool moveToTrashWhenDelete          = false;
-
+    bool autoRunOnStartUp = false;
     gbhk::KeyCombination symlinkHotkey  = "Ctrl+S";
     gbhk::KeyCombination hardlinkHotkey = "Ctrl+H";
+    LinkConfig linkConfig;
 };

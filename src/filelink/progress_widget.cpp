@@ -15,10 +15,12 @@ ProgressWidget::ProgressWidget(
     LinkType linkType,
     const QString& sourceDir,
     const QString& targetDir,
+    bool keepWhenErrorOccurred,
     QWidget* parent)
     : QWidget(parent),
     errorLogDlg_(this),
-    linkType_(linkType)
+    linkType_(linkType),
+    keepWhenErrorOccurred_(keepWhenErrorOccurred)
 {
     ui.setupUi(this);
     setFixedSize(width(), height());
@@ -94,7 +96,7 @@ void ProgressWidget::decideConflicts(const LinkTasks& conflicts)
 
 void ProgressWidget::onWorkFinished()
 {
-    if (stats_.failedEntries == 0)
+    if (stats_.failedEntries == 0 || !keepWhenErrorOccurred_)
     {
         close();
         return;

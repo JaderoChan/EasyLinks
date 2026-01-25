@@ -394,6 +394,7 @@ void FileLinkWorker::generateNewPath(QFileInfo& file)
 
     do
     {
-        file.setFile(QString("%1/%2 (%3).%4").arg(path, baseName, QString::number(counter++), suffix));
+        QString newPath = path + "/" + baseName + " (" + QString::number(counter++) + "." + suffix;
+        file.setFile(newPath);
     } while (file.exists());
 }

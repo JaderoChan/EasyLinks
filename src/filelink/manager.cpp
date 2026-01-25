@@ -3,31 +3,24 @@
 #include <qdir.h>
 #include <qfileinfo.h>
 
-FileLinkManager::FileLinkManager(QObject* parent)
-    : QObject(parent)
-{}
-
-FileLinkManager::~FileLinkManager()
-{
-    emit cancel();
-    workerThread_.quit();
-    workerThread_.wait();
-}
-
-void FileLinkManager::createLinks(LinkType linkType, const QStringList& sourcePaths, const QString& targetDir)
+FileLinkManager::FileLinkManager(
+    LinkType linkType,
+    const QStringList& sourcePaths,
+    const QString& targetDir,
+    const LinkConfig& config,
+    QObject* parent)
+    : QObject(parent), config_(config)
 {
     if (sourcePaths.isEmpty())
         return;
 
     worker_ = new FileLinkWorker();
-    worker_->setParameters(linkType, sourcePaths, targetDir);
+    worker_->setParameters(linkType, sourcePaths, targetDir, config_.removeToTrash);
     worker_->moveToThread(&workerThread_);
 
-    {
-        auto sourceDir = QFileInfo(sourcePaths.front()).absolutePath();
-        progress_ = new ProgressWidget(linkType, sourceDir, targetDir);
-        progress_->setAttribute(Qt::WA_DeleteOnClose);
-    }
+    auto sourceDir = QFileInfo(sourcePaths.front()).absolutePath();
+    progress_ = new ProgressWidget(linkType, sourceDir, targetDir, config_.keepDialogWhenErrorOccurred);
+    progress_->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(worker_, &FileLinkWorker::progressUpdated, progress_, &ProgressWidget::updateProgress);
     connect(worker_, &FileLinkWorker::errorOccurred, progress_, &ProgressWidget::appendErrorLog);
@@ -45,10 +38,23 @@ void FileLinkManager::createLinks(LinkType linkType, const QStringList& sourcePa
     connect(this, &FileLinkManager::operate, worker_, &FileLinkWorker::run);
     connect(this, &FileLinkManager::cancel, worker_, &FileLinkWorker::cancel, Qt::DirectConnection);
     connect(&workerThread_, &QThread::finished, worker_, &QObject::deleteLater);
+}
 
-    progress_->show();    // for dev
-    // progress_->laterShow(200);
-    workerThread_.start();
+FileLinkManager::~FileLinkManager()
+{
+    emit cancel();
+    workerThread_.quit();
+    workerThread_.wait();
+}
 
-    emit operate();
+void FileLinkManager::start()
+{
+    if (worker_ && progress_)
+    {
+        progress_->show();    // for dev
+        // progress_->laterShow(200);
+        workerThread_.start();
+
+        emit operate();
+    }
 }

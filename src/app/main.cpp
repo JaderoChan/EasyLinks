@@ -19,8 +19,8 @@ int main(int argc, char* argv[])
     if (!setLanguage(APPLANG_ZH))
         qDebug() << "Failed set the language";
 
-    FileLinkManager m;
-    m.createLinks(LT_HARDLINK, {"E:/05_Data"}, "E:/06_TMP/Test");
+    FileLinkManager m(LT_HARDLINK, {"E:/05_Data"}, "E:/06_TMP/Test");
+    m.start();
 
     int ret = a.exec();
 

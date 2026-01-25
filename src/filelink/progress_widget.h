@@ -17,6 +17,7 @@ public:
         LinkType linkType,
         const QString& sourceDir,   // For header area info display.
         const QString& targetDir,   // For header area info display.
+        bool keepWhenErrorOccurred,
         QWidget* parent = nullptr);
     ~ProgressWidget();
 
@@ -88,4 +89,5 @@ private:
     int speed_ = 0;
 
     bool paused_ = false;
+    bool keepWhenErrorOccurred_ = false;
 };
