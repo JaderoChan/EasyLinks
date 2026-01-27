@@ -7,7 +7,7 @@
 #define READ_KC(settings, key, defaultValue) \
 gbhk::KeyCombination(settings.value(key, "defaultValue").toString().toStdString())
 
-Settings readSettings()
+Settings loadSettings()
 {
     Settings settings;
 
@@ -18,14 +18,14 @@ Settings readSettings()
     settings.hardlinkHotkey = READ_KC(qsettings, "HardlinkHotkey", "Ctrl+H");
 
     qsettings.beginGroup("LinkConfig");
-    settings.linkConfig.keepDialogWhenErrorOccurred = qsettings.value("KeepDialogWhenErrorOccurred", false).toBool();
+    settings.linkConfig.keepDialogOnErrorOccurred = qsettings.value("KeepDialogOnErrorOccurred", false).toBool();
     settings.linkConfig.removeToTrash = qsettings.value("RemoveToTrash", false).toBool();
     qsettings.endGroup();
 
     return settings;
 }
 
-void writeSettings(const Settings& settings)
+void saveSettings(const Settings& settings)
 {
     QSettings qsettings(QSettings::NativeFormat, QSettings::UserScope, APP_ORGANIZATION, APP_TITLE);
     qsettings.setValue("Language", settings.language);
@@ -34,7 +34,7 @@ void writeSettings(const Settings& settings)
     qsettings.setValue("HardlinkHotkey", settings.hardlinkHotkey.toString().c_str());
 
     qsettings.beginGroup("LinkConfig");
-    qsettings.setValue("KeepDialogWhenErrorOccurred", settings.linkConfig.keepDialogWhenErrorOccurred);
+    qsettings.setValue("KeepDialogOnErrorOccurred", settings.linkConfig.keepDialogOnErrorOccurred);
     qsettings.setValue("RemoveToTrash", settings.linkConfig.removeToTrash);
     qsettings.endGroup();
 }

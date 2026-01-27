@@ -19,7 +19,7 @@ FileLinkManager::FileLinkManager(
     worker_->moveToThread(&workerThread_);
 
     auto sourceDir = QFileInfo(sourcePaths.front()).absolutePath();
-    progress_ = new ProgressWidget(linkType, sourceDir, targetDir, config_.keepDialogWhenErrorOccurred);
+    progress_ = new ProgressWidget(linkType, sourceDir, targetDir, config_.keepDialogOnErrorOccurred);
     progress_->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(worker_, &FileLinkWorker::progressUpdated, progress_, &ProgressWidget::updateProgress);

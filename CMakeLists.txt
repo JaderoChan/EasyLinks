@@ -8,7 +8,7 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
-list(APPEND CMAKE_PREFIX_PATH $ENV{MINGW_LIBS})
+list(APPEND CMAKE_PREFIX_PATH $ENV{MSVC_LIBS})
 
 find_package(global_hotkey REQUIRED)
 find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Widgets)

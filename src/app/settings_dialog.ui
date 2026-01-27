@@ -95,9 +95,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="keepDialogWhenErrorOccurredCb">
+       <widget class="QCheckBox" name="keepDialogOnErrorOccurredCb">
         <property name="text">
-         <string>Keep dialog display when error occurred</string>
+         <string>Keep dialog display on error occurred</string>
         </property>
        </widget>
       </item>

@@ -7,7 +7,7 @@
 
 #include "config.h"
 
-static QString languageStringId(Language lang)
+QString languageStringId(Language lang)
 {
     switch (lang)
     {

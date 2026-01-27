@@ -1,7 +1,5 @@
 #pragma once
 
-#include <qdir.h>
-
 #define APP_ORGANIZATION    "@APP_ORGANIZATION@"
 #define APP_TITLE           "@APP_TITLE@"
 #define APP_COPYRIGHT_TEXT  "@APP_COPYRIGHT_TEXT@"
@@ -13,4 +11,4 @@
 #define APP_VERSION_PATCH   @PROJECT_VERSION_PATCH@
 
 #define APP_LANG_LIST_FILENAME  "languages/languages.json"
-#define APP_LOCK_FILENAME       QDir::temp().absoluteFilePath(".Lock-@PROJECT_NAME@-" APP_UUID)
+#define APP_LOCK_FILENAME       "@PROJECT_NAME@-" APP_UUID ".lock"
