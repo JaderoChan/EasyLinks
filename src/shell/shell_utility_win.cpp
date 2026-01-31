@@ -16,7 +16,7 @@ QString getFocusedExplorerWindowDirectory()
     constexpr const WCHAR* DESKTOP_CLASS_NAME_2     = L"WorkerW";
 
     HWND focusedWindow = GetForegroundWindow();
-    if (focusedWindow == nullptr)
+    if (!focusedWindow)
         throw std::runtime_error("Failed to GetForegroundWindow()");
 
     WCHAR classname[MAX_CLASS_NAME];
