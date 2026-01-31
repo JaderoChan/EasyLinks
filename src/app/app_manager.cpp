@@ -60,6 +60,6 @@ AppManager::AppManager(QObject* parent)
 
 AppManager::~AppManager()
 {
-    aboutDlg_->deleteLater();
-    settingsWgt_->deleteLater();
+    delete aboutDlg_;
+    delete settingsWgt_;
 }

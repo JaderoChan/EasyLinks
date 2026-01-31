@@ -123,7 +123,7 @@ void ProgressWidget::laterShowAndActivate(int ms)
     auto timer = new QTimer(this);
     timer->start(ms);
     connect(timer, &QTimer::timeout, this, &ProgressWidget::showAndActivate);
-    connect(timer, &QTimer::timeout, timer, &QObject::deleteLater);
+    connect(timer, &QTimer::timeout, this, [=]() { delete timer; });
 }
 
 void ProgressWidget::updateText()

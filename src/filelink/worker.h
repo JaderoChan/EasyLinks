@@ -89,7 +89,7 @@ private:
     QStringList sourcePaths_;
     QString targetDir_;
 
-    LinkType linkType_;
+    LinkType linkType_ = LT_SYMLINK;
     LinkTasks tasks_;
     LinkStats stats_;
 
