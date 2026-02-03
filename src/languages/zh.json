@@ -49,7 +49,7 @@
     "SettingsWidget.MessageBox.IllegalRenamePattern.Text": "不合法的重命名模式，重命名模式必须得包含有效的@和#占位符！",
     "SettingsWidget.LineEdit.RenamePattern.Placeholder": "输入重命名模式，@和#占位符是必须的。",
     "SettingsWidget.RenamePatternGroupBox.Title": "重命名模式",
-    "SettingsWidget.Text.RenamePatternTips": "可用占位符：\n\"@\"：原文件名\n\"#\"：数字编号\n\n示例：\n对于模式\"@-linked-#\"，对文件\"file.ext\"进行重命名时，可能的结果是\"file-linked-1.ext\"",
+    "SettingsWidget.Text.RenamePatternTips": "可用占位符：\n@：原文件名\n#：数字编号\n\n示例：\n使用模式\"@-linked-#\"，对文件\"file.ext\"进行重命名时，可能的结果是\"file-linked-1.ext\"",
     "SettingsWidget.Text.HardlinkHotkey": "硬链接",
     "SettingsWidget.Text.Language": "语言",
     "SettingsWidget.Text.SymlinkHotkey": "符号链接",
