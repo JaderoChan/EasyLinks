@@ -1,25 +1,11 @@
-#include "key_private.hpp"
+#include <kbdt/keyutils.hpp>
 
 #include <Carbon/Carbon.h>
 
-namespace gbhk
+namespace kbdt
 {
 
-int modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
-{
-    int mod = 0;
-    if (modifiers.has(META))
-        mod |= cmdKey;
-    if (modifiers.has(CTRL))
-        mod |= controlKey;
-    if (modifiers.has(ALT))
-        mod |= optionKey;
-    if (modifiers.has(SHIFT))
-        mod |= shiftKey;
-    return mod;
-}
-
-int keyToNativeKey(const Key& key) noexcept
+KBDT_API int keyToNativeKey(Key key) noexcept
 {
     switch (key)
     {
@@ -160,38 +146,24 @@ int keyToNativeKey(const Key& key) noexcept
         case Key_Angle_Bracket:     return 0;   // Not supported
 
         // Modifiers keys
-        case Key_Mod_Meta:          return kVK_Command;
-        case Key_Mod_Meta_Left:     return 0;   // Not supported
-        case Key_Mod_Meta_Right:    return kVK_RightCommand;
-        case Key_Mod_Ctrl:          return kVK_Control;
-        case Key_Mod_Ctrl_Left:     return 0;   // Not supported
-        case Key_Mod_Ctrl_Right:    return kVK_RightControl;
-        case Key_Mod_Alt:           return kVK_Option;
-        case Key_Mod_Alt_Left:      return 0;   // Not supported
-        case Key_Mod_Alt_Right:     return kVK_RightOption;
-        case Key_Mod_Shift:         return kVK_Shift;
-        case Key_Mod_Shift_Left:    return 0;   // Not supported
-        case Key_Mod_Shift_Right:   return kVK_RightShift;
+        case Key_Meta:          return kVK_Command;
+        case Key_Meta_Left:     return 0;   // Not supported
+        case Key_Meta_Right:    return kVK_RightCommand;
+        case Key_Ctrl:          return kVK_Control;
+        case Key_Ctrl_Left:     return 0;   // Not supported
+        case Key_Ctrl_Right:    return kVK_RightControl;
+        case Key_Alt:           return kVK_Option;
+        case Key_Alt_Left:      return 0;   // Not supported
+        case Key_Alt_Right:     return kVK_RightOption;
+        case Key_Shift:         return kVK_Shift;
+        case Key_Shift_Left:    return 0;   // Not supported
+        case Key_Shift_Right:   return kVK_RightShift;
 
         default:                    return 0;
     }
 }
 
-Modifiers modifiersFromNativeModifiers(int nativeModifiers) noexcept
-{
-    Modifiers mod;
-    if (nativeModifiers & cmdKey)
-        mod.add(META);
-    if (nativeModifiers & controlKey)
-        mod.add(CTRL);
-    if (nativeModifiers & optionKey)
-        mod.add(ALT);
-    if (nativeModifiers & shiftKey)
-        mod.add(SHIFT);
-    return mod;
-}
-
-Key keyFromNativeKey(int nativeKey) noexcept
+KBDT_API Key keyFromNativeKey(int nativeKey) noexcept
 {
     switch (nativeKey)
     {
@@ -326,17 +298,17 @@ Key keyFromNativeKey(int nativeKey) noexcept
         case kVK_ANSI_Backslash:        return Key_Backslash;
 
         // Modifiers keys
-        case kVK_Command:               return Key_Mod_Meta;
-        case kVK_RightCommand:          return Key_Mod_Meta_Right;
-        case kVK_Control:               return Key_Mod_Ctrl;
-        case kVK_RightControl:          return Key_Mod_Ctrl_Right;
-        case kVK_Option:                return Key_Mod_Alt;
-        case kVK_RightOption:           return Key_Mod_Alt_Right;
-        case kVK_Shift:                 return Key_Mod_Shift;
-        case kVK_RightShift:            return Key_Mod_Shift_Right;
+        case kVK_Command:               return Key_Meta;
+        case kVK_RightCommand:          return Key_Meta_Right;
+        case kVK_Control:               return Key_Ctrl;
+        case kVK_RightControl:          return Key_Ctrl_Right;
+        case kVK_Option:                return Key_Alt;
+        case kVK_RightOption:           return Key_Alt_Right;
+        case kVK_Shift:                 return Key_Shift;
+        case kVK_RightShift:            return Key_Shift_Right;
 
-        default:                        return Key();
+        default:                        return (Key) 0;
     }
 }
 
-} // namespace gbhk
+} // namespace kbdt

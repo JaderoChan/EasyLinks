@@ -1,20 +1,21 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(global_hotkey VERSION 1.5.0 LANGUAGES CXX)
-
+project(global_hotkey VERSION 1.5.1 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(GLOBAL_HOTKEY_MSG_PREFIX "[Global Hotkey]")
 
+# Set the default CMAKE_BUILD_TYPE to Release.
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
-set(GLOBAL_HOTKEY_MSG_PREFIX "[Global Hotkey]")
-
-if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+# Projects cannot be built in the same-level directory of the source code.
+if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_CURRENT_BINARY_DIR)
     message(FATAL_ERROR "${GLOBAL_HOTKEY_MSG_PREFIX} In-source builds are not allowed. Please make a new directory (e.g. build) and run CMake from there.")
 endif()
 
+# Check whether the project is the root project.
 if(NOT DEFINED GLOBAL_HOTKEY_MASTER_PROJECT)
     if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
         set(GLOBAL_HOTKEY_MASTER_PROJECT ON)
@@ -23,74 +24,98 @@ if(NOT DEFINED GLOBAL_HOTKEY_MASTER_PROJECT)
     endif()
 endif()
 
-option(GLOBAL_HOTKEY_BUILD_SHARED "Build shared library" OFF)
-set(GLOBAL_HOTKEY_SHARED ${GLOBAL_HOTKEY_BUILD_SHARED})
-if(GLOBAL_HOTKEY_BUILD_SHARED)
-    message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Shared library will be built.")
-else()
-    message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Static library will be built.")
-endif()
-
-option(GLOBAL_HOTKEY_DISABLE_HOOK "Disable hook Global Hotkey Manager" OFF)
-if(GLOBAL_HOTKEY_DISABLE_HOOK)
-    message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Hook Global Hotkey Manager be disable.")
-endif()
-
+# Process the "GLOBAL_HOTKEY_DISABLE_REGISTER" option to collect relevant files。
 set(SRC)
 option(GLOBAL_HOTKEY_DISABLE_REGISTER "Disable register Global Hotkey Manager" OFF)
 if(GLOBAL_HOTKEY_DISABLE_REGISTER)
     message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Register Global Hotkey Manager be disable.")
 else()
-    set(
-        SRC ${SRC}
-        src/register_global_hotkey_manager/register_global_hotkey_manager.cpp
-        src/register_global_hotkey_manager/register_ghm_private.cpp
+    list(
+        APPEND SRC
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/register_global_hotkey_manager.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/register_ghm_private.cpp
     )
+
     if(WIN32)
-        file(GLOB_RECURSE SRC ${SRC} src/register_global_hotkey_manager/*win*.cpp)
+        file(GLOB SRC ${SRC} ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*win*.cpp)
     elseif(APPLE)
-        file(GLOB_RECURSE SRC ${SRC} src/register_global_hotkey_manager/*mac*.cpp)
+        file(GLOB SRC ${SRC} ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*mac*.cpp)
     elseif(LINUX)
-        file(GLOB_RECURSE SRC ${SRC} src/register_global_hotkey_manager/*x11*.cpp)
+        file(GLOB SRC ${SRC} ${CMAKE_CURRENT_SOURCE_DIR}/src/register_global_hotkey_manager/*x11*.cpp)
     endif()
 endif()
 
+# Process the "GLOBAL_HOTKEY_DISABLE_HOOK" option to collect relevant files。
+option(GLOBAL_HOTKEY_DISABLE_HOOK "Disable hook Global Hotkey Manager" OFF)
+if(GLOBAL_HOTKEY_DISABLE_HOOK)
+    message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Hook Global Hotkey Manager be disable.")
+else()
+    list(
+        APPEND SRC
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/hook_global_hotkey_manager/hook_global_hotkey_manager.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/hook_global_hotkey_manager/hook_ghm_private.cpp
+    )
+endif()
+
+# Hook GHM and Register GHM cannot be disabled simultaneously.
 if(GLOBAL_HOTKEY_DISABLE_HOOK AND GLOBAL_HOTKEY_DISABLE_REGISTER)
     message(FATAL_ERROR "${GLOBAL_HOTKEY_MSG_PREFIX} Cannot set both GLOBAL_HOTKEY_DISABLE_REGISTER and GLOBAL_HOTKEY_DISABLE_HOOK to ON.")
 endif()
 
-option(GLOBAL_HOTKEY_BUILD_EXAMPLE "Build example" ${GLOBAL_HOTKEY_MASTER_PROJECT})
-
-file(
-    GLOB_RECURSE SRC ${SRC}
-    src/global_hotkey_manager/*.cpp
-    src/key/key.cpp
-    src/key_combination/key_combination.cpp
+# Collect the necessary source files.
+list(
+    APPEND SRC
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/global_hotkey_manager/global_hotkey_manager.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/global_hotkey_manager/ghm_private.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/key/key.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/key_combination/key_combination.cpp
 )
-if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
-    file(GLOB_RECURSE SRC ${SRC} src/hook_global_hotkey_manager/*.cpp)
-endif()
 
+# Collect key-related source files based on the platform and build options.
 if(WIN32)
-    file(GLOB_RECURSE SRC ${SRC} src/key/*win*.cpp)
+    list(
+        APPEND SRC
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/key/key_private_win.cpp
+    )
 elseif(APPLE)
-    file(GLOB_RECURSE SRC ${SRC} src/key/*mac*.cpp)
+    list(
+        APPEND SRC
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/key/key_private_mac.cpp
+    )
 elseif(LINUX)
     if(NOT GLOBAL_HOTKEY_DISABLE_REGISTER)
-        file(GLOB_RECURSE SRC ${SRC} src/key/*x11*.cpp)
+        list(
+            APPEND SRC
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/key/key_private_x11.cpp
+        )
     endif()
     if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
-        file(GLOB_RECURSE SRC ${SRC} src/key/*linux*.cpp)
+        list(
+            APPEND SRC
+            ${CMAKE_CURRENT_SOURCE_DIR}/src/key/key_private_linux.cpp
+        )
     endif()
 endif()
 
+#########
+# Build #
+#########
+
+option(GLOBAL_HOTKEY_BUILD_SHARED "Build shared library" OFF)
 if(GLOBAL_HOTKEY_BUILD_SHARED)
+    message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Shared library will be built.")
     add_library(${PROJECT_NAME} SHARED ${SRC})
     target_compile_definitions(${PROJECT_NAME} PRIVATE GLOBAL_HOTKEY_BUILD_SHARED)
 else()
+    message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Static library will be built.")
     add_library(${PROJECT_NAME} STATIC ${SRC})
 endif()
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+set(GLOBAL_HOTKEY_SHARED ${GLOBAL_HOTKEY_BUILD_SHARED})
+
+####################
+# Configure target #
+####################
 
 option(
     GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY
@@ -101,6 +126,19 @@ if(GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY)
     target_compile_definitions(${PROJECT_NAME} PRIVATE GLOBAL_HOTKEY_OPTIMIZE_SYSTEM_RESERVE_HOTKEY)
 endif()
 
+# Set the suffix of the library file in Windows.
+if(WIN32)
+    message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Windows platform detected.")
+    set(CMAKE_STATIC_LIBRARY_SUFFIX ".lib")
+    set(CMAKE_IMPORT_LIBRARY_SUFFIX ".lib")
+endif()
+
+set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX d)
+
+########################
+# Configure dependency #
+########################
+
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in
     ${CMAKE_CURRENT_BINARY_DIR}/include/config.hpp
@@ -109,28 +147,22 @@ configure_file(
 include(GNUInstallDirs)
 target_include_directories(${PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-set(THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
-
 if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
     message(STATUS "Start configure the 'keyboard tool' library...")
+    set(THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
     include(FetchContent)
     FetchContent_Declare(
-        kbdt
-        SOURCE_DIR ${THIRDPARTY_DIR}/kbdt
+        keyboard_tools
+        SOURCE_DIR ${THIRDPARTY_DIR}/keyboard_tools
     )
-    set(KBDT_BUILD_WITH_UTILS OFF)
-    FetchContent_MakeAvailable(kbdt)
+    set(KBDT_WITH_KEYUTILS OFF)
+    FetchContent_MakeAvailable(keyboard_tools)
     message(STATUS "Success to configure the 'keyboard tool' library.")
-endif()
-
-if(WIN32)
-    message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Windows platform detected.")
-    set(CMAKE_STATIC_LIBRARY_SUFFIX ".lib")
-    set(CMAKE_IMPORT_LIBRARY_SUFFIX ".lib")
 endif()
 
 if(APPLE)
@@ -182,10 +214,12 @@ endif()
 find_package(Threads REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE Threads::Threads)
 if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
-    target_link_libraries(${PROJECT_NAME} PRIVATE kbdt::kbdt)
+    target_link_libraries(${PROJECT_NAME} PRIVATE keyboard_tools::keyboard_tools)
 endif()
 
-set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX d)
+###########
+# Install #
+###########
 
 install(
     TARGETS ${PROJECT_NAME}
@@ -195,8 +229,14 @@ install(
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
-install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-file(GLOB HEADERS ${CMAKE_CURRENT_BINARY_DIR}/include/*.h ${CMAKE_CURRENT_BINARY_DIR}/include/*.hpp)
+file(GLOB HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/include/global_hotkey/*.hpp)
+if(GLOBAL_HOTKEY_DISABLE_HOOK)
+    list(FILTER HEADERS EXCLUDE REGEX ".*hook_global_hotkey_manager\.hpp")
+endif()
+if(GLOBAL_HOTKEY_DISABLE_REGISTER)
+    list(FILTER HEADERS EXCLUDE REGEX ".*register_global_hotkey_manager\.hpp")
+endif()
+list(APPEND HEADERS ${CMAKE_CURRENT_BINARY_DIR}/include/config.hpp)
 install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/global_hotkey)
 install(DIRECTORY doc/ DESTINATION ${CMAKE_INSTALL_DOCDIR})
 install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/licenses/${PROJECT_NAME})
@@ -229,9 +269,12 @@ install(
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 
+#################
+# Build Example #
+#################
+
+option(GLOBAL_HOTKEY_BUILD_EXAMPLE "Build example" ${GLOBAL_HOTKEY_MASTER_PROJECT})
 if(GLOBAL_HOTKEY_BUILD_EXAMPLE)
     message(STATUS "${GLOBAL_HOTKEY_MSG_PREFIX} Example will be built.")
     add_subdirectory(example)
 endif()
-
-export(PACKAGE ${PROJECT_NAME})

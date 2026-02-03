@@ -1,18 +1,13 @@
-#ifndef GLOBAL_HOTKEY_DISABLE_REGISTER
-
 #include "register_ghm_private_win.hpp"
 
-#ifdef GLOBAL_HOTKEY_WIN
-
 #include <global_hotkey/return_code.hpp>
-
-#include "../key/key_private.hpp"
-
-#define WM_REGISTER_HOTKEY      (WM_USER + 1)
-#define WM_UNREGISTER_HOTKEY    (WM_USER + 2)
+#include <key/key_private.hpp>
 
 namespace gbhk
 {
+
+#define WM_REGISTER_HOTKEY      (WM_USER + 1)
+#define WM_UNREGISTER_HOTKEY    (WM_USER + 2)
 
 RegisterGHMPrivateWin::RegisterGHMPrivateWin() :
     regUnregRc_(0),
@@ -154,7 +149,3 @@ void RegisterGHMPrivateWin::tryInvoke(WPARAM wParam, LPARAM lParam) const
 }
 
 } // namespace gbhk
-
-#endif // GLOBAL_HOTKEY_WIN
-
-#endif // !GLOBAL_HOTKEY_DISABLE_REGISTER

@@ -1,25 +1,11 @@
-#include "key_private.hpp"
+#include <kbdt/keyutils.hpp>
 
 #include <windows.h>
 
-namespace gbhk
+namespace kbdt
 {
 
-int modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
-{
-    int mod = 0;
-    if (modifiers.has(META))
-        mod |= MOD_WIN;
-    if (modifiers.has(CTRL))
-        mod |= MOD_CONTROL;
-    if (modifiers.has(ALT))
-        mod |= MOD_ALT;
-    if (modifiers.has(SHIFT))
-        mod |= MOD_SHIFT;
-    return mod;
-}
-
-int keyToNativeKey(const Key& key) noexcept
+KBDT_API int keyToNativeKey(Key key) noexcept
 {
     if ((key >= Key_0 && key <= Key_9) || (key >= Key_A && key <= Key_Z))
         return key;
@@ -139,41 +125,27 @@ int keyToNativeKey(const Key& key) noexcept
         case Key_Angle_Bracket:     return VK_OEM_102;
 
         // Modifier keys
-        case Key_Mod_Meta:          return 0;   // Not supported
-        case Key_Mod_Meta_Left:     return VK_LWIN;
-        case Key_Mod_Meta_Right:    return VK_RWIN;
-        case Key_Mod_Ctrl:          return VK_CONTROL;
-        case Key_Mod_Ctrl_Left:     return VK_LCONTROL;
-        case Key_Mod_Ctrl_Right:    return VK_RCONTROL;
-        case Key_Mod_Alt:           return VK_MENU;
-        case Key_Mod_Alt_Left:      return VK_LMENU;
-        case Key_Mod_Alt_Right:     return VK_RMENU;
-        case Key_Mod_Shift:         return VK_SHIFT;
-        case Key_Mod_Shift_Left:    return VK_LSHIFT;
-        case Key_Mod_Shift_Right:   return VK_RSHIFT;
+        case Key_Meta:          return 0;   // Not supported
+        case Key_Meta_Left:     return VK_LWIN;
+        case Key_Meta_Right:    return VK_RWIN;
+        case Key_Ctrl:          return VK_CONTROL;
+        case Key_Ctrl_Left:     return VK_LCONTROL;
+        case Key_Ctrl_Right:    return VK_RCONTROL;
+        case Key_Alt:           return VK_MENU;
+        case Key_Alt_Left:      return VK_LMENU;
+        case Key_Alt_Right:     return VK_RMENU;
+        case Key_Shift:         return VK_SHIFT;
+        case Key_Shift_Left:    return VK_LSHIFT;
+        case Key_Shift_Right:   return VK_RSHIFT;
 
         default:                    return 0;
     }
 }
 
-Modifiers modifiersFromNativeModifiers(int nativeModifiers) noexcept
-{
-    Modifiers mod;
-    if (nativeModifiers & MOD_WIN)
-        mod.add(META);
-    if (nativeModifiers & MOD_CONTROL)
-        mod.add(CTRL);
-    if (nativeModifiers & MOD_ALT)
-        mod.add(ALT);
-    if (nativeModifiers & MOD_SHIFT)
-        mod.add(SHIFT);
-    return mod;
-}
-
-Key keyFromNativeKey(int nativeKey) noexcept
+KBDT_API Key keyFromNativeKey(int nativeKey) noexcept
 {
     if ((nativeKey >= '0' && nativeKey <= '9') || (nativeKey >= 'A' && nativeKey <= 'Z'))
-        return Key(nativeKey);
+        return (Key) nativeKey;
 
     switch (nativeKey)
     {
@@ -289,20 +261,20 @@ Key keyFromNativeKey(int nativeKey) noexcept
         case VK_OEM_102:            return Key_Angle_Bracket;
 
         // Modifier keys
-        case VK_LWIN:               return Key_Mod_Meta_Left;
-        case VK_RWIN:               return Key_Mod_Meta_Right;
-        case VK_CONTROL:            return Key_Mod_Ctrl;
-        case VK_LCONTROL:           return Key_Mod_Ctrl_Left;
-        case VK_RCONTROL:           return Key_Mod_Ctrl_Right;
-        case VK_MENU:               return Key_Mod_Alt;
-        case VK_LMENU:              return Key_Mod_Alt_Left;
-        case VK_RMENU:              return Key_Mod_Alt_Right;
-        case VK_SHIFT:              return Key_Mod_Shift;
-        case VK_LSHIFT:             return Key_Mod_Shift_Left;
-        case VK_RSHIFT:             return Key_Mod_Shift_Right;
+        case VK_LWIN:               return Key_Meta_Left;
+        case VK_RWIN:               return Key_Meta_Right;
+        case VK_CONTROL:            return Key_Ctrl;
+        case VK_LCONTROL:           return Key_Ctrl_Left;
+        case VK_RCONTROL:           return Key_Ctrl_Right;
+        case VK_MENU:               return Key_Alt;
+        case VK_LMENU:              return Key_Alt_Left;
+        case VK_RMENU:              return Key_Alt_Right;
+        case VK_SHIFT:              return Key_Shift;
+        case VK_LSHIFT:             return Key_Shift_Left;
+        case VK_RSHIFT:             return Key_Shift_Right;
 
-        default:                    return Key();
+        default:                    return (Key) 0;
     }
 }
 
-} // namespace gbhk
+} // namespace kbdt

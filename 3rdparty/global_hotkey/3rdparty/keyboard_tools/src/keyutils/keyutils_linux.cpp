@@ -1,17 +1,11 @@
-#include "key_private.hpp"
+#include <kbdt/keyutils.hpp>
 
 #include <linux/input-event-codes.h>
 
-namespace gbhk
+namespace kbdt
 {
 
-int modifiersToNativeModifiers(const Modifiers& modifiers) noexcept
-{
-    // Not supported for native Linux.
-    return 0;
-}
-
-int keyToNativeKey(const Key& key) noexcept
+KBDT_API int keyToNativeKey(Key key) noexcept
 {
     switch (key)
     {
@@ -168,31 +162,24 @@ int keyToNativeKey(const Key& key) noexcept
         case Key_Angle_Bracket:     return KEY_102ND;     // Need to check
 
         // Modifier keys
-        case Key_Mod_Meta:          return 0;   // Not supported
-        case Key_Mod_Meta_Left:     return KEY_LEFTMETA;
-        case Key_Mod_Meta_Right:    return KEY_RIGHTMETA;
-        case Key_Mod_Ctrl:          return 0;   // Not supported
-        case Key_Mod_Ctrl_Left:     return KEY_LEFTCTRL;
-        case Key_Mod_Ctrl_Right:    return KEY_RIGHTCTRL;
-        case Key_Mod_Alt:           return 0;   // Not supported
-        case Key_Mod_Alt_Left:      return KEY_LEFTALT;
-        case Key_Mod_Alt_Right:     return KEY_RIGHTALT;
-        case Key_Mod_Shift:         return 0;   // Not supported
-        case Key_Mod_Shift_Left:    return KEY_LEFTSHIFT;
-        case Key_Mod_Shift_Right:   return KEY_RIGHTSHIFT;
+        case Key_Meta:          return 0;   // Not supported
+        case Key_Meta_Left:     return KEY_LEFTMETA;
+        case Key_Meta_Right:    return KEY_RIGHTMETA;
+        case Key_Ctrl:          return 0;   // Not supported
+        case Key_Ctrl_Left:     return KEY_LEFTCTRL;
+        case Key_Ctrl_Right:    return KEY_RIGHTCTRL;
+        case Key_Alt:           return 0;   // Not supported
+        case Key_Alt_Left:      return KEY_LEFTALT;
+        case Key_Alt_Right:     return KEY_RIGHTALT;
+        case Key_Shift:         return 0;   // Not supported
+        case Key_Shift_Left:    return KEY_LEFTSHIFT;
+        case Key_Shift_Right:   return KEY_RIGHTSHIFT;
 
         default:                    return 0;
     }
 }
 
-Modifiers modifiersFromNativeModifiers(int nativeModifiers) noexcept
-{
-    // Not supported for native Linux.
-    return Modifiers();
-}
-
-/// @ref https://github.com/torvalds/linux/blob/master/include/uapi/linux/input-event-codes.h
-Key keyFromNativeKey(int nativeKey) noexcept
+KBDT_API Key keyFromNativeKey(int nativeKey) noexcept
 {
     switch (nativeKey)
     {
@@ -349,17 +336,17 @@ Key keyFromNativeKey(int nativeKey) noexcept
         case KEY_102ND:             return Key_Angle_Bracket;   // Need to check
 
         // Modifier keys
-        case KEY_LEFTMETA:          return Key_Mod_Meta_Left;
-        case KEY_RIGHTMETA:         return Key_Mod_Meta_Right;
-        case KEY_LEFTCTRL:          return Key_Mod_Ctrl_Left;
-        case KEY_RIGHTCTRL:         return Key_Mod_Ctrl_Right;
-        case KEY_LEFTALT:           return Key_Mod_Alt_Left;
-        case KEY_RIGHTALT:          return Key_Mod_Alt_Right;
-        case KEY_LEFTSHIFT:         return Key_Mod_Shift_Left;
-        case KEY_RIGHTSHIFT:        return Key_Mod_Shift_Right;
+        case KEY_LEFTMETA:          return Key_Meta_Left;
+        case KEY_RIGHTMETA:         return Key_Meta_Right;
+        case KEY_LEFTCTRL:          return Key_Ctrl_Left;
+        case KEY_RIGHTCTRL:         return Key_Ctrl_Right;
+        case KEY_LEFTALT:           return Key_Alt_Left;
+        case KEY_RIGHTALT:          return Key_Alt_Right;
+        case KEY_LEFTSHIFT:         return Key_Shift_Left;
+        case KEY_RIGHTSHIFT:        return Key_Shift_Right;
 
-        default:                    return Key();
+        default:                    return (Key) 0;
     }
 }
 
-} // namespace gbhk
+} // namespace kbdt

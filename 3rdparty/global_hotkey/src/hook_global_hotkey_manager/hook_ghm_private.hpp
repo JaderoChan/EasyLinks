@@ -1,13 +1,11 @@
 #ifndef GLOBAL_HOTKEY_HOOK_GHM_PRIVATE_HPP
 #define GLOBAL_HOTKEY_HOOK_GHM_PRIVATE_HPP
 
-#ifndef GLOBAL_HOTKEY_DISABLE_HOOK
-
-#include "../global_hotkey_manager/ghm_private.hpp"
+#include <global_hotkey_manager/ghm_private.hpp>
 
 #include <queue>    // queue
 
-#include <kbdt/kbdt.h>
+#include <kbdt/kbdt.hpp>
 
 namespace gbhk
 {
@@ -49,11 +47,11 @@ private:
     static Event takeEvent();
     static void pushEvent(const Event& event);
     static void clearEventQueue();
-    static void kbdtEventHandler(keyboard_event* event);
+    static bool kbdtEventHandler(kbdt::KeyEvent event);
+
+    kbdt::KeyboardToolsManager& kbdtMgr_;
 };
 
 } // namespace gbhk
-
-#endif // !GLOBAL_HOTKEY_DISABLE_HOOK
 
 #endif // !GLOBAL_HOTKEY_HOOK_GHM_PRIVATE_HPP

@@ -1,10 +1,7 @@
-#ifndef GLOBAL_HOTKEY_DISABLE_HOOK
-
 #include "hook_ghm_private.hpp"
 
 #include <global_hotkey/return_code.hpp>
-
-#include "../key/key_private.hpp"
+#include <key/key_private.hpp>
 
 namespace gbhk
 {
@@ -13,7 +10,7 @@ std::mutex HookGHMPrivate::mtx_;
 std::condition_variable HookGHMPrivate::cvHasEvent_;
 std::queue<Event> HookGHMPrivate::eventQueue_;
 
-HookGHMPrivate::HookGHMPrivate() = default;
+HookGHMPrivate::HookGHMPrivate() : kbdtMgr_(kbdt::KeyboardToolsManager::getInstance()) {}
 
 HookGHMPrivate::~HookGHMPrivate() { uninitialize(); }
 
@@ -21,17 +18,17 @@ int HookGHMPrivate::doBeforeThreadRun()
 {
     clearEventQueue();
 
-    int rc = kbdt_start();
+    int rc = kbdtMgr_.run();
     if (rc != KBDT_RC_SUCCESS)
         return rc;
-    kbdt_set_event_handler(&kbdtEventHandler);
+    kbdtMgr_.setEventHandler(&kbdtEventHandler);
     return RC_SUCCESS;
 }
 
 int HookGHMPrivate::doBeforeThreadEnd()
 {
     pushEvent({ET_EXIT});
-    int rc = kbdt_stop();
+    int rc = kbdtMgr_.stop();
     if (rc != KBDT_RC_SUCCESS)
         return rc;
     return RC_SUCCESS;
@@ -171,13 +168,12 @@ void HookGHMPrivate::clearEventQueue()
         eventQueue_.pop();
 }
 
-void HookGHMPrivate::kbdtEventHandler(keyboard_event* event)
+bool HookGHMPrivate::kbdtEventHandler(kbdt::KeyEvent event)
 {
-    auto key = keyFromNativeKey(event->native_key);
-    auto et = (event->type == KBDET_PRESSED ? ET_KEY_PRESSED : ET_KEY_RELEASED);
+    auto key = keyFromNativeKey(event.nativeKey);
+    auto et = (event.type == kbdt::KET_PRESSED ? ET_KEY_PRESSED : ET_KEY_RELEASED);
     pushEvent({et, key});
+    return true;
 }
 
 } // namespace gbhk
-
-#endif // !GLOBAL_HOTKEY_DISABLE_HOOK

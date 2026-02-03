@@ -1,29 +1,28 @@
+#include <kbdt/keyutils.hpp>
+
 #include <cctype>   // isspace, isalnum, toupper
 #include <cstddef>  // size_t
-#include <sstream>  // stringstream
 
-#include <global_hotkey/key.hpp>
-
-namespace gbhk
+namespace kbdt
 {
 
 #define IS_SPACE(c) std::isspace(static_cast<unsigned char>(c))
 #define IS_ALNUM(c) std::isalnum(static_cast<unsigned char>(c))
 #define TO_UPPER(c) std::toupper(static_cast<unsigned char>(c))
 
-#ifdef GLOBAL_HOTKEY_WIN
+#ifdef KBDT_WIN
     #define META_TEXT   "Win"
     #define ALT_TEXT    "Alt"
-#elif defined(GLOBAL_HOTKEY_MAC)
+#elif defined(KBDT_MAC)
     #define META_TEXT   "Command"
     #define ALT_TEXT    "Option"
-#elif defined(GLOBAL_HOTKEY_LINUX)
+#elif defined(KBDT_LINUX)
     #define META_TEXT   "Super"
     #define ALT_TEXT    "Alt"
 #else
     #define META_TEXT   "Meta"
     #define ALT_TEXT    "Alt"
-#endif // GLOBAL_HOTKEY_WIN
+#endif // KBDT_WIN
 
 #define CTRL_TEXT       "Ctrl"
 #define SHIFT_TEXT      "Shift"
@@ -43,38 +42,9 @@ isEqualStr(str, prefix "^") || isEqualStr(str, prefix "\xE2\x8C\x83"))
 #define IS_SHIFT(str, prefix) \
 (isEqualStr(str, prefix "shift") || isEqualStr(str, prefix "\xE2\x87\xAA"))
 
-static std::string modifierFlagString(ModifierFlag flag) noexcept
+KBDT_API const char* keyToStr(Key key) noexcept
 {
-    switch (flag)
-    {
-        case META:  return META_TEXT;
-        case CTRL:  return CTRL_TEXT;
-        case ALT:   return ALT_TEXT;
-        case SHIFT: return SHIFT_TEXT;
-        default:    return "";
-    }
-}
-
-std::string Modifiers::toString(char connector) const noexcept
-{
-    std::string str;
-    std::string connectorStr(1, connector);
-
-    if (has(META))
-        str += modifierFlagString(META);
-    if (has(CTRL))
-        str += (!str.empty() ? connectorStr : "") + modifierFlagString(CTRL);
-    if (has(ALT))
-        str += (!str.empty() ? connectorStr : "") + modifierFlagString(ALT);
-    if (has(SHIFT))
-        str += (!str.empty() ? connectorStr : "") + modifierFlagString(SHIFT);
-
-    return str;
-}
-
-std::string Key::toString() const noexcept
-{
-    switch (data_)
+    switch (key)
     {
         // Number keys
         case Key_0:                 return "0";
@@ -229,21 +199,26 @@ std::string Key::toString() const noexcept
         case Key_Angle_Bracket:     return "<>";
 
         // Modifier keys
-        case Key_Mod_Meta:          return META_TEXT;
-        case Key_Mod_Meta_Left:     return ("Left " META_TEXT);
-        case Key_Mod_Meta_Right:    return ("Right " META_TEXT);
-        case Key_Mod_Ctrl:          return CTRL_TEXT;
-        case Key_Mod_Ctrl_Left:     return ("Left " CTRL_TEXT);
-        case Key_Mod_Ctrl_Right:    return ("Right " CTRL_TEXT);
-        case Key_Mod_Alt:           return ALT_TEXT;
-        case Key_Mod_Alt_Left:      return ("Left " ALT_TEXT);
-        case Key_Mod_Alt_Right:     return ("Right " ALT_TEXT);
-        case Key_Mod_Shift:         return SHIFT_TEXT;
-        case Key_Mod_Shift_Left:    return ("Left " SHIFT_TEXT);
-        case Key_Mod_Shift_Right:   return ("Right " SHIFT_TEXT);
+        case Key_Meta:          return META_TEXT;
+        case Key_Meta_Left:     return ("Left " META_TEXT);
+        case Key_Meta_Right:    return ("Right " META_TEXT);
+        case Key_Ctrl:          return CTRL_TEXT;
+        case Key_Ctrl_Left:     return ("Left " CTRL_TEXT);
+        case Key_Ctrl_Right:    return ("Right " CTRL_TEXT);
+        case Key_Alt:           return ALT_TEXT;
+        case Key_Alt_Left:      return ("Left " ALT_TEXT);
+        case Key_Alt_Right:     return ("Right " ALT_TEXT);
+        case Key_Shift:         return SHIFT_TEXT;
+        case Key_Shift_Left:    return ("Left " SHIFT_TEXT);
+        case Key_Shift_Right:   return ("Right " SHIFT_TEXT);
 
         default:                    return "";
     }
+}
+
+KBDT_API Key keyFromStr(const char* str) noexcept
+{
+    return keyFromStr(std::string(str));
 }
 
 // Check whether two strings is equal, ignoring case, spaces and underscores.
@@ -270,34 +245,13 @@ static bool isEqualStr(const std::string& str1, const std::string& str2) noexcep
     return true;
 }
 
-static int modifierFlagFromString(const std::string& str) noexcept
-{
-    if (str.empty())        return 0;
-    if (IS_META(str, ""))   return META;
-    if (IS_CTRL(str, ""))   return CTRL;
-    if (IS_ALT(str, ""))    return ALT;
-    if (IS_SHIFT(str, ""))  return SHIFT;
-    return 0;
-}
-
-Modifiers Modifiers::fromString(const std::string& str, char connector) noexcept
-{
-    std::stringstream ss;
-    ss << str;
-    Modifiers mod;
-    std::string s;
-    while (std::getline(ss, s, connector))
-        mod.add(modifierFlagFromString(s));
-    return mod;
-}
-
-Key Key::fromString(const std::string& str) noexcept
+KBDT_API Key keyFromStr(const std::string& str) noexcept
 {
     if (str.empty())
-        return Key();
+        return (Key) 0;
 
     if (str.size() == 1 && IS_ALNUM(str[0]))
-        return Key(str[0]);
+        return (Key) str[0];
 
     // Whitespace keys
     if (isEqualStr(str, "tab"))     return Key_Tab;
@@ -455,20 +409,20 @@ Key Key::fromString(const std::string& str) noexcept
     if (isEqualStr(str, "<>"))      return Key_Angle_Bracket;
 
     // Modifier keys
-    if (IS_META(str, ""))           return Key_Mod_Meta;
-    if (IS_META(str, "left"))       return Key_Mod_Meta_Left;
-    if (IS_META(str, "right"))      return Key_Mod_Meta_Right;
-    if (IS_CTRL(str, ""))           return Key_Mod_Ctrl;
-    if (IS_CTRL(str, "left"))       return Key_Mod_Ctrl_Left;
-    if (IS_CTRL(str, "right"))      return Key_Mod_Ctrl_Right;
-    if (IS_ALT(str, ""))            return Key_Mod_Alt;
-    if (IS_ALT(str, "left"))        return Key_Mod_Alt_Left;
-    if (IS_ALT(str, "right"))       return Key_Mod_Alt_Right;
-    if (IS_SHIFT(str, ""))          return Key_Mod_Shift;
-    if (IS_SHIFT(str, "left"))      return Key_Mod_Shift_Left;
-    if (IS_SHIFT(str, "right"))     return Key_Mod_Shift_Right;
+    if (IS_META(str, ""))           return Key_Meta;
+    if (IS_META(str, "left"))       return Key_Meta_Left;
+    if (IS_META(str, "right"))      return Key_Meta_Right;
+    if (IS_CTRL(str, ""))           return Key_Ctrl;
+    if (IS_CTRL(str, "left"))       return Key_Ctrl_Left;
+    if (IS_CTRL(str, "right"))      return Key_Ctrl_Right;
+    if (IS_ALT(str, ""))            return Key_Alt;
+    if (IS_ALT(str, "left"))        return Key_Alt_Left;
+    if (IS_ALT(str, "right"))       return Key_Alt_Right;
+    if (IS_SHIFT(str, ""))          return Key_Shift;
+    if (IS_SHIFT(str, "left"))      return Key_Shift_Left;
+    if (IS_SHIFT(str, "right"))     return Key_Shift_Right;
 
-    return Key();
+    return (Key) 0;
 }
 
-} // namespace gbhk
+} // namespace kbdt

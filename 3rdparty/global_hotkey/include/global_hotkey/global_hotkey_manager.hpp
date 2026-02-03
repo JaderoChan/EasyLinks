@@ -5,6 +5,7 @@
 #include <memory>       // unique_ptr
 #include <unordered_set>
 
+#include "defines.hpp"
 #include "key_combination.hpp"
 
 namespace gbhk
@@ -39,7 +40,8 @@ public:
     /// @brief Replace an existing hotkey with a new key combination.
     /// @param oldKc The existing key combination to replace.
     /// @param newKc The new key combination to register.
-    /// @note If registering newKc fails, oldKc will still be removed.
+    /// @note If 'oldKc' and 'newKc' are the same, do nothing and return RC_SUCCESS.
+    /// @note If registering 'newKc' fails, 'oldKc' will still be removed.
     int replace(const KeyCombination& oldKc, const KeyCombination& newKc);
 
     /// @brief Set the callback function for specified hotkey.
