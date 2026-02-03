@@ -1,7 +1,6 @@
 #include "settings_widget.h"
 
 #include <qmessagebox.h>
-#include <qvalidator.h>
 
 #include <easy_translate.hpp>
 
@@ -21,11 +20,6 @@ SettingsWidget::SettingsWidget(const Settings& settings, QWidget* parent)
     ui.symlinkHotkeyInputer->setKeyCombination(symlinkQks.isEmpty() ? QKeyCombination() : symlinkQks[0]);
     auto hardlinkQks = QKeySequence::fromString(settings_.hardlinkHotkey.toString().c_str());
     ui.hardlinkHotkeyInputer->setKeyCombination(hardlinkQks.isEmpty() ? QKeyCombination() : hardlinkQks[0]);
-
-    auto validator = new QRegularExpressionValidator(this);
-    // 要求Rename Pattern至少包含一个前面没有反斜杠的'@'字符和前面没有反斜杠的'#'字符。
-    validator->setRegularExpression(QRegularExpression("^(?=.*(?<!\\)@)(?=.*(?<!\\)#)"));
-    ui.renamePatternLe->setValidator(validator);
 
     connect(ui.languageComboBox, &QComboBox::currentIndexChanged, this, &SettingsWidget::onLanguageChanged);
     connect(ui.autoRunOnStartUpCb, &QCheckBox::toggled, this, &SettingsWidget::onAutoRunOnStartUpChanged);
@@ -101,6 +95,14 @@ void SettingsWidget::onRenamePatternChanged(QString renamePattern)
 {
     if (!isLegalRenamePattern(renamePattern))
     {
+        QMessageBox msgBox(
+            QMessageBox::Warning,
+            EASYTR("SettingsWidget.MessageBox.IllegalRenamePattern.Title"),
+            EASYTR("SettingsWidget.MessageBox.IllegalRenamePattern.Text"),
+            QMessageBox::Ok,
+            this
+        );
+        msgBox.exec();
         ui.renamePatternLe->setText(settings_.linkConfig.renamePattern);
     }
     else

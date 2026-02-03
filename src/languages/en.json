@@ -45,6 +45,8 @@
     "SettingsWidget.KeyCombinationInputer.ToolTip": "Press ESC to cancel, Press Delete to remove hotkey",
     "SettingsWidget.MessageBox.AlertSameHotkey.Title": "Warning",
     "SettingsWidget.MessageBox.AlertSameHotkey.Text": "Hotkeys cannot be repeated!",
+    "SettingsWidget.MessageBox.IllegalRenamePattern.Title": "Warning",
+    "SettingsWidget.MessageBox.IllegalRenamePattern.Text": "An illegal renaming pattern. The renaming pattern must include valid @ and # placeholders!",
     "SettingsWidget.LineEdit.RenamePattern.Placeholder": "Input the rename pattern, `@` and `#` is necessary.",
     "SettingsWidget.RenamePatternGroupBox.Title": "Rename Pattern",
     "SettingsWidget.Text.RenamePatternTips": "Placeholder available:\n\"@\": The original file name\n\"#\": The number\n\nExample:\nFor pattern \"@-linked-#\", The original file \"file.ext\" maybe be rename to \"file-linked-1.ext\"",
