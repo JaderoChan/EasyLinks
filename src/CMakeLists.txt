@@ -1,7 +1,12 @@
 cmake_minimum_required(VERSION 3.17)
 
 file(GLOB_RECURSE HEADER *.h *.hpp)
-file(GLOB_RECURSE SRC *.cpp)
+file(GLOB_RECURSE SRC app/*.cpp filelink/*.cpp)
+if(WIN32)
+    list(APPEND SRC shell/shell_utility_win.cpp)
+elseif(APPLE)
+else()
+endif()
 file(GLOB_RECURSE UI *.ui)
 file(GLOB_RECURSE QRC *qrc)
 set(PROJECT_SOURCE ${HEADER} ${SRC} ${UI} ${QRC})
