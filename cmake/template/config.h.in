@@ -14,3 +14,5 @@
 
 #define APP_LANG_LIST_FILENAME  "languages/languages.json"
 #define APP_LOCK_FILENAME       "@PROJECT_NAME@-" APP_UUID ".lock"
+
+#define DEFAULT_RENAME_PATTERN  "@ (#)"

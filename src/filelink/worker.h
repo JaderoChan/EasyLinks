@@ -9,6 +9,7 @@
 #include <qelapsedtimer.h>
 
 #include "types.h"
+#include "config.h"
 
 class FileLinkWorker : public QObject
 {
@@ -33,6 +34,7 @@ public:
         LinkType linkType,
         const QStringList& sourcePaths,
         const QString& targetDir,
+        const QString& renamePattern,
         bool removeToTrash = false);
 
     // - 必须在工作线程处于暂停状态时调用。
@@ -99,6 +101,7 @@ private:
     std::atomic<bool> cesApplyToAll_{false};
     std::atomic<ConflictingEntryStrategy> cesOfAll{CES_NONE};
 
+    QString renamePattern_ = DEFAULT_RENAME_PATTERN;
     bool removeToTrash_ = false;
 
     EntryPair currentEntryPair_;

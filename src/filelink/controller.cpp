@@ -15,7 +15,7 @@ FileLinkController::FileLinkController(
         return;
 
     worker_ = new FileLinkWorker();
-    worker_->setParameters(linkType, sourcePaths, targetDir, config_.removeToTrash);
+    worker_->setParameters(linkType, sourcePaths, targetDir, config_.renamePattern, config_.removeToTrash);
     worker_->moveToThread(&workerThread_);
 
     auto sourceDir = QFileInfo(sourcePaths.front()).absolutePath();

@@ -17,6 +17,23 @@ In the file Manager, select multiple entries (files/folders) and copy them. In t
 - Folders do not support creating hard links. So when you try to create a hard link to a folder, the program will traverse all the files under the folder and hard link each file to the target path with the same directory structure.
 - Most file systems do not support hard linking across disks. For symbolic links, if the drive letter changes, it may cause the symbolic link to become invalid.
 
+## File Rename Pattern
+
+The default pattern is `@ (#)`.
+
+### Available placeholders
+
+- `@`: Original file name
+- `#`: A number
+
+If you need to insert a placeholder, you can use a backslash `\` to escape the placeholder.
+
+The placeholders `@` and `#` are necessary.
+
+### Example
+
+Original file `file.ext` rename via pattern `@-linked-#` maybe produce new file name `file-linked-1.ext`
+
 ## Application Screenshots
 
 ![progress_dialog](../screenshots/progress_dialog_en.png)

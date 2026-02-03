@@ -6,6 +6,8 @@
 
 #include <qdir.h>
 
+#include "rename_pattern.h"
+
 #define THROW_RTERR(errorMsg) throw std::runtime_error(errorMsg)
 
 constexpr int ProgressUpdateInterval = 20;
@@ -134,11 +136,15 @@ void FileLinkWorker::setParameters(
     LinkType linkType,
     const QStringList& sourcePaths,
     const QString& targetDir,
+    const QString& renamePattern,
     bool removeToTrash)
 {
     linkType_ = linkType;
     sourcePaths_ = sourcePaths;
     targetDir_ = targetDir;
+    renamePattern_ = renamePattern;
+    if (!isLegalRenamePattern(renamePattern_))
+        renamePattern_ = DEFAULT_RENAME_PATTERN;
     removeToTrash_ = removeToTrash;
 }
 
@@ -400,7 +406,7 @@ void FileLinkWorker::generateNewPath(QFileInfo& file)
 
     do
     {
-        QString newPath = path + "/" + baseName + " (" + QString::number(counter++) + "." + suffix;
+        QString newPath = path + "/" + parseRenamePattern(renamePattern_, baseName, counter++) + "." + suffix;
         file.setFile(newPath);
     } while (file.exists());
 }

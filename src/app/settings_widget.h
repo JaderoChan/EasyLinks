@@ -26,6 +26,7 @@ protected:
     void onAutoRunOnStartUpChanged(bool enable);
     void onKeepDialogOnErrorOccurredChanged(bool enable);
     void onRemoveToTrashChanged(bool enable);
+    void onRenamePatternChanged(QString renamePattern);
     void onSymlinkHotkeyChanged(QKeyCombination qkc);
     void onHardlinkHotkeyChanged(QKeyCombination qkc);
 

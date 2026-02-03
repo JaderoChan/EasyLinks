@@ -3,6 +3,7 @@
 #include <qsettings.h>
 
 #include "config.h"
+#include "filelink/rename_pattern.h"
 
 #define READ_KC(settings, key, defaultValue) \
 gbhk::KeyCombination(settings.value(key, defaultValue).toString().toStdString())
@@ -20,6 +21,9 @@ Settings loadSettings()
     qsettings.beginGroup("LinkConfig");
     settings.linkConfig.keepDialogOnErrorOccurred = qsettings.value("KeepDialogOnErrorOccurred", true).toBool();
     settings.linkConfig.removeToTrash = qsettings.value("RemoveToTrash", false).toBool();
+    settings.linkConfig.renamePattern = qsettings.value("RenamePattern", DEFAULT_RENAME_PATTERN).toString();
+    if (!isLegalRenamePattern(settings.linkConfig.renamePattern))
+        settings.linkConfig.renamePattern = DEFAULT_RENAME_PATTERN;
     qsettings.endGroup();
 
     return settings;
@@ -36,5 +40,6 @@ void saveSettings(const Settings& settings)
     qsettings.beginGroup("LinkConfig");
     qsettings.setValue("KeepDialogOnErrorOccurred", settings.linkConfig.keepDialogOnErrorOccurred);
     qsettings.setValue("RemoveToTrash", settings.linkConfig.removeToTrash);
+    qsettings.setValue("RenamePattern", settings.linkConfig.renamePattern);
     qsettings.endGroup();
 }
