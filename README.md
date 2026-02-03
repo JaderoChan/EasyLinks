@@ -1,4 +1,4 @@
-# Easy Link
+# Easy Links
 
 **[中文 | [English](doc/README_EN.md)]**
 
