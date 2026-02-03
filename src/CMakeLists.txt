@@ -5,7 +5,9 @@ file(GLOB_RECURSE SRC app/*.cpp filelink/*.cpp)
 if(WIN32)
     list(APPEND SRC shell/shell_utility_win.cpp)
 elseif(APPLE)
+    # todo
 else()
+    # todo
 endif()
 file(GLOB_RECURSE UI *.ui)
 file(GLOB_RECURSE QRC *qrc)
@@ -36,6 +38,10 @@ if(WIN32)
     set(RC_CONTENT "APP_ICON ICON \"${APP_ICON}\"")
     file(WRITE ${RC_FILE} ${RC_CONTENT})
     target_sources(${PROJECT_NAME} PRIVATE ${RC_FILE})
+elseif(APPLE)
+    # todo
+else()
+    # todo
 endif()
 
 set_target_properties(
