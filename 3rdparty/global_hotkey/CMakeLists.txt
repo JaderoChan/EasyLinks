@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(global_hotkey VERSION 1.5.1 LANGUAGES CXX)
+project(global_hotkey VERSION 1.5.3 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(GLOBAL_HOTKEY_MSG_PREFIX "[Global Hotkey]")
@@ -139,9 +139,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX d)
 # Configure dependency #
 ########################
 
+set(CONFIG_HEADER_PATH ${CMAKE_CURRENT_BINARY_DIR}/include/global_hotkey/config.hpp)
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/templates/config.hpp.in
-    ${CMAKE_CURRENT_BINARY_DIR}/include/config.hpp
+    ${CONFIG_HEADER_PATH}
 )
 
 include(GNUInstallDirs)
@@ -236,7 +237,7 @@ endif()
 if(GLOBAL_HOTKEY_DISABLE_REGISTER)
     list(FILTER HEADERS EXCLUDE REGEX ".*register_global_hotkey_manager\.hpp")
 endif()
-list(APPEND HEADERS ${CMAKE_CURRENT_BINARY_DIR}/include/config.hpp)
+list(APPEND HEADERS ${CONFIG_HEADER_PATH})
 install(FILES ${HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/global_hotkey)
 install(DIRECTORY doc/ DESTINATION ${CMAKE_INSTALL_DOCDIR})
 install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/licenses/${PROJECT_NAME})
