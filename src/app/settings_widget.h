@@ -21,6 +21,7 @@ signals:
 protected:
     virtual void updateText();
     void changeEvent(QEvent* event) override;
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
     void onLanguageChanged(int index);
     void onAutoRunOnStartUpChanged(bool enable);

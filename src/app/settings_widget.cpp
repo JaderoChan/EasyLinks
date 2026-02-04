@@ -21,11 +21,12 @@ SettingsWidget::SettingsWidget(const Settings& settings, QWidget* parent)
     auto hardlinkQks = QKeySequence::fromString(settings_.hardlinkHotkey.toString().c_str());
     ui.hardlinkHotkeyInputer->setKeyCombination(hardlinkQks.isEmpty() ? QKeyCombination() : hardlinkQks[0]);
 
+    ui.renamePatternLe->installEventFilter(this);
+
     connect(ui.languageComboBox, &QComboBox::currentIndexChanged, this, &SettingsWidget::onLanguageChanged);
     connect(ui.autoRunOnStartUpCb, &QCheckBox::toggled, this, &SettingsWidget::onAutoRunOnStartUpChanged);
     connect(ui.keepDialogOnErrorOccurredCb, &QCheckBox::toggled, this, &SettingsWidget::onKeepDialogOnErrorOccurredChanged);
     connect(ui.removeToTrashCb, &QCheckBox::toggled, this, &SettingsWidget::onRemoveToTrashChanged);
-    connect(ui.renamePatternLe, &QLineEdit::textEdited, this, &SettingsWidget::onRenamePatternChanged);
     connect(ui.symlinkHotkeyInputer, &KeyCombinationInputer::keyCombinationChanged, this, &SettingsWidget::onSymlinkHotkeyChanged);
     connect(ui.hardlinkHotkeyInputer, &KeyCombinationInputer::keyCombinationChanged, this, &SettingsWidget::onHardlinkHotkeyChanged);
 
@@ -65,6 +66,13 @@ void SettingsWidget::changeEvent(QEvent* event)
     if (event->type() == QEvent::LanguageChange)
         updateText();
     QWidget::changeEvent(event);
+}
+
+bool SettingsWidget::eventFilter(QObject* obj, QEvent* event)
+{
+    if (event->type() == event->FocusOut)
+        onRenamePatternChanged(ui.renamePatternLe->text());
+    return QWidget::eventFilter(obj, event);
 }
 
 void SettingsWidget::onLanguageChanged(int index)
