@@ -5,7 +5,7 @@
 - [x] 完成功能：ConflictDecisionDialog，“跳过相同日期与大小”可选框逻辑。
 - [ ] ~~完成功能：ConflictDecisionDialog，表头可选框与表头打开外部链接逻辑。~~
 - [x] 完成功能：ConflictDecisionDialog，增加CheckBox模拟表头。
-- [ ] 完成功能：FileLinkWorker::isOnSameDriver，其他平台的逻辑实现。
+- [ ] ~~完成功能：FileLinkWorker::isOnSameDriver，其他平台的逻辑实现。~~（重实现Replace逻辑以摒弃此操作）
 - [ ] 优化功能：增加Windows平台下长路径支持。
 - [ ] ~~优化功能：FileLinkWorker的文件收集与文件处理异步执行，降低内存使用量（不需要存储所有收集到的条目列表然后再处理）。~~（使用生产者消费者模型可解决，不过感觉没有必要引入新线程，目前的内存使用量还算可以接受；此外，如果采用异步线程，其也要先计算总文件数量以供进度条能够正常显示，有点鸡肋）
 - [ ] 增加实用程序，对给定的目录，将其中所有符合用户筛选器的文件进行硬链接替换。
