@@ -253,7 +253,7 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo& source, QFileInfo&
         }
         else
         {
-            THROW_RTERR("There are nonregular file entities with the same name in the target directory.");
+            THROW_RTERR("The target directory exists nonregular file entities of the same name.");
         }
     }
     else
