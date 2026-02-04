@@ -210,30 +210,37 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo& source, QFileInfo&
                     }
 
                     QString targetOriginName = target.absoluteFilePath();
-                    QString targetTempName = target.absoluteDir().filePath(target.completeBaseName() + APP_UUID);
-                    if (!QFile::rename(targetOriginName, targetTempName))
-                        THROW_RTERR("Failed to rename the target file.");
-
-                    try
+                    if (removeToTrash_)
                     {
-                        createLink(linkType, source, target);
-                        if (removeToTrash_)
+                        QString filenameInTrash;
+                        if (!QFile::moveToTrash(targetOriginName, &filenameInTrash))
+                            THROW_RTERR("Failed to move the target file to trash.");
+                        try
                         {
-                            if (!QFile::moveToTrash(targetTempName, &targetOriginName))
-                                THROW_RTERR("Failed to move the target file to trash.");
+                            createLink(linkType, source, target);
                         }
-                        else
+                        catch(const std::exception& e)
                         {
-                            if (!QFile::remove(targetTempName))
-                                THROW_RTERR("Failed to remove the target file.");
+                            QFile::rename(filenameInTrash, targetOriginName);
+                            THROW_RTERR(e.what());
                         }
                     }
-                    catch(const std::exception& e)
+                    else
                     {
-                        QFile::rename(targetTempName, targetOriginName);
-                        THROW_RTERR(e.what());
+                        QString targetTempName = target.absoluteDir().filePath(target.fileName() + APP_UUID);
+                        if (!QFile::rename(targetOriginName, targetTempName))
+                            THROW_RTERR("Failed to rename the target file.");
+                        try
+                        {
+                            createLink(linkType, source, target);
+                            QFile::remove(targetTempName);
+                        }
+                        catch(const std::exception& e)
+                        {
+                            QFile::rename(targetTempName, targetOriginName);
+                            THROW_RTERR(e.what());
+                        }
                     }
-
                     break;
                 }
                 case CES_SKIP:
