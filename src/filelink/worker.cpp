@@ -123,7 +123,7 @@ void FileLinkWorker::run()
     }
 
     // 如果用户使用Skip策略并应用至所有冲突项，则只更新统计数据。
-    if (cesApplyToAll_ && cesOfAll == CES_SKIP)
+    if (cesApplyToAll_ && cesOfAll_ == CES_SKIP)
         stats_.processedEntries += stats_.conflicts;
     else
         processTasks();
@@ -150,7 +150,7 @@ void FileLinkWorker::setParameters(
 
 void FileLinkWorker::setConflictsDecisionForAll(ConflictingEntryStrategy ces)
 {
-    cesOfAll = ces;
+    cesOfAll_ = ces;
     cesApplyToAll_ = true;
     resume();
 }
@@ -217,7 +217,7 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo& source, QFileInfo&
         }
         else if (target.isFile() || isWindowsSymlink(target))
         {
-            ces = cesApplyToAll_ ? cesOfAll.load() : ces;
+            ces = cesApplyToAll_ ? cesOfAll_.load() : ces;
             switch (ces)
             {
                 case CES_NONE:

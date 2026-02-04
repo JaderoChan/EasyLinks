@@ -99,7 +99,7 @@ private:
     std::atomic<bool> paused_{false};
     std::atomic<bool> cancelled_{false};
     std::atomic<bool> cesApplyToAll_{false};
-    std::atomic<ConflictingEntryStrategy> cesOfAll{CES_NONE};
+    std::atomic<ConflictingEntryStrategy> cesOfAll_{CES_NONE};
 
     QString renamePattern_ = DEFAULT_RENAME_PATTERN;
     bool removeToTrash_ = false;
