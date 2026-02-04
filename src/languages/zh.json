@@ -1,8 +1,8 @@
 {
     "AboutDialog.AuthorText": "作者",
     "AboutDialog.ContactText": "联系方式",
-    "AboutDialog.Title": "关于",
-    "AboutDialog.WindowTitle": "随心链接",
+    "AboutDialog.Title": "随心链接",
+    "AboutDialog.WindowTitle": "关于",
     "CommonButton.Cancel": "取消",
     "CommonButton.Ok": "确认",
     "ConflictDecisionDialog.CheckBox.SkipSameDateSize": "跳过 %1 个具有相同日期与大小的条目",

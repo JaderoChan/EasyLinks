@@ -1,8 +1,8 @@
 {
     "AboutDialog.AuthorText": "Author",
     "AboutDialog.ContactText": "Contact me",
-    "AboutDialog.Title": "About",
-    "AboutDialog.WindowTitle": "Easy Link",
+    "AboutDialog.Title": "Easy Link",
+    "AboutDialog.WindowTitle": "About",
     "CommonButton.Cancel": "Cancel",
     "CommonButton.Ok": "Ok",
     "ConflictDecisionDialog.CheckBox.SkipSameDateSize": "Skip %1 entries with the same date and size",
