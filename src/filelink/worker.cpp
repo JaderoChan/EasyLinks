@@ -204,7 +204,7 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo& source, QFileInfo&
     source.refresh();
     target.refresh();
 
-    // 如果创建的是硬链接且原文件与目标文件处于不同驱动器上则抛出错误。
+    // 如果创建的是硬链接且原文件与目标文件处于不同驱动器上则抛出异常。
     // （此情况在绝大多数时候一定会链接失败，为了防止目标文件已存在且用户决定替换目标文件而导致目标文件被无端删除）
     if (linkType == LT_HARDLINK && !isOnSameDriver(source.absoluteFilePath(), target.absoluteFilePath()))
         THROW_RTERR("The specified original file and the target are located on different devices or file systems.");
