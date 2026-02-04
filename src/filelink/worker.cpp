@@ -10,6 +10,33 @@
 
 #define THROW_RTERR(errorMsg) throw std::runtime_error(errorMsg)
 
+#ifdef Q_OS_WIN
+
+#define LONG_PATH(p) (!fix::isNeeded(p) ? p : fix::apply(p))
+
+namespace fix
+{
+
+static bool isUnc(const std::filesystem::path& p) noexcept
+{
+    auto pathStr = p.native();
+    return pathStr.size() < 2 ? false : (pathStr[0] == L'\\' && pathStr[1] == L'\\');
+}
+
+static bool isNeeded(const std::filesystem::path& p) noexcept
+{
+	return p.is_absolute() && !isUnc(p);
+}
+
+static std::filesystem::path apply(const std::filesystem::path& p) noexcept
+{
+	return LR"(\\?\)" + p.lexically_normal().native();
+}
+
+} // namespace fix
+
+#endif // Q_OS_WIN
+
 constexpr int ProgressUpdateInterval = 20;
 
 FileLinkWorker::FileLinkWorker(QObject* parent)
@@ -38,9 +65,10 @@ void FileLinkWorker::createLink(LinkType linkType, const QFileInfo& source, cons
             THROW_RTERR("The target path cannot be created.");
     }
 
-    // 如果原文件与目标文件是同一个文件实体则抛出异常。
-    auto sourcePath = source.filesystemAbsoluteFilePath();
-    auto targetPath = target.filesystemAbsoluteFilePath();
+#ifdef Q_OS_WIN
+    auto sourcePath = LONG_PATH(source.filesystemAbsoluteFilePath());
+    auto targetPath = LONG_PATH(target.filesystemAbsoluteFilePath());
+#endif // Q_OS_WIN
 
     switch (linkType)
     {
