@@ -41,8 +41,6 @@ void FileLinkWorker::createLink(LinkType linkType, const QFileInfo& source, cons
     // 如果原文件与目标文件是同一个文件实体则抛出异常。
     auto sourcePath = source.filesystemAbsoluteFilePath();
     auto targetPath = target.filesystemAbsoluteFilePath();
-    if (fs::exists(sourcePath) && fs::exists(targetPath) && fs::equivalent(sourcePath, targetPath))
-        THROW_RTERR("The source file and the target file are the same entity.");
 
     switch (linkType)
     {
