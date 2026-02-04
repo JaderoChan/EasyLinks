@@ -21,19 +21,6 @@ FileLinkWorker::~FileLinkWorker()
     cancel();
 }
 
-bool FileLinkWorker::isOnSameDriver(const QString& a, const QString& b)
-{
-#ifdef Q_OS_WIN
-    QDir dirA(a);
-    QDir dirB(b);
-    if (!a.isEmpty() && !b.isEmpty())
-        return dirA.rootPath().left(3).toUpper() == dirB.rootPath().left(3).toUpper();
-    return false;
-#else
-    // todo
-#endif
-}
-
 bool FileLinkWorker::isWindowsSymlink(const QFileInfo& fileinfo)
 {
     return fileinfo.isShortcut() || fileinfo.isJunction();
@@ -204,11 +191,6 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo& source, QFileInfo&
     source.refresh();
     target.refresh();
 
-    // 如果创建的是硬链接且原文件与目标文件处于不同驱动器上则抛出异常。
-    // （此情况在绝大多数时候一定会链接失败，为了防止目标文件已存在且用户决定替换目标文件而导致目标文件被无端删除）
-    if (linkType == LT_HARDLINK && !isOnSameDriver(source.absoluteFilePath(), target.absoluteFilePath()))
-        THROW_RTERR("The specified original file and the target are located on different devices or file systems.");
-
     if (source.exists())
     {
         if (!target.exists())
@@ -223,24 +205,39 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo& source, QFileInfo&
                 case CES_NONE:
                     return false;
                 case CES_REPLACE:
+                {
                     if (source.absoluteFilePath() == target.absoluteFilePath())
                     {
                         THROW_RTERR("The replaced file and the replacement file are the same entity.");
                     }
 
-                    if (removeToTrash_)
+                    QString targetOriginName = target.absoluteFilePath();
+                    QString targetTempName = target.absoluteDir().filePath(target.completeBaseName() + APP_UUID);
+                    if (!QFile::rename(targetOriginName, targetTempName))
+                        THROW_RTERR("Failed to rename the target file.");
+
+                    try
                     {
-                        if (!QFile::moveToTrash(target.absoluteFilePath()))
-                            THROW_RTERR("Failed to move the target file to trash.");
+                        createLink(linkType, source, target);
+                        if (removeToTrash_)
+                        {
+                            if (!QFile::moveToTrash(targetTempName, &targetOriginName))
+                                THROW_RTERR("Failed to move the target file to trash.");
+                        }
+                        else
+                        {
+                            if (!QFile::remove(targetTempName))
+                                THROW_RTERR("Failed to remove the target file.");
+                        }
                     }
-                    else
+                    catch(const std::exception& e)
                     {
-                        if (!QFile::remove(target.absoluteFilePath()))
-                            THROW_RTERR("Failed to remove the target file.");
+                        QFile::rename(targetTempName, targetOriginName);
+                        THROW_RTERR(e.what());
                     }
 
-                    createLink(linkType, source, target);
                     break;
+                }
                 case CES_SKIP:
                     break;
                 case CES_KEEP:

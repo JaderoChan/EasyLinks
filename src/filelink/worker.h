@@ -19,8 +19,6 @@ public:
     explicit FileLinkWorker(QObject* parent = nullptr);
     ~FileLinkWorker();
 
-    // 比较所给路径是否位于同一驱动器下。
-    static bool isOnSameDriver(const QString& a, const QString& b);
     // 判断所给fileinfo引用的文件实体是否为Shortcut、Junction。
     static bool isWindowsSymlink(const QFileInfo& fileinfo);
     // - 如果目标路径不存在，会尝试创建其所有父路径。
