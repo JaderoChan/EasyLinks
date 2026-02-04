@@ -1,4 +1,4 @@
-#include <kbdt_details.hpp>
+#include <keyboard_tools_details.hpp>
 
 #include <string>
 #include <atomic>
@@ -124,7 +124,6 @@ static void unsetupInotifyFd()
 static void addEvdevFd(const std::string& evdevName)
 {
     std::string filename = EVDEV_DIR + evdevName;
-    printf("Add evdev Fd: %s\n", filename.c_str());
 
     if (!isCharacterDevice(filename))
         return;
@@ -231,7 +230,6 @@ static void handleDevicesChanged()
     while (p < fdEventBuffer + rsize)
     {
         struct inotify_event* ev = (struct inotify_event*) p;
-        printf("Evdev Changed: %s\n", ev->name);
         if (ev->mask == IN_CREATE && ev->len > 0)
             addEvdevFd(ev->name);
         else if (ev->mask == IN_DELETE && ev->len > 0)
@@ -274,7 +272,7 @@ int initialize()
     return setups();
 }
 
-int finalize()
+int stopWork()
 {
     return emitWorkEvent(WORK_ET_END, 0);
 }

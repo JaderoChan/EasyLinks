@@ -14,9 +14,9 @@ std::unordered_map<KeyCombination, EventHotKeyRef> RegisterGHMPrivateMac::kcToHo
 
 RegisterGHMPrivateMac::RegisterGHMPrivateMac() = default;
 
-RegisterGHMPrivateMac::~RegisterGHMPrivateMac() { uninitialize(); }
+RegisterGHMPrivateMac::~RegisterGHMPrivateMac() { stop(); }
 
-int RegisterGHMPrivateMac::doBeforeThreadRun()
+int RegisterGHMPrivateMac::initialize()
 {
     sourceContext_ = {
         .version = 0,
@@ -33,7 +33,7 @@ int RegisterGHMPrivateMac::doBeforeThreadRun()
     return RC_SUCCESS;
 }
 
-int RegisterGHMPrivateMac::doBeforeThreadEnd()
+int RegisterGHMPrivateMac::stopWork()
 {
     CFRunLoopStop(runLoop_);
     return RC_SUCCESS;
@@ -49,14 +49,14 @@ void RegisterGHMPrivateMac::work()
         return;
     }
 
-    EventTypeSpec eventType_Specs[2] = {0};
-    eventType_Specs[0].eventClass = kEventClassKeyboard;
-    eventType_Specs[0].eventKind = kEventHotKeyPressed;
-    eventType_Specs[1].eventClass = kEventClassKeyboard;
-    eventType_Specs[1].eventKind = kEventHotKeyReleased;
+    EventTypeSpec eventTypeSpecs[2] = {0};
+    eventTypeSpecs[0].eventClass = kEventClassKeyboard;
+    eventTypeSpecs[0].eventKind = kEventHotKeyPressed;
+    eventTypeSpecs[1].eventClass = kEventClassKeyboard;
+    eventTypeSpecs[1].eventKind = kEventHotKeyReleased;
     auto status = InstallApplicationEventHandler(
         &RegisterGHMPrivateMac::hotkeyEventHandler,
-        2, eventType_Specs,
+        2, eventTypeSpecs,
         NULL, NULL
     );
     if (status != noErr)
@@ -88,7 +88,7 @@ void RegisterGHMPrivateMac::work()
     kcToHotkeyRef_.clear();
 }
 
-int RegisterGHMPrivateMac::registerHotkey(const KeyCombination& kc, bool autoRepeat)
+int RegisterGHMPrivateMac::registerHotkeyImpl(const KeyCombination& kc, bool autoRepeat)
 {
     regUnregRc_ = -1;
     eventType_ = ET_REGISTER;
@@ -102,7 +102,7 @@ int RegisterGHMPrivateMac::registerHotkey(const KeyCombination& kc, bool autoRep
     return regUnregRc_;
 }
 
-int RegisterGHMPrivateMac::unregisterHotkey(const KeyCombination& kc)
+int RegisterGHMPrivateMac::unregisterHotkeyImpl(const KeyCombination& kc)
 {
     regUnregRc_ = -1;
     eventType_ = ET_UNREGISTER;
@@ -162,7 +162,6 @@ OSStatus RegisterGHMPrivateMac::hotkeyEventHandler(EventHandlerCallRef handler, 
         {
             printf("KeyPressed: %d\n", nativeKey);
         }
-        // eventKind == kEventHotKeyReleased
         else
         {
             printf("KeyReleased: %d\n", nativeKey);
@@ -179,25 +178,25 @@ int RegisterGHMPrivateMac::nativeRegisterHotkey()
     UInt32 key = (UInt32) keyToNativeKey(kc.key());
 
     EventHotKeyID hotkeyId = {(OSType) mod, key};
-    EventHotKeyRef ref = 0;
+    EventHotKeyRef eventHotkey = 0;
     auto status = RegisterEventHotKey(
         key,
         mod,
         hotkeyId,
         GetApplicationEventTarget(),
         0,
-        &ref
+        &eventHotkey
     );
     if (status != noErr)
         return (int) status;
-    kcToHotkeyRef_[regUnregKc_] = ref;
+    kcToHotkeyRef_[regUnregKc_] = eventHotkey;
     return RC_SUCCESS;
 }
 
 int RegisterGHMPrivateMac::nativeUnregisterHotkey()
 {
-    EventHotKeyRef ref = kcToHotkeyRef_[regUnregKc_];
-    auto status = UnregisterEventHotKey(ref);
+    EventHotKeyRef eventHotkey = kcToHotkeyRef_[regUnregKc_];
+    auto status = UnregisterEventHotKey(eventHotkey);
     if (status != noErr)
         return (int) status;
     kcToHotkeyRef_.erase(regUnregKc_);
@@ -206,7 +205,7 @@ int RegisterGHMPrivateMac::nativeUnregisterHotkey()
 
 void RegisterGHMPrivateMac::tryInvoke() const
 {
-
+    // TODO
 }
 
 } // namespace gbhk

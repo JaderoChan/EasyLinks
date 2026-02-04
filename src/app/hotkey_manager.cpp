@@ -11,17 +11,17 @@ HotkeyManager::HotkeyManager(QObject* parent)
     : QObject(parent),
     ghm_(gbhk::HookGlobalHotkeyManager::getInstance())
 {
-    int rc = ghm_.initialize();
+    int rc = ghm_.run();
     if (rc != gbhk::RC_SUCCESS)
-        qDebug() << "Failed to initialize the Global Hotkey Manager";
+        qDebug() << "Failed to run the Global Hotkey Manager";
     connect(this, &HotkeyManager::shouldLinks, this, &HotkeyManager::links);
 }
 
 HotkeyManager::~HotkeyManager()
 {
-    int rc = ghm_.uninitialize();
+    int rc = ghm_.stop();
     if (rc != gbhk::RC_SUCCESS)
-        qDebug() << "Failed to uninitialize the Global Hotkey Manager";
+        qDebug() << "Failed to stop the Global Hotkey Manager";
 }
 
 void HotkeyManager::setSettings(const Settings& settings)
@@ -31,11 +31,11 @@ void HotkeyManager::setSettings(const Settings& settings)
         auto oldHotkey = (linkType == LT_SYMLINK ? settings_.symlinkHotkey : settings_.hardlinkHotkey);
         auto newHotkey = (linkType == LT_SYMLINK ? settings.symlinkHotkey : settings.hardlinkHotkey);
 
-        if (ghm_.has(oldHotkey))
+        if (ghm_.isHotkeyRegistered(oldHotkey))
         {
             if (newHotkey.isValid())
             {
-                int rc = ghm_.replace(oldHotkey, newHotkey);
+                int rc = ghm_.replaceHotkey(oldHotkey, newHotkey);
                 if (rc != gbhk::RC_SUCCESS)
                     qDebug() << QString("Failed to replace hotkey from %1 to %2, error message: %3").arg(
                         oldHotkey.toString().c_str(),
@@ -44,9 +44,9 @@ void HotkeyManager::setSettings(const Settings& settings)
             }
             else
             {
-                int rc = ghm_.remove(oldHotkey);
+                int rc = ghm_.unregisterHotkey(oldHotkey);
                 if (rc != gbhk::RC_SUCCESS)
-                    qDebug() << QString("Failed to remove hotkey %1, error message: %3").arg(
+                    qDebug() << QString("Failed to unregister hotkey %1, error message: %3").arg(
                         oldHotkey.toString().c_str(),
                         gbhk::getReturnCodeMessage(rc).c_str());
             }
@@ -55,7 +55,7 @@ void HotkeyManager::setSettings(const Settings& settings)
         {
             if (newHotkey.isValid())
             {
-                int rc = ghm_.add(newHotkey, [=]() { emit shouldLinks(linkType); });
+                int rc = ghm_.registerHotkey(newHotkey, [=]() { emit shouldLinks(linkType); });
                 if (rc != gbhk::RC_SUCCESS)
                     qDebug() << QString("Failed to add hotkey %1, error message: %3").arg(
                         newHotkey.toString().c_str(),

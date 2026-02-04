@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(global_hotkey VERSION 1.5.3 LANGUAGES CXX)
+project(global_hotkey VERSION 2.0.2 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(GLOBAL_HOTKEY_MSG_PREFIX "[Global Hotkey]")
@@ -162,7 +162,7 @@ if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
         keyboard_tools
         SOURCE_DIR ${THIRDPARTY_DIR}/keyboard_tools
     )
-    set(KBDT_WITH_KEYUTILS OFF)
+    set(KEYBOARD_TOOLS_WITH_KEYUTILS OFF)
     FetchContent_MakeAvailable(keyboard_tools)
     message(STATUS "Success to configure the 'keyboard tool' library.")
 endif()

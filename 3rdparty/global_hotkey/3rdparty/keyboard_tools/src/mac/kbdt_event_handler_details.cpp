@@ -1,4 +1,4 @@
-#include <kbdt_details.hpp>
+#include <keyboard_tools_details.hpp>
 
 #include <atomic>
 
@@ -37,7 +37,7 @@ int initialize()
     return KBDT_RC_SUCCESS;
 }
 
-int finalize()
+int stopWork()
 {
     CFRunLoopStop(runLoop);
     return KBDT_RC_SUCCESS;
