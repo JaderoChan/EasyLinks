@@ -35,6 +35,19 @@
     <number>3</number>
    </property>
    <item>
+    <widget class="QLabel" name="headerText">
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+       <stylestrategy>PreferAntialias</stylestrategy>
+      </font>
+     </property>
+     <property name="text">
+      <string>If there are too many logs, only the first thousand logs will be displayed</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTextBrowser" name="log">
      <property name="minimumSize">
       <size>

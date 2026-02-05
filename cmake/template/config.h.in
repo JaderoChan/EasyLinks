@@ -16,3 +16,5 @@
 #define APP_LOCK_FILENAME       "@PROJECT_NAME@-" APP_UUID ".lock"
 
 #define DEFAULT_RENAME_PATTERN  "@ (#)"
+
+#define MAX_LOG_COUNT       1000

@@ -22,4 +22,5 @@ private:
     static QString currentTimeString();
 
     Ui::ErrorLogDialog ui;
+    int logCount_ = 0;
 };

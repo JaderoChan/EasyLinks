@@ -4,17 +4,16 @@
 
 #include <easy_translate.hpp>
 
+#include "config.h"
+
 #define CLSNAME "ErrorLogDialog"
 #define ERROR_LOG_FORMAT_STRING \
-    "<div style='margin: 1px 0; line-height: 1.2;'>" \
-    "<span style='color:gray;'>[%1]</span><br>" \
-    "Failed to %2 the<br>" \
+    "<a style='color:gray;'>[%1]</a>" \
+    " Failed to %2 the " \
     "<a href='%3' style='color:rgba(0, 100, 180, 216);text-decoration:none;'>%4</a> " \
-    "<br>to<br>" \
+    " to " \
     "<a href='%5' style='color:rgba(0, 100, 180, 216);text-decoration:none;'>%6</a>" \
-    "<br>" \
-    "Error message: <span style='color:red;'>%7</span>" \
-    "</div><br>"
+    ". Error message: <a style='color:red;'>%7</a><br>" \
 
 ErrorLogDialog::ErrorLogDialog(QWidget* parent)
     : QDialog(parent)
@@ -25,6 +24,9 @@ ErrorLogDialog::ErrorLogDialog(QWidget* parent)
 
 void ErrorLogDialog::appendLog(LinkType linkType, const EntryPair& entryPair, const QString& errorMsg)
 {
+    if (logCount_ > MAX_LOG_COUNT)
+        return;
+
     auto log = QString(ERROR_LOG_FORMAT_STRING).arg(
         currentTimeString(),
         linkType == LT_SYMLINK ? "Symlink" : "Hardlink",
@@ -34,11 +36,13 @@ void ErrorLogDialog::appendLog(LinkType linkType, const EntryPair& entryPair, co
         entryPair.target.fileinfo.absoluteFilePath(),
         errorMsg);
     ui.log->append(log);
+    logCount_++;
 }
 
 void ErrorLogDialog::updateText()
 {
     setWindowTitle(EASYTR(CLSNAME ".WindowTitle"));
+    ui.headerText->setText(QString(EASYTR(CLSNAME ".HeaderText")).arg(MAX_LOG_COUNT));
 }
 
 void ErrorLogDialog::changeEvent(QEvent* event)

@@ -11,6 +11,7 @@
     "ConflictDecisionDialog.WindowTitle": "There are %1 conflicting entries in total",
     "ConflictDecisionTableWidget.Label.SourceHeaderText": "Entries from",
     "ConflictDecisionTableWidget.Label.TargetHeaderText": "Entries exists in",
+    "ErrorLogDialog.HeaderText": "If there are too many logs, only the first %1 logs will be displayed",
     "ErrorLogDialog.WindowTitle": "Error Log",
     "LinkType.Hardlink": "Hardlink",
     "LinkType.Symlink": "Symlink",

@@ -11,6 +11,7 @@
     "ConflictDecisionDialog.WindowTitle": "共 %1 个冲突条目",
     "ConflictDecisionTableWidget.Label.SourceHeaderText": "条目来自于",
     "ConflictDecisionTableWidget.Label.TargetHeaderText": "条目存在于",
+    "ErrorLogDialog.HeaderText": "如果日志数量过多，则只显示前%1条",
     "ErrorLogDialog.WindowTitle": "错误日志",
     "LinkType.Hardlink": "硬链接",
     "LinkType.Symlink": "符号链接",
