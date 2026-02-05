@@ -2,6 +2,7 @@
 
 #include <qapplication.h>
 #include <qclipboard.h>
+#include <qdir.h>
 #include <qmimedata.h>
 
 #include "filelink/controller.h"
@@ -84,6 +85,7 @@ void HotkeyManager::links(LinkType linkType)
         try
         {
             targetDir = getFocusedExplorerWindowDirectory();
+            targetDir = QDir(targetDir).canonicalPath();
         }
         catch (std::exception& e)
         {
