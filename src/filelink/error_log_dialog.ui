@@ -49,6 +49,9 @@
    </item>
    <item>
     <widget class="QTextBrowser" name="log">
+     <property name="contextMenuPolicy">
+      <enum>Qt::NoContextMenu</enum>
+     </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
