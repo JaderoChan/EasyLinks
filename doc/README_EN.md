@@ -36,8 +36,8 @@ Original file `file.ext` rename via pattern `@-linked-#` maybe produce new file 
 
 ## Application Screenshots
 
-![progress_dialog](../screenshots/progress_dialog_en.png)
+![progress_dialog](screenshots/progress_dialog_en.png)
 
-![conflict_entry_strategy](../screenshots/conflict_entry_strategy_en.png)
+![conflict_entry_strategy](screenshots/conflict_entry_strategy_en.png)
 
-![conflict_decision_dialog](../screenshots/conflict_decision_dialog_en.png)
+![conflict_decision_dialog](screenshots/conflict_decision_dialog_en.png)

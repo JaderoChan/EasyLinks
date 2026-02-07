@@ -36,8 +36,8 @@
 
 ## 应用截图
 
-![progress_dialog](../screenshots/progress_dialog_zh.png)
+![progress_dialog](screenshots/progress_dialog_zh.png)
 
-![conflict_entry_strategy](../screenshots/conflict_entry_strategy_zh.png)
+![conflict_entry_strategy](screenshots/conflict_entry_strategy_zh.png)
 
-![conflict_decision_dialog](../screenshots/conflict_decision_dialog_zh.png)
+![conflict_decision_dialog](screenshots/conflict_decision_dialog_zh.png)
