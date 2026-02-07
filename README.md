@@ -1,1 +1,1 @@
-E:/07_WorkSpace/Project/VSCode/CXX/EasyLink/doc/README_ZH.md
+./doc/README_ZH.md
