@@ -1,6 +1,6 @@
 # Easy Links
 
-**[中文 | [English](README_EN.md)]**
+**[中文 | [English](doc/README_EN.md)]**
 
 易于使用的文件链接工具，通过可视化界面，全局快捷键，帮助您轻松创建文件/文件夹的符号链接与硬链接。
 
@@ -36,8 +36,8 @@
 
 ## 应用截图
 
-![progress_dialog](screenshots/progress_dialog_zh.png)
+![progress_dialog](doc/screenshots/progress_dialog_zh.png)
 
-![conflict_entry_strategy](screenshots/conflict_entry_strategy_zh.png)
+![conflict_entry_strategy](doc/screenshots/conflict_entry_strategy_zh.png)
 
-![conflict_decision_dialog](screenshots/conflict_decision_dialog_zh.png)
+![conflict_decision_dialog](doc/screenshots/conflict_decision_dialog_zh.png)
