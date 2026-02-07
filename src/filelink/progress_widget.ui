@@ -104,12 +104,6 @@
          </item>
          <item>
           <widget class="QLabel" name="sourcePathText">
-           <property name="maximumSize">
-            <size>
-             <width>160</width>
-             <height>16777215</height>
-            </size>
-           </property>
            <property name="text">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;C:&quot;&gt;&lt;span style=&quot;color: rgba(0, 100, 180, 216);text-decoration:none;&quot;&gt;source&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
@@ -136,12 +130,6 @@
          </item>
          <item>
           <widget class="QLabel" name="targetPathText">
-           <property name="maximumSize">
-            <size>
-             <width>160</width>
-             <height>16777215</height>
-            </size>
-           </property>
            <property name="text">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;C:&quot;&gt;&lt;span style=&quot;color: rgba(0, 100, 180, 216);text-decoration:none;&quot;&gt;source&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
