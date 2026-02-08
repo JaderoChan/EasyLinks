@@ -19,18 +19,30 @@ AppManager::AppManager(QObject* parent)
                 settings_.autoRunOnStartUp ? "set" : "unset");
     }
 
-    aboutDlg_ = new AboutDialog();
-
     hotkeyMgr_ = new HotkeyManager(this);
     hotkeyMgr_->setSettings(settings_);
-
-    settingsWgt_ = new SettingsWidget(settings_);
 
     sti_ = new SystemTrayIcon(this);;
     sti_->setToolTip(EASYTR("SystemTrayIcon.ToolTip"));
     sti_->show();
 
-    connect(settingsWgt_, &SettingsWidget::settingsChanged, this, [=](Settings settings)
+    connect(sti_, &SystemTrayIcon::settingsActionTriggered, this, &AppManager::showSettingsWidget);
+    connect(sti_, &SystemTrayIcon::aboutActionTriggered, this, &AppManager::showAboutDialog);
+    connect(sti_, &SystemTrayIcon::exitActionTriggered, qApp, &QApplication::quit);
+}
+
+void AppManager::showAboutDialog()
+{
+    auto dlg = new AboutDialog();
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->showAndActivate();
+}
+
+void AppManager::showSettingsWidget()
+{
+    auto wgt = new SettingsWidget(settings_);
+    wgt->setAttribute(Qt::WA_DeleteOnClose);
+    connect(wgt, &SettingsWidget::settingsChanged, this, [=](Settings settings)
     {
         if (settings.language != settings_.language)
         {
@@ -52,14 +64,5 @@ AppManager::AppManager(QObject* parent)
         saveSettings(settings_);
         hotkeyMgr_->setSettings(settings_);
     });
-
-    connect(sti_, &SystemTrayIcon::settingsActionTriggered, settingsWgt_, &SettingsWidget::showAndActivate);
-    connect(sti_, &SystemTrayIcon::aboutActionTriggered, aboutDlg_, &AboutDialog::showAndActivate);
-    connect(sti_, &SystemTrayIcon::exitActionTriggered, qApp, &QApplication::quit);
-}
-
-AppManager::~AppManager()
-{
-    delete aboutDlg_;
-    delete settingsWgt_;
+    wgt->showAndActivate();
 }

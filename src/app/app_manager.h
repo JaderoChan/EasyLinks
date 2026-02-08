@@ -14,12 +14,13 @@ class AppManager : public QObject
 
 public:
     explicit AppManager(QObject* parent = nullptr);
-    ~AppManager();
+
+protected:
+    void showAboutDialog();
+    void showSettingsWidget();
 
 private:
     Settings settings_;
-    AboutDialog* aboutDlg_ = nullptr;
     HotkeyManager* hotkeyMgr_ = nullptr;
-    SettingsWidget* settingsWgt_ = nullptr;
     SystemTrayIcon* sti_ = nullptr;
 };
