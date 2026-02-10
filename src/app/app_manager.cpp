@@ -23,8 +23,6 @@ AppManager::AppManager(QObject* parent)
     hotkeyMgr_->setSettings(settings_);
 
     sti_ = new SystemTrayIcon(this);;
-    sti_->setToolTip(EASYTR("SystemTrayIcon.ToolTip"));
-    sti_->show();
 
     connect(sti_, &SystemTrayIcon::settingsActionTriggered, this, &AppManager::showSettingsWidget);
     connect(sti_, &SystemTrayIcon::aboutActionTriggered, this, &AppManager::showAboutDialog);
@@ -49,7 +47,6 @@ void AppManager::showSettingsWidget()
             if (!setLanguage(settings.language))
                 qDebug() << QString("Failed to set language to %1").arg(
                     languageStringId(settings.language));
-            sti_->setToolTip(EASYTR("SystemTrayIcon.ToolTip"));
             sti_->updateText();
         }
 

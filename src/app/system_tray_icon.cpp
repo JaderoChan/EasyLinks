@@ -5,10 +5,8 @@
 #include <easy_translate.hpp>
 
 SystemTrayIcon::SystemTrayIcon(QObject* parent)
-    : QSystemTrayIcon(parent)
+    : QSystemTrayIcon(QIcon(":/icons/app.ico"), parent)
 {
-    setIcon(QIcon(":/icons/app.ico"));
-
     menu_.addActions({&settingsAction_, &aboutAction_});
     menu_.addSeparator();
     menu_.addAction(&exitAction_);
@@ -20,11 +18,13 @@ SystemTrayIcon::SystemTrayIcon(QObject* parent)
     connect(&aboutAction_, &QAction::triggered, this, [=]() { emit aboutActionTriggered(); });
     connect(&exitAction_, &QAction::triggered, this, [=]() { emit exitActionTriggered(); });
 
+    show();
     updateText();
 }
 
 void SystemTrayIcon::updateText()
 {
+    setToolTip(EASYTR("SystemTrayIcon.ToolTip"));
     settingsAction_.setText(EASYTR("SystemTrayIcon.Action.Settings"));
     aboutAction_.setText(EASYTR("SystemTrayIcon.Action.About"));
     exitAction_.setText(EASYTR("SystemTrayIcon.Action.Exit"));
