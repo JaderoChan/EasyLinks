@@ -13,7 +13,7 @@ AboutDialog::AboutDialog(QWidget* parent) :
     ui.versionLbl->setText(APP_VERSION);
     ui.copyrightLbl->setText(APP_COPYRIGHT_TEXT);
     ui.authorValueLbl->setText(APP_AUTHOR);
-    ui.contactValueLbl->setText(APP_AUTHOR_CONTACT);
+    ui.contactValueLbl->setText(APP_AUTHOR_EMAIL);
 
     updateText();
 }

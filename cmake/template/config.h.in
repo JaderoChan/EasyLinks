@@ -2,7 +2,7 @@
 
 #define APP_TITLE           "@APP_TITLE@"
 #define APP_AUTHOR          "@APP_AUTHOR@"
-#define APP_AUTHOR_CONTACT  "@APP_AUTHOR_CONTACT@"
+#define APP_AUTHOR_EMAIL    "@APP_AUTHOR_EMAIL@"
 #define APP_ORGANIZATION    "@APP_ORGANIZATION@"
 #define APP_COPYRIGHT_TEXT  "@APP_COPYRIGHT_TEXT@"
 #define APP_UUID            "@APP_UUID@"

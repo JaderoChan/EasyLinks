@@ -19,6 +19,7 @@ qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCE})
 configure_file(
     ${CMAKE_SOURCE_DIR}/cmake/template/config.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/include/config.h
+    @ONLY
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
@@ -35,8 +36,11 @@ target_link_libraries(
 set(APP_ICON ${CMAKE_CURRENT_SOURCE_DIR}/app/icons/app.ico)
 if(WIN32)
     set(RC_FILE ${CMAKE_CURRENT_BINARY_DIR}/app.rc)
-    set(RC_CONTENT "APP_ICON ICON \"${APP_ICON}\"")
-    file(WRITE ${RC_FILE} ${RC_CONTENT})
+    configure_file(
+        ${CMAKE_SOURCE_DIR}/cmake/template/app.rc.in
+        ${RC_FILE}
+        @ONLY
+    )
     target_sources(${PROJECT_NAME} PRIVATE ${RC_FILE})
 elseif(APPLE)
     # todo

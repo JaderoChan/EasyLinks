@@ -29,10 +29,10 @@ FetchContent_MakeAvailable(global_hotkey)
 include(GNUInstallDirs)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE})
 
+set(APP_ORGANIZATION "JaderoChan")
 set(APP_TITLE ${PROJECT_NAME})
 set(APP_AUTHOR "頔珞 JaderoChan")
-set(APP_AUTHOR_CONTACT "c_dl_cn@outlook.com")
-set(APP_ORGANIZATION "JaderoChan")
+set(APP_AUTHOR_EMAIL "c_dl_cn@outlook.com")
 set(APP_COPYRIGHT_TEXT "Copyright (c) 2025 JaderoChan")
 set(APP_UUID "53c90f08-cf31-4998-83f0-2eeb408406f9")
 
