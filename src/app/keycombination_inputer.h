@@ -24,8 +24,8 @@ public:
     void setKeyCombination(const QKeyCombination& keyCombination);
 
     /// @overload
-    /// @note 如果序列为空，则将组合键也设置为空。
-    /// @note 如果序列中的组合键数量大于1，则设置为序列中的第一个组合键。
+    /// @note - 如果序列为空，则将组合键也设置为空。
+    /// @note - 如果序列中的组合键数量大于1，则设置为序列中的第一个组合键。
     void setKeyCombination(const QKeySequence& keySequence);
 
 signals:
