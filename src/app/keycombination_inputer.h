@@ -5,7 +5,7 @@
 #include <qlineedit.h>
 #include <qstring.h>
 
-/// @brief 基于#QLineEdit的组合键输入组件。
+/// @brief 基于`QLineEdit`的组合键输入组件。
 class KeyCombinationInputer : public QLineEdit
 {
     Q_OBJECT
