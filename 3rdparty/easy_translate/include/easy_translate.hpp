@@ -19,10 +19,10 @@
 
 #include <nlohmann/json.hpp>    // json
 
-/// @brief Define this macro to enable the easytr::updateTranslationsFiles() function.
-/// @note When this macro is defined, the easytr::TranslateManager::translate() function will store
+/// @def EASY_TRANSLATE_UPDATE_TRANSLATIONS_FILES
+/// @brief Define this macro to enable the `easytr::updateTranslationsFiles()` function.
+/// @note When this macro is defined, the `easytr::TranslateManager::translate()` function will store
 /// all `Translation ID`s in memory for potential updates to `Translations files`.
-// #define EASY_TRANSLATE_UPDATE_TRANSLATIONS_FILES
 
 // Translate function
 //   - Usage: EASYTR("Translation ID")
@@ -72,12 +72,6 @@ class Languages
 public:
     Languages() = default;
 
-    Languages(const std::vector<std::pair<std::string, std::string>>& langs)
-    {
-        for (const auto& var : langs)
-            languages_.insert({ var.first, var.second });
-    }
-
     Languages(const std::map<std::string, std::string>& langs) : languages_(langs) {}
 
     /// @brief Load `Languages` from a JSON string.
@@ -92,7 +86,7 @@ public:
 
         std::map<std::string, std::string> list;
         for (const auto& var : j.items())
-            list.insert({ var.key(), var.value() });
+            list.insert({var.key(), var.value()});
 
         return Languages(list);
     }
@@ -117,7 +111,7 @@ public:
         std::map<std::string, std::string> list;
         ifs.close();
         for (const auto& var : j.items())
-            list.insert({ var.key(), var.value() });
+            list.insert({var.key(), var.value()});
 
         return Languages(list);
     }
@@ -171,7 +165,7 @@ public:
     void add(const std::string& languageId, const std::string& translationsFilename)
     {
         if (!has(languageId))
-            languages_.insert({ languageId, translationsFilename });
+            languages_.insert({languageId, translationsFilename});
     }
 
     /// @brief Remove a `Language ID` and its corresponding `Translations filename`.
@@ -195,12 +189,6 @@ class Translations
 public:
     Translations() = default;
 
-    Translations(const std::vector<std::pair<std::string, std::string>>& trans)
-    {
-        for (const auto& var : trans)
-            translations_.insert({ var.first, var.second });
-    }
-
     Translations(const std::map<std::string, std::string>& trans) : translations_(trans) {}
 
     /// @brief Load `Translations` from a JSON string.
@@ -215,7 +203,7 @@ public:
 
         std::map<std::string, std::string> list;
         for (const auto& var : j.items())
-            list.insert({ var.key(), var.value() });
+            list.insert({var.key(), var.value()});
 
         return Translations(list);
     }
@@ -240,7 +228,7 @@ public:
         std::map<std::string, std::string> list;
         ifs.close();
         for (const auto& var : j.items())
-            list.insert({ var.key(), var.value() });
+            list.insert({var.key(), var.value()});
 
         return Translations(list);
     }
@@ -299,7 +287,7 @@ public:
     void add(const std::string& tranId, const std::string& translation)
     {
         if (!has(tranId))
-            translations_.insert({ tranId, translation });
+            translations_.insert({tranId, translation});
     }
 
     /// @brief Remove a `Translation ID` and its corresponding `Translation text`.
@@ -344,9 +332,6 @@ public:
 
     /// @brief Set the `Languages` and reset the current language.
     void setLanguages(const Languages& languages) { languages_ = languages; currentLanguage_.clear(); }
-
-    /// @brief Set the `Languages` from a JSON file and reset the current language.
-    void setLanguages(const std::string& filename) { setLanguages(Languages::fromFile(filename)); }
 
     /// @brief Get the `Language ID` of the current language.
     const char* currentLanguage() const { return currentLanguage_.c_str(); }
@@ -393,10 +378,10 @@ public:
 
     /// @brief Update all `Translations files` (add new `Translation ID`s with empty `Translation text`).
     /// @return The number of files updated.
-    /// @note - New `Translation ID`s are collected from all calls to translate() in the program.
-    /// @note - This function helps to easily obtain all `Translation ID`s that need translation.
-    /// @attention - Call this function after all translate() calls to ensure a complete `Translation ID` list.
-    /// @attention - This function has no effect when the macro \ref EASY_TRANSLATE_UPDATE_TRANSLATIONS_FILES is undefined.
+    /// @note New `Translation ID`s are collected from all calls to `translate()` in the program.
+    /// @note This function helps to easily obtain all `Translation ID`s that need translation.
+    /// @attention Call this function after all `translate()` calls to ensure a complete `Translation ID` list.
+    /// @attention This function has no effect when the macro `EASY_TRANSLATE_UPDATE_TRANSLATIONS_FILES` is undefined.
     size_t updateTranslationsFiles() const
     {
     #ifndef EASY_TRANSLATE_UPDATE_TRANSLATIONS_FILES
@@ -428,7 +413,7 @@ public:
                 {
                     std::map<std::string, std::string> map; // For sorting
                     for (const auto& tranId : tranIds_)
-                        j.contains(tranId) ? map.insert({ tranId, j[tranId] }) : map.insert({ tranId, "" });
+                        j.contains(tranId) ? map.insert({tranId, j[tranId]}) : map.insert({tranId, ""});
 
                     j.clear();
                     for (const auto& var : map)
@@ -482,10 +467,6 @@ inline const char* translate(const std::string& tranId)
 inline void setLanguages(const Languages& langs)
 { getTranslateManager().setLanguages(langs); }
 
-/// @brief Set the `Languages` from a JSON file.
-inline void setLanguages(const std::string& filename)
-{ getTranslateManager().setLanguages(filename); }
-
 inline const char* currentLanguage()
 { return getTranslateManager().currentLanguage(); }
 
@@ -518,10 +499,10 @@ inline const Translations& translations()
 
 /// @brief Update all `Translations files` (add new `Translation ID`s with empty `Translation text`).
 /// @return The number of files updated.
-/// @note - New `Translation ID`s are collected from all calls to translate() in the program.
-/// @note - This function helps to easily obtain all `Translation ID`s that need translation.
-/// @attention - Call this function after all translate() calls to ensure a complete `Translation ID` list.
-/// @attention - This function has no effect when the macro \ref EASY_TRANSLATE_UPDATE_TRANSLATIONS_FILES is undefined.
+/// @note New `Translation ID`s are collected from all calls to `translate()` in the program.
+/// @note This function helps to easily obtain all `Translation ID`s that need translation.
+/// @attention Call this function after all `translate()` calls to ensure a complete `Translation ID` list.
+/// @attention This function has no effect when the macro `EASY_TRANSLATE_UPDATE_TRANSLATIONS_FILES` is undefined.
 inline size_t updateTranslationsFiles()
 { return getTranslateManager().updateTranslationsFiles(); }
 

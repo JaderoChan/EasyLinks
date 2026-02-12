@@ -1,5 +1,5 @@
-#ifndef KEYBOARD_TOOLS_KEY_UTILITYS_HPP
-#define KEYBOARD_TOOLS_KEY_UTILITYS_HPP
+#ifndef KEYBOARD_TOOLS_KEY_UTILITY_HPP
+#define KEYBOARD_TOOLS_KEY_UTILITY_HPP
 
 #include <cstdint>  // uint32_t
 #include <string>
@@ -9,7 +9,7 @@
 namespace kbdt
 {
 
-enum Key : int32_t
+enum Key : uint32_t
 {
     // Number keys
     Key_0       = 0x0030,
@@ -122,8 +122,8 @@ enum Key : int32_t
 
     // Applications keys
     Key_Escape,
-    Key_Pause,              // Not is Key_Media_Play_Pause
-    Key_Play,               // Not is Key_Media_Play_Pause
+    Key_Pause,              // Not is `Key_Media_Play_Pause`
+    Key_Play,               // Not is `Key_Media_Play_Pause`
     Key_Help,
     Key_Menu,
 
@@ -197,10 +197,10 @@ KEYBOARD_TOOLS_API Key keyFromStr(const char* str) noexcept;
 
 KEYBOARD_TOOLS_API Key keyFromStr(const std::string& str) noexcept;
 
-KEYBOARD_TOOLS_API int keyToNativeKey(Key key) noexcept;
+KEYBOARD_TOOLS_API uint32_t keyToNativeKey(Key key) noexcept;
 
-KEYBOARD_TOOLS_API Key keyFromNativeKey(int nativeKey) noexcept;
+KEYBOARD_TOOLS_API Key keyFromNativeKey(uint32_t nativeKey) noexcept;
 
 } // namespace kbdt
 
-#endif // !KEYBOARD_TOOLS_KEY_UTILITYS_HPP
+#endif // !KEYBOARD_TOOLS_KEY_UTILITY_HPP

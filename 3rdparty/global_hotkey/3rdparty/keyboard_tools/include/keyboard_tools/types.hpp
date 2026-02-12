@@ -1,32 +1,29 @@
 #ifndef KEYBOARD_TOOLS_TYPES_HPP
 #define KEYBOARD_TOOLS_TYPES_HPP
 
-#include <cstddef>  // size_t
+#include <cstdint>  // uint8_t
+#include <cstddef>
 
 namespace kbdt
 {
 
-/**
- * @brief Key event types.
- */
-enum KeyEventType
+/** @brief Key event types. */
+enum KeyEventType : uint8_t
 {
     KET_RELEASED,   ///< Key released event
     KET_PRESSED     ///< Key pressed event
 };
 
-/**
- * @brief Key event structure.
- */
+/** @brief Key event structure. */
 struct KeyEvent
 {
     KeyEventType type;  ///< Type of the key event
-    int nativeKey;      ///< Native key code
+    uint32_t nativeKey; ///< Native key code
 };
 
 /**
- * @brief Key event handler callback type.
- * @note - If the event handler returns true, the event continues to propagate, otherwise, the event is blocked.
+ * @brief The function type of the key event handler.
+ * @note If the event handler returns true, the event continues to propagate, otherwise, the event is blocked.
  * (Available only on Windows and MacOS platforms)
  */
 using KeyEventHandler = bool (*)(KeyEvent);

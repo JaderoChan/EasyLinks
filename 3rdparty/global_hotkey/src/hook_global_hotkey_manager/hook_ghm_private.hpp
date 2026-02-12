@@ -10,7 +10,7 @@
 namespace gbhk
 {
 
-enum EventType
+enum EventType : uint8_t
 {
     ET_EXIT         = 1,
     ET_KEY_PRESSED  = 2,
@@ -20,7 +20,7 @@ enum EventType
 struct Event
 {
     EventType type;
-    int32_t data;
+    uint32_t data;
 };
 
 class HookGHMPrivate final : public GHMPrivate
@@ -43,7 +43,7 @@ private:
     static std::condition_variable cvHasEvent_;
     static std::queue<Event> eventQueue_;
 
-    // Block until has event pushed.
+    // Block thread until has event pushed.
     static Event takeEvent();
     static void pushEvent(const Event& event);
     static void clearEventQueue();

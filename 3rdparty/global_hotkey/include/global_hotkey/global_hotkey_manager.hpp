@@ -40,8 +40,8 @@ public:
     /// @brief Replace an registered hotkey with a new hotkey.
     /// @param oldKc Key combination of the registered hotkey to replace.
     /// @param newKc Key combination of the new hotkey to register.
-    /// @note If 'oldKc' and 'newKc' are the same, do nothing and return RC_SUCCESS.
-    /// @note If registering 'newKc' fails, 'oldKc' will still be removed.
+    /// @note If `oldKc` and `newKc` are the same, do nothing and return `RC_SUCCESS`.
+    /// @note If registering `newKc` fails, the `oldKc` will still be removed.
     int replaceHotkey(const KeyCombination& oldKc, const KeyCombination& newKc);
 
     /// @brief Set the callback function for specified hotkey.
@@ -52,7 +52,7 @@ public:
     /// @brief Enable or disable auto-repeat for a registered hotkey.
     /// @param kc Key combination of the hotkey to modify.
     /// @param autoRepeat Whether to enable auto-repeat.
-    /// @see isHotkeyAutoRepeat()
+    /// @sa isHotkeyAutoRepeat()
     int setHotkeyAutoRepeat(const KeyCombination& kc, bool autoRepeat);
 
     /// @brief Check if a hotkey is registered.
@@ -65,7 +65,7 @@ public:
     /// @param kc Key combination of the hotkey to check.
     /// @return True if auto-repeat is enabled, false otherwise.
     /// @note False will be returned when the specified hotkey does not exist.
-    /// @see setHotkeyAutoRepeat()
+    /// @sa setHotkeyAutoRepeat()
     bool isHotkeyAutoRepeat(const KeyCombination& kc) const;
 
     /// @brief Check if the Global Hotkey Manager service is running.

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(global_hotkey VERSION 2.0.2 LANGUAGES CXX)
+project(global_hotkey VERSION 2.0.4 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(GLOBAL_HOTKEY_MSG_PREFIX "[Global Hotkey]")
@@ -155,16 +155,16 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 )
 
 if(NOT GLOBAL_HOTKEY_DISABLE_HOOK)
-    message(STATUS "Start configure the 'keyboard tool' library...")
+    message(STATUS "Start configure the 'keyboard tools' library...")
     set(THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
     include(FetchContent)
     FetchContent_Declare(
         keyboard_tools
         SOURCE_DIR ${THIRDPARTY_DIR}/keyboard_tools
     )
-    set(KEYBOARD_TOOLS_WITH_KEYUTILS OFF)
+    set(KEYBOARD_TOOLS_WITH_KEYUTIL OFF)
     FetchContent_MakeAvailable(keyboard_tools)
-    message(STATUS "Success to configure the 'keyboard tool' library.")
+    message(STATUS "Success to configure the 'keyboard tools' library.")
 endif()
 
 if(APPLE)

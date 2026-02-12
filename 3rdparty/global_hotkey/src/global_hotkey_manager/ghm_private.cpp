@@ -21,6 +21,7 @@ int GHMPrivate::run()
     if (rc != RC_SUCCESS)
         return rc;
 
+    // Start the worker thread.
     workerThread_ = std::thread([this]() {
         workerThreadId_ = std::this_thread::get_id();
         work();
@@ -29,10 +30,12 @@ int GHMPrivate::run()
     });
     workerThread_.detach();
 
+    // Wait for the worker thread to set the running state and the running return code.
     std::mutex dummyMtx;
     std::unique_lock<std::mutex> lock(dummyMtx);
     cvRunningState_.wait(lock, [this]() { return runningState_ != RS_FREE; });
 
+    // Reset variables if start the worker thread fail.
     if (runningState_ == RS_TERMINATE)
     {
         workerThreadId_ = std::this_thread::get_id();
@@ -117,7 +120,8 @@ int GHMPrivate::replaceHotkey(const KeyCombination& oldKc, const KeyCombination&
         fns_.erase(oldKc);
     }
     rc = registerHotkeyImpl(newKc, value.first);
-    // No Error Rollback! That is if registering newKc fails, oldKc will still be removed.
+    // No Error Rollback! That is if registering new key combination fails,
+    // the old key combination will still be removed.
     if (rc != RC_SUCCESS)
         return rc;
 
