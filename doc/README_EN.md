@@ -10,6 +10,17 @@ Support Windows and MacOS!
 
 As a cyber hamster, I enjoy collecting all kinds of electronic files. When the number of files I collect increases, I need to categorize them. For now, I use folders as tags and place each file under the tag folder it belongs to. However, many files may have multiple tags at the same time. At this point, merely copying files would result in a significant waste of disk space. Therefore, I developed this small tool to solve my problem.
 
+## How to build?
+
+Make sure Qt is configured correctly.
+
+```shell
+git clone https://github/jaderochan/EasyLinks
+cd EasyLinks
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+```
+
 ## Application Usage
 
 In the file Manager, select multiple entries (files/folders) and copy them. In the target directory you want to link to, press **Ctrl+H** or **Ctrl+S** to perform hard link or symbolic link operations (the shortcut keys can be changed).
