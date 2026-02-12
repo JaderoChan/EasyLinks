@@ -2,7 +2,7 @@
 
 #include <easy_translate.hpp>
 
-#include "auto_run_on_startup.h"
+#include "platforms/auto_run_on_startup.h"
 #include "language.h"
 
 AppManager::AppManager(QObject* parent)

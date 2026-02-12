@@ -6,7 +6,7 @@
 #include <qmimedata.h>
 
 #include "filelink/controller.h"
-#include "shell/shell_utility.h"
+#include "platforms/filemgr_dir_getter.h"
 
 HotkeyManager::HotkeyManager(QObject* parent)
     : QObject(parent),
@@ -84,12 +84,12 @@ void HotkeyManager::links(LinkType linkType)
         QString targetDir;
         try
         {
-            targetDir = getFocusedExplorerWindowDirectory();
+            targetDir = getDirectoryOfFocusedFileManager();
             targetDir = QDir(targetDir).canonicalPath();
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
-            qDebug() << "Failed to getFocusedExplorerWindowDirectory()";
+            qDebug() << "Failed to getDirectoryOfFocusedFileManager()";
             return;
         }
         auto controller = new FileLinkController(linkType, sourcePaths, targetDir, settings_.linkConfig, this);

@@ -7,7 +7,6 @@
 
 bool isAutoRunOnStartUp()
 {
-#ifdef Q_OS_WIN
     QSettings settings(
         "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
         QSettings::NativeFormat);
@@ -16,15 +15,10 @@ bool isAutoRunOnStartUp()
     if (settings.contains(appName) && settings.value(appName) == appPath)
         return true;
     return false;
-#else
-    // todo
-    return false;
-#endif
 }
 
 bool setAutoRunOnStartUp(bool enable)
 {
-#ifdef Q_OS_WIN
     QSettings settings(
         "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
         QSettings::NativeFormat);
@@ -36,8 +30,4 @@ bool setAutoRunOnStartUp(bool enable)
         settings.remove(appName);
     settings.sync();
     return settings.status() == QSettings::NoError;
-#else
-    // todo
-    return false;
-#endif
 }

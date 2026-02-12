@@ -30,7 +30,11 @@ Language currentSystemLang()
 
 bool setLanguage(Language lang)
 {
+#ifdef Q_OS_MAC
+    QDir::setCurrent(QApplication::applicationDirPath() + "/../Resources");
+#else
     QDir::setCurrent(QApplication::applicationDirPath());
+#endif
     easytr::setLanguages(APP_LANG_LIST_FILENAME);
     if (easytr::languages().empty())
     {

@@ -323,7 +323,7 @@ LinkTasks FileLinkWorker::processTasks()
 
             tryUpdateProgress();
         }
-        catch (std::exception& e)
+        catch (const std::exception& e)
         {
             stats_.processedEntries++;
             stats_.failedEntries++;

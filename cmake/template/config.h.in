@@ -1,20 +1,17 @@
 #pragma once
 
-#define APP_TITLE           "@APP_TITLE@"
-#define APP_AUTHOR          "@APP_AUTHOR@"
-#define APP_AUTHOR_EMAIL    "@APP_AUTHOR_EMAIL@"
-#define APP_ORGANIZATION    "@APP_ORGANIZATION@"
-#define APP_COPYRIGHT_TEXT  "@APP_COPYRIGHT_TEXT@"
-#define APP_UUID            "@APP_UUID@"
-
-#define APP_VERSION         "@PROJECT_VERSION@"
-#define APP_VERSION_MAJOR   @PROJECT_VERSION_MAJOR@
-#define APP_VERSION_MINOR   @PROJECT_VERSION_MINOR@
-#define APP_VERSION_PATCH   @PROJECT_VERSION_PATCH@
+#define APP_ORGANIZATION        "@APP_ORGANIZATION@"
+#define APP_ORGANIZATION_DOMAIN "@APP_ORGANIZATION_DOMAIN@"
+#define APP_TITLE               "@APP_TITLE@"
+#define APP_VERSION             "@APP_VERSION@"
+#define APP_AUTHOR              "@APP_AUTHOR@"
+#define APP_AUTHOR_EMAIL        "@APP_AUTHOR_EMAIL@"
+#define APP_COPYRIGHT_TEXT      "@APP_COPYRIGHT_TEXT@"
+#define APP_UUID                "@APP_UUID@"
 
 #define APP_LANG_LIST_FILENAME  "languages/languages.json"
-#define APP_LOCK_FILENAME       "@PROJECT_NAME@-" APP_UUID ".lock"
+#define APP_LOCK_FILENAME       APP_TITLE "-" APP_UUID ".lock"
 
 #define DEFAULT_RENAME_PATTERN  "@ (#)"
 
-#define MAX_LOG_COUNT       1000
+#define MAX_LOG_COUNT           1000

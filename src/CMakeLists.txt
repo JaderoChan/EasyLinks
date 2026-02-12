@@ -1,20 +1,33 @@
 cmake_minimum_required(VERSION 3.17)
 
-file(GLOB_RECURSE HEADER *.h *.hpp)
-file(GLOB_RECURSE SRC app/*.cpp filelink/*.cpp)
+#############
+# 收集源文件 #
+#############
+
+file(GLOB_RECURSE HEADER ${CMAKE_CURRENT_SOURCE_DIR}/*.h ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
+file(GLOB_RECURSE SRC ${CMAKE_CURRENT_SOURCE_DIR}/app/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/filelink/*.cpp)
 if(WIN32)
-    list(APPEND SRC shell/shell_utility_win.cpp)
+    file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_win.cpp)
 elseif(APPLE)
-    # todo
+    file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_mac.cpp)
 else()
-    # todo
+    file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_linux.cpp)
 endif()
-file(GLOB_RECURSE UI *.ui)
-file(GLOB_RECURSE QRC *qrc)
+list(APPEND SRC ${PLATFORMS_SRC})
+file(GLOB_RECURSE UI ${CMAKE_CURRENT_SOURCE_DIR}/*.ui)
+file(GLOB_RECURSE QRC ${CMAKE_CURRENT_SOURCE_DIR}/*qrc)
 set(PROJECT_SOURCE ${HEADER} ${SRC} ${UI} ${QRC})
+
+###########
+# 构建程序 #
+###########
 
 qt_standard_project_setup()
 qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCE})
+
+###########
+# 配置依赖 #
+###########
 
 configure_file(
     ${CMAKE_SOURCE_DIR}/cmake/template/config.h.in
@@ -33,20 +46,9 @@ target_link_libraries(
     easy_translate::easy_translate
 )
 
-set(APP_ICON ${CMAKE_CURRENT_SOURCE_DIR}/app/icons/app.ico)
-if(WIN32)
-    set(RC_FILE ${CMAKE_CURRENT_BINARY_DIR}/app.rc)
-    configure_file(
-        ${CMAKE_SOURCE_DIR}/cmake/template/app.rc.in
-        ${RC_FILE}
-        @ONLY
-    )
-    target_sources(${PROJECT_NAME} PRIVATE ${RC_FILE})
-elseif(APPLE)
-    # todo
-else()
-    # todo
-endif()
+###############
+# 配置生成目标 #
+###############
 
 set_target_properties(
     ${PROJECT_NAME} PROPERTIES
@@ -61,16 +63,78 @@ if(MSVC)
 endif()
 
 option(UPDATE_TRANSLATIONS_FILES OFF)
-
 target_compile_definitions(
     ${PROJECT_NAME} PRIVATE
     $<$<BOOL:UPDATE_TRANSLATIONS_FILES>:EASY_TRANSLATE_UPDATE_TRANSLATIONS_FILES>
 )
 
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_CURRENT_SOURCE_DIR}/languages ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/languages
-)
+# 设置应用文件图标
+set(APP_ICON ${CMAKE_CURRENT_SOURCE_DIR}/app/icons/app.ico)
+if(WIN32)
+    set(RC_FILE ${CMAKE_CURRENT_BINARY_DIR}/app.rc)
+    configure_file(
+        ${CMAKE_SOURCE_DIR}/cmake/template/app.rc.in
+        ${RC_FILE}
+        @ONLY
+    )
+    target_sources(${PROJECT_NAME} PRIVATE ${RC_FILE})
+elseif(APPLE)
+    set_target_properties(
+        ${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE ON
+        MACOSX_BUNDLE_ICON_FILE "app.ico"
+    )
 
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/languages DESTINATION ${CMAKE_INSTALL_BINDIR})
+    set_source_files_properties(
+        ${APP_ICON} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources"
+    )
+
+    target_sources(${PROJECT_NAME} PRIVATE ${APP_ICON})
+else()
+    # todo
+endif()
+
+# 配置MacOS下Bundle属性
+if(APPLE)
+    set_target_properties(
+        ${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE_GUI_IDENTIFIER ${APP_ORGANIZATION_DOMAIN}.${APP_TITLE}
+        MACOSX_BUNDLE_BUNDLE_NAME ${APP_TITLE}
+        MACOSX_BUNDLE_EXECUTABLE_NAME ${APP_TITLE}
+        MACOSX_BUNDLE_BUNDLE_VERSION ${APP_VERSION}
+        MACOSX_BUNDLE_SHORT_VERSION_STRING ${APP_VERSION}
+        MACOSX_BUNDLE_COPYRIGHT ${APP_COPYRIGHT_TEXT}
+    )
+endif()
+
+# 配置MacOS下语言文件
+if(APPLE)
+    file(GLOB LANG_FILES ${CMAKE_CURRENT_SOURCE_DIR}/languages/*)
+    set_source_files_properties(
+        ${LANG_FILES} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources/languages"
+    )
+    target_sources(${PROJECT_NAME} PRIVATE ${LANG_FILES})
+endif()
+
+#################
+# 生成后额外命令 #
+#################
+
+# 复制语言文件至输出目录
+if(NOT APPLE)
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/languages ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/languages
+    )
+endif()
+
+########
+# 安装 #
+########
+
+if(NOT APPLE)
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/languages DESTINATION ${CMAKE_INSTALL_BINDIR})
+endif()
