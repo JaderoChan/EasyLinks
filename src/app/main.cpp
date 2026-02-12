@@ -17,7 +17,6 @@ int main(int argc, char* argv[])
     a.setOrganizationName(APP_ORGANIZATION);
     a.setOrganizationDomain(APP_ORGANIZATION_DOMAIN);
     a.setApplicationName(APP_TITLE);
-    a.setApplicationDisplayName(APP_TITLE);
     a.setApplicationVersion(APP_VERSION);
     a.setWindowIcon(QIcon(":/icons/app.ico"));
     a.setQuitOnLastWindowClosed(false);

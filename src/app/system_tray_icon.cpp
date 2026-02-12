@@ -4,6 +4,8 @@
 
 #include <easy_translate.hpp>
 
+#include "config.h"
+
 SystemTrayIcon::SystemTrayIcon(QObject* parent)
     : QSystemTrayIcon(QIcon(":/icons/app.ico"), parent)
 {
@@ -24,7 +26,7 @@ SystemTrayIcon::SystemTrayIcon(QObject* parent)
 
 void SystemTrayIcon::updateText()
 {
-    setToolTip(EASYTR("SystemTrayIcon.ToolTip"));
+    setToolTip(EASYTR("App.Title"));
     settingsAction_.setText(EASYTR("SystemTrayIcon.Action.Settings"));
     aboutAction_.setText(EASYTR("SystemTrayIcon.Action.About"));
     exitAction_.setText(EASYTR("SystemTrayIcon.Action.Exit"));

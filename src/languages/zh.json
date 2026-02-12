@@ -1,7 +1,7 @@
 {
+    "App.Title": "随心链接",
     "AboutDialog.AuthorText": "作者",
     "AboutDialog.ContactText": "联系方式",
-    "AboutDialog.Title": "随心链接",
     "AboutDialog.WindowTitle": "关于",
     "CommonButton.Cancel": "取消",
     "CommonButton.Ok": "确认",
@@ -37,7 +37,6 @@
     "ProgressDialog.Label.Sec": "秒",
     "ProgressDialog.Label.Speed": "速度：",
     "ProgressDialog.Label.SpeedUnit": "条目/秒",
-    "ProgressDialog.WindowTitle": "随心链接",
     "SettingsWidget.CheckBox.AutoRunOnStartUp": "开机自启动",
     "SettingsWidget.CheckBox.KeepDialogOnErrorOccurred": "当错误发生时保持对话框显示",
     "SettingsWidget.CheckBox.RemoveToTrash": "删除文件时移动至回收站",
@@ -57,6 +56,5 @@
     "SettingsWidget.WindowTitle": "设置",
     "SystemTrayIcon.Action.About": "关于",
     "SystemTrayIcon.Action.Exit": "退出",
-    "SystemTrayIcon.Action.Settings": "设置",
-    "SystemTrayIcon.ToolTip": "随心链接"
+    "SystemTrayIcon.Action.Settings": "设置"
 }

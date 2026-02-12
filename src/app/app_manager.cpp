@@ -27,6 +27,8 @@ AppManager::AppManager(QObject* parent)
     connect(sti_, &SystemTrayIcon::settingsActionTriggered, this, &AppManager::showSettingsWidget);
     connect(sti_, &SystemTrayIcon::aboutActionTriggered, this, &AppManager::showAboutDialog);
     connect(sti_, &SystemTrayIcon::exitActionTriggered, qApp, &QApplication::quit);
+
+    qApp->setApplicationDisplayName(EASYTR("App.Title"));
 }
 
 void AppManager::showAboutDialog()
@@ -48,6 +50,7 @@ void AppManager::showSettingsWidget()
                 qDebug() << QString("Failed to set language to %1").arg(
                     languageStringId(settings.language));
             sti_->updateText();
+            qApp->setApplicationDisplayName(EASYTR("App.Title"));
         }
 
         if (settings.autoRunOnStartUp != settings_.autoRunOnStartUp)

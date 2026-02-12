@@ -4,6 +4,7 @@
 
 #include <easy_translate.hpp>
 
+#include "config.h"
 #include "conflict_decision_dialog.h"
 
 #define CLSNAME "ProgressDialog"
@@ -128,7 +129,7 @@ void ProgressWidget::laterShowAndActivate(int ms)
 
 void ProgressWidget::updateText()
 {
-    setWindowTitle(EASYTR(CLSNAME ".WindowTitle"));
+    setWindowTitle(linkTypeString());
     updateHeaderText1();
     ui.headerText2->setText(EASYTR(CLSNAME ".Label.HeaderText2"));
     ui.speedText->setText(EASYTR(CLSNAME ".Label.Speed"));

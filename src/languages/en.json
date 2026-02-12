@@ -1,7 +1,7 @@
 {
+    "App.Title": "Easy Links",
     "AboutDialog.AuthorText": "Author",
     "AboutDialog.ContactText": "Contact me",
-    "AboutDialog.Title": "Easy Links",
     "AboutDialog.WindowTitle": "About",
     "CommonButton.Cancel": "Cancel",
     "CommonButton.Ok": "Ok",
@@ -37,7 +37,6 @@
     "ProgressDialog.Label.Sec": "second",
     "ProgressDialog.Label.Speed": "Speed: ",
     "ProgressDialog.Label.SpeedUnit": "entries/s",
-    "ProgressDialog.WindowTitle": "Easy Links",
     "SettingsWidget.CheckBox.AutoRunOnStartUp": "Auto run on start up",
     "SettingsWidget.CheckBox.KeepDialogOnErrorOccurred": "Keep dialog display when error occurred",
     "SettingsWidget.CheckBox.RemoveToTrash": "When deleting files, move them to the Recycle Bin",
@@ -57,6 +56,5 @@
     "SettingsWidget.WindowTitle": "Settings",
     "SystemTrayIcon.Action.About": "About",
     "SystemTrayIcon.Action.Exit": "Exit",
-    "SystemTrayIcon.Action.Settings": "Settings",
-    "SystemTrayIcon.ToolTip": "Easy Links"
+    "SystemTrayIcon.Action.Settings": "Settings"
 }

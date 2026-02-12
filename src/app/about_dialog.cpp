@@ -28,7 +28,7 @@ void AboutDialog::showAndActivate()
 void AboutDialog::updateText()
 {
     setWindowTitle(EASYTR("AboutDialog.WindowTitle"));
-    ui.titleLbl->setText(EASYTR("AboutDialog.Title"));
+    ui.titleLbl->setText(EASYTR("App.Title"));
     ui.authorTextLbl->setText(EASYTR("AboutDialog.AuthorText"));
     ui.contactTextLbl->setText(EASYTR("AboutDialog.ContactText"));
 }
