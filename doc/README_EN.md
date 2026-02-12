@@ -4,6 +4,8 @@
 
 An easy-to-use file linking tool, through a visual interface and global shortcut keys, helps you easily create symbolic links and hard links for files/folders.
 
+Support Windows and MacOS!
+
 ## Mind
 
 As a cyber hamster, I enjoy collecting all kinds of electronic files. When the number of files I collect increases, I need to categorize them. For now, I use folders as tags and place each file under the tag folder it belongs to. However, many files may have multiple tags at the same time. At this point, merely copying files would result in a significant waste of disk space. Therefore, I developed this small tool to solve my problem.
