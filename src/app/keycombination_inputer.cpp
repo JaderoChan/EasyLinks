@@ -136,5 +136,5 @@ void KeyCombinationInputer::mouseDoubleClickEvent(QMouseEvent* event)
 
 void KeyCombinationInputer::updateText()
 {
-    isWaitingInput_ ? setText(waitingText_) : setText(QKeySequence(kc_).toString());
+    isWaitingInput_ ? setText(waitingText_) : setText(QKeySequence(kc_).toString(QKeySequence::NativeText));
 }

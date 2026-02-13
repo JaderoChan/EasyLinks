@@ -81,7 +81,6 @@ if(WIN32)
 elseif(APPLE)
     set_target_properties(
         ${PROJECT_NAME} PROPERTIES
-        MACOSX_BUNDLE ON
         MACOSX_BUNDLE_ICON_FILE "app.ico"
     )
 
@@ -99,6 +98,7 @@ endif()
 if(APPLE)
     set_target_properties(
         ${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE ON
         MACOSX_BUNDLE_GUI_IDENTIFIER ${APP_ORGANIZATION_DOMAIN}.${APP_TITLE}
         MACOSX_BUNDLE_BUNDLE_NAME ${APP_TITLE}
         MACOSX_BUNDLE_EXECUTABLE_NAME ${APP_TITLE}
@@ -106,16 +106,20 @@ if(APPLE)
         MACOSX_BUNDLE_SHORT_VERSION_STRING ${APP_VERSION}
         MACOSX_BUNDLE_COPYRIGHT ${APP_COPYRIGHT_TEXT}
     )
+
+    set(IS_MACOSX_BUNDLE $<TARGET_PROPERTY:${PROJECT_NAME},MACOSX_BUNDLE>)
 endif()
 
 # 配置MacOS下语言文件
-if(APPLE)
+if(APPLE AND ${IS_MACOSX_BUNDLE})
     file(GLOB LANG_FILES ${CMAKE_CURRENT_SOURCE_DIR}/languages/*)
     set_source_files_properties(
         ${LANG_FILES} PROPERTIES
         MACOSX_PACKAGE_LOCATION "Resources/languages"
     )
     target_sources(${PROJECT_NAME} PRIVATE ${LANG_FILES})
+
+    target_compile_definitions(${PROJECT_NAME} PRIVATE IS_MACOSX_BUNDLE)
 endif()
 
 #################
@@ -123,18 +127,10 @@ endif()
 #################
 
 # 复制语言文件至输出目录
-if(NOT APPLE)
+if(NOT APPLE OR (APPLE AND NOT ${IS_MACOSX_BUNDLE}))
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_CURRENT_SOURCE_DIR}/languages ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/languages
     )
-endif()
-
-########
-# 安装 #
-########
-
-if(NOT APPLE)
-    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/languages DESTINATION ${CMAKE_INSTALL_BINDIR})
 endif()

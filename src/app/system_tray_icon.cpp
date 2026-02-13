@@ -34,13 +34,15 @@ void SystemTrayIcon::updateText()
 
 void SystemTrayIcon::onActivated(QSystemTrayIcon::ActivationReason reason)
 {
+#ifndef Q_OS_MAC
     switch (reason)
     {
-        case ActivationReason::Trigger: // Fallthrough
         case ActivationReason::Context:
+        case ActivationReason::Trigger:
             contextMenu()->popup(QCursor::pos());
             break;
         default:
             break;
     }
+#endif // !Q_OS_MAC
 }

@@ -73,6 +73,13 @@ void HotkeyManager::setSettings(const Settings& settings)
     settings_ = settings;
 }
 
+static QString removeLastSeparator(QString path)
+{
+    while (path.endsWith('/') || path.endsWith('\\'))
+        path.removeLast();
+    return path;
+}
+
 void HotkeyManager::links(LinkType linkType)
 {
     auto data = qApp->clipboard()->mimeData();
@@ -80,7 +87,7 @@ void HotkeyManager::links(LinkType linkType)
     {
         QStringList sourcePaths;
         for (const auto& url : data->urls())
-            sourcePaths.append(url.toLocalFile());
+            sourcePaths.append(removeLastSeparator(url.toLocalFile()));
         QString targetDir;
         try
         {

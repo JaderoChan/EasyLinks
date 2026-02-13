@@ -30,7 +30,7 @@ Language currentSystemLang()
 
 bool setLanguage(Language lang)
 {
-#ifdef Q_OS_MAC
+#if defined(Q_OS_MAC) && defined(IS_MACOSX_BUNDLE)
     QDir::setCurrent(QApplication::applicationDirPath() + "/../Resources");
 #else
     QDir::setCurrent(QApplication::applicationDirPath());
