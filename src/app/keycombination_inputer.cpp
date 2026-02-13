@@ -38,9 +38,9 @@ void KeyCombinationInputer::setKeyCombination(const QKeyCombination& keyCombinat
     if (newKc != kc_)
     {
         kc_ = newKc;
-        updateText();
         emit keyCombinationChanged(kc_);
     }
+    updateText();
 }
 
 void KeyCombinationInputer::setKeyCombination(const QKeySequence& keySequence)
@@ -49,9 +49,9 @@ void KeyCombinationInputer::setKeyCombination(const QKeySequence& keySequence)
     if (newKc != kc_)
     {
         kc_ = newKc;
-        updateText();
         emit keyCombinationChanged(kc_);
     }
+    updateText();
 }
 
 bool KeyCombinationInputer::isVaild(int key, Qt::KeyboardModifiers mod)
