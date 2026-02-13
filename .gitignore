@@ -4,3 +4,5 @@ vs/
 data/
 temp/
 backup/
+
+.DS_Store
