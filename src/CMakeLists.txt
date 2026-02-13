@@ -95,7 +95,6 @@ else()
 endif()
 
 # 配置MacOS下Bundle属性
-set(IS_MACOSX_BUNDLE FALSE)
 if(APPLE)
     set_target_properties(
         ${PROJECT_NAME} PROPERTIES
@@ -108,11 +107,15 @@ if(APPLE)
         MACOSX_BUNDLE_COPYRIGHT ${APP_COPYRIGHT_TEXT}
     )
 
-    set(IS_MACOSX_BUNDLE $<TARGET_PROPERTY:${PROJECT_NAME},MACOSX_BUNDLE>)
+    if($<TARGET_PROPERTY:${PROJECT_NAME},MACOSX_BUNDLE>)
+        set(IS_MACOSX_BUNDLE TRUE)
+    else()
+        set(IS_MACOSX_BUNDLE FALSE)
+    endif()
 endif()
 
 # 配置MacOS下语言文件
-if(APPLE AND ${IS_MACOSX_BUNDLE})
+if(APPLE AND IS_MACOSX_BUNDLE)
     file(GLOB LANG_FILES ${CMAKE_CURRENT_SOURCE_DIR}/languages/*)
     set_source_files_properties(
         ${LANG_FILES} PROPERTIES
@@ -128,7 +131,7 @@ endif()
 #################
 
 # 复制语言文件至输出目录
-if(NOT APPLE OR (APPLE AND NOT ${IS_MACOSX_BUNDLE}))
+if(NOT APPLE OR NOT IS_MACOSX_BUNDLE)
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
