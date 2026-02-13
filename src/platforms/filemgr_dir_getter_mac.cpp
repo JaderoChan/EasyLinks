@@ -34,9 +34,10 @@ QString getDirectoryOfFocusedFileManager()
         "return POSIX path of targetFolder "
         "end tell\"";
 
+    std::string out;
     try
     {
-        std::string out = runCommand(script);
+        out = runCommand(script);
     }
     catch (const std::exception& e)
     {

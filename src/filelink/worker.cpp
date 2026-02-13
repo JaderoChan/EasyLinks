@@ -68,6 +68,9 @@ void FileLinkWorker::createLink(LinkType linkType, const QFileInfo& source, cons
 #ifdef Q_OS_WIN
     auto sourcePath = LONG_PATH(source.filesystemAbsoluteFilePath());
     auto targetPath = LONG_PATH(target.filesystemAbsoluteFilePath());
+#else
+    auto sourcePath = source.filesystemAbsoluteFilePath();
+    auto targetPath = target.filesystemAbsoluteFilePath();
 #endif // Q_OS_WIN
 
     switch (linkType)
