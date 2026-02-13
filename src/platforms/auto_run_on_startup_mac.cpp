@@ -13,7 +13,7 @@
 
 #include "config.h"
 
-static QString buildPlistContent(const QString& label, const QString& exePath)
+static QString buildPlistContent(const QString& label, const QString& appPath)
 {
     static QString content = QString(
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
@@ -23,22 +23,19 @@ static QString buildPlistContent(const QString& label, const QString& exePath)
         "<dict>\n"
         "    <key>Label</key>\n"
         "    <string>%1</string>\n"
-        "    <key>ProgramArguments</key>\n"
-        "    <array>\n"
-        "        <string>open</string>\n"
-        "        <string>-a</string>\n"
-        "        <string>%2</string>\n"
-        "    </array>\n"
+        "    <key>Program</key>\n"
+        "    <string>%2</string>\n"
         "    <key>RunAtLoad</key>\n"
         "    <true/>\n"
         "</dict>\n"
         "</plist>\n"
-    ).arg(label, exePath);
+    ).arg(label, appPath);
     return content;
 }
 
+static const QString plistName = QString("%1.%2").arg(APP_ORGANIZATION_DOMAIN, APP_TITLE);
 static const QString launchAgentPlistPath =
-    QString("%1/Library/LaunchAgents/%2.%3.plist").arg(QDir::homePath(), APP_ORGANIZATION_DOMAIN, APP_TITLE);
+    QString("%1/Library/LaunchAgents/%2.plist").arg(QDir::homePath(), plistName);
 
 bool isAutoRunOnStartUp()
 {
@@ -48,8 +45,8 @@ bool isAutoRunOnStartUp()
 
 bool setAutoRunOnStartUp(bool enable)
 {
-    auto exePath = QCoreApplication::applicationFilePath();
-    if (exePath.isEmpty())
+    auto appPath = QCoreApplication::applicationFilePath();
+    if (appPath.isEmpty())
         return false;
 
     uid_t uid = getuid();
@@ -66,7 +63,7 @@ bool setAutoRunOnStartUp(bool enable)
             return false;
 
         QTextStream ts(&file);
-        ts << buildPlistContent(APP_ORGANIZATION_DOMAIN, exePath);
+        ts << buildPlistContent(plistName, appPath);
         file.close();
 
         QString cmd = QString("launchctl bootstrap %1 \"%2\"").arg(guiDomain, launchAgentPlistPath);
