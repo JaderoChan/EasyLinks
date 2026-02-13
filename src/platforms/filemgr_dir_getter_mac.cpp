@@ -21,23 +21,35 @@ static std::string runCommand(const char* cmd)
 
 QString getDirectoryOfFocusedFileManager()
 {
-    const char* script =
-        "/usr/bin/osascript 2>&1 -e "
-        "\"tell application \\\"System Events\\\" "
-        "set frontApp to name of first application process whose frontmost is true "
-        "end tell "
-        "if frontApp is not \\\"Finder\\\" then error \\\"Front window is not Finder\\\" "
-        "tell application \\\"Finder\\\" "
-        "if (count of Finder windows) = 0 then error \\\"No Finder window is open\\\" "
-        "set targetFolder to target of front Finder window "
-        "if targetFolder is missing value then error \\\"No folder is selected\\\" "
-        "return POSIX path of targetFolder "
-        "end tell\"";
+    const char* script = R"(
+        tell application "System Events"
+            set frontApp to name of first application process where it is frontmost
+        end tell
+
+        if frontApp is not "Finder" then
+            error "Front application is not Finder"
+        end if
+
+        tell application "Finder"
+            if (count of Finder windows) = 0 then
+                error "No Finder window is open"
+            end if
+
+            set targetFolder to target of front Finder window
+            if targetFolder is missing value then
+                error "Finder window has no valid target"
+            end if
+
+            return POSIX path of targetFolder
+        end tell
+    )";
+
+    std::string cmd = "osascript -e '" + script + "' 2>&1";
 
     std::string out;
     try
     {
-        out = runCommand(script);
+        out = runCommand(cmd.c_str());
     }
     catch (const std::exception& e)
     {
