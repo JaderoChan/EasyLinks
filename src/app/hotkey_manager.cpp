@@ -76,7 +76,7 @@ void HotkeyManager::setSettings(const Settings& settings)
 static QString removeLastSeparator(QString path)
 {
     while (path.endsWith('/') || path.endsWith('\\'))
-        path.removeLast();
+        path.chop(1);
     return path;
 }
 
