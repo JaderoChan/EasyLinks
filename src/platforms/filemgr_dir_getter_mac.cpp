@@ -21,49 +21,26 @@ static std::string runCommand(const char* cmd)
 
 QString getDirectoryOfFocusedFileManager()
 {
-    const char* script = R"(
-        tell application "System Events"
-            set frontApp to name of first application process where it is frontmost
-        end tell
+    const char* cmd =
+        R"(osascript -e 'tell application "Finder" to set thePath to (quoted form of POSIX path of (target of front window as alias))')";
 
-        if frontApp is not "Finder" then
-            error "Front application is not Finder"
-        end if
-
-        tell application "Finder"
-            if (count of Finder windows) = 0 then
-                error "No Finder window is open"
-            end if
-
-            set targetFolder to target of front Finder window
-            if targetFolder is missing value then
-                error "Finder window has no valid target"
-            end if
-
-            return POSIX path of targetFolder
-        end tell
-    )";
-
-    std::string cmd = "osascript -e '";
-    cmd.append(script);
-    cmd.append("' 2>&1");
-
-    std::string out;
+    std::string path;
     try
     {
-        out = runCommand(cmd.c_str());
+        path = runCommand(cmd.c_str());
     }
     catch (const std::exception& e)
     {
         throw std::runtime_error(std::string("Failed to run osascript: ") + e.what());
     }
 
-    // 去除末尾换行符
-    while (!out.empty() && (out.back() == '\n' || out.back() == '\r'))
-        out.pop_back();
-
-    if (out.empty())
+    // 如果成功返回路径，其会被单引号包裹。
+    if (path.size() < 2 || path.front() != '\'' || path.back() != '\'')
         throw std::runtime_error("Failed to get directory path from Finder");
 
-    return QString::fromStdString(out);
+    // 去除首尾引号
+    path.erase(path.begin());
+    path.pop_back();
+
+    return QString::fromStdString(path);
 }
