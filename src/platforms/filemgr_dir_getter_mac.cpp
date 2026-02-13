@@ -44,7 +44,9 @@ QString getDirectoryOfFocusedFileManager()
         end tell
     )";
 
-    std::string cmd = "osascript -e '" + script + "' 2>&1";
+    std::string cmd = "osascript -e '";
+    cmd.append(script);
+    cmd.append("' 2>&1");
 
     std::string out;
     try
