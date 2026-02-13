@@ -95,6 +95,7 @@ else()
 endif()
 
 # 配置MacOS下Bundle属性
+set(IS_MACOSX_BUNDLE FALSE)
 if(APPLE)
     set_target_properties(
         ${PROJECT_NAME} PROPERTIES
