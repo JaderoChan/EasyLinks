@@ -27,7 +27,7 @@ QString getDirectoryOfFocusedFileManager()
     std::string path;
     try
     {
-        path = runCommand(cmd.c_str());
+        path = runCommand(cmd);
     }
     catch (const std::exception& e)
     {
