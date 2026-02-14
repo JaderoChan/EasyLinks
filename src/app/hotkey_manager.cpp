@@ -95,7 +95,6 @@ void HotkeyManager::links(LinkType linkType)
             if (!QFileInfo(targetDir).isAbsolute())
                 throw std::runtime_error("Target directory is not absolute");
             targetDir = QDir(targetDir).canonicalPath();
-            qDebug() << "Target directory:" << targetDir;
         }
         catch (const std::exception& e)
         {
