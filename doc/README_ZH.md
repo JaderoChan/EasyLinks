@@ -1,4 +1,4 @@
-# Easy Links
+# 随心链接 Easy Links
 
 **[中文 | [English](README_EN.md)]**
 
