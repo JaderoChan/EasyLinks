@@ -14,7 +14,6 @@ QIcon ConflictDecisionTableModel::getFileIcon(const QFileInfo& fileinfo)
     if (fileinfo.exists())
         return fileIconProvider.icon(fileinfo);
     return QIcon();
-    QIcon icon;
 }
 
 ConflictingEntryStrategy ConflictDecisionTableModel::getEcsByCheckState(Qt::CheckState source, Qt::CheckState target)
