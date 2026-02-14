@@ -21,7 +21,7 @@ static std::string runCommand(const char* cmd)
     return out;
 }
 
-QString getDirectoryOfFocusedFileManager()
+QString getFocusedFileManagerDir()
 {
     const char* script = R"(
         tell application "System Events"

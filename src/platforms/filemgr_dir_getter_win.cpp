@@ -8,7 +8,7 @@
 #include <shobjidl.h>
 #include <shlobj.h>
 
-QString getDirectoryOfFocusedFileManager()
+QString getFocusedFileManagerDir()
 {
     constexpr const WCHAR* EXPLORER_CLASS_NAME_1    = L"ExploreWClass";
     constexpr const WCHAR* EXPLORER_CLASS_NAME_2    = L"CabinetWClass";

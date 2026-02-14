@@ -91,7 +91,7 @@ void HotkeyManager::links(LinkType linkType)
 
         try
         {
-            QString targetDir = getDirectoryOfFocusedFileManager();
+            QString targetDir = getFocusedFileManagerDir();
             targetDir = QDir(targetDir).canonicalPath();
 
             auto controller = new FileLinkController(linkType, sourcePaths, targetDir, settings_.linkConfig, this);
@@ -99,7 +99,7 @@ void HotkeyManager::links(LinkType linkType)
         }
         catch (const std::exception& e)
         {
-            qDebug() << "Failed to getDirectoryOfFocusedFileManager():" << e.what();
+            qDebug() << "Failed to getFocusedFileManagerDir():" << e.what();
             return;
         }
     }
