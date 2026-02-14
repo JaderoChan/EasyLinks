@@ -7,6 +7,7 @@ ConflictDecisionTableModel::ConflictDecisionTableModel(LinkTasks& conflicts, QOb
     : QAbstractTableModel(parent), conflicts_(conflicts)
 {}
 
+// todo: Windows下获取位于磁盘根目录的可执行文件图标失败
 QIcon ConflictDecisionTableModel::getFileIcon(const QFileInfo& fileinfo)
 {
     static QFileIconProvider fileIconProvider;
