@@ -23,7 +23,7 @@ cmake --build build
 
 ## Application Usage
 
-In the file Manager, select multiple entries (files/folders) and copy them. In the target directory you want to link to, press **Ctrl+H** or **Ctrl+S** to perform hard link or symbolic link operations (the shortcut keys can be changed).
+In the file Manager, select multiple entries (files/folders) and copy them. In the target directory you want to link to, press **Ctrl+H** or **Ctrl+S** (**Option+H** or **Alt+S** on MacOS) to perform hard link or symbolic link operations (the shortcut keys can be changed).
 
 ## Notes
 

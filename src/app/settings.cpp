@@ -15,8 +15,13 @@ Settings loadSettings()
     QSettings qsettings(QSettings::NativeFormat, QSettings::UserScope, APP_ORGANIZATION, APP_TITLE);
     settings.language = qsettings.value("Language", currentSystemLang()).value<Language>();
     settings.autoRunOnStartUp = qsettings.value("AutoRunOnStartUp", false).toBool();
+#ifdef Q_MAC_OS
+    settings.symlinkHotkey = READ_KC(qsettings, "SymlinkHotkey", "ALt+S");
+    settings.hardlinkHotkey = READ_KC(qsettings, "HardlinkHotkey", "Alt+H");
+#else
     settings.symlinkHotkey = READ_KC(qsettings, "SymlinkHotkey", "Ctrl+S");
     settings.hardlinkHotkey = READ_KC(qsettings, "HardlinkHotkey", "Ctrl+H");
+#endif // Q_MAC_OS
 
     qsettings.beginGroup("LinkConfig");
     settings.linkConfig.keepDialogOnErrorOccurred = qsettings.value("KeepDialogOnErrorOccurred", true).toBool();
