@@ -9,7 +9,7 @@
 #define APP_COPYRIGHT_TEXT      "@APP_COPYRIGHT_TEXT@"
 #define APP_UUID                "@APP_UUID@"
 
-#define APP_LANG_LIST_FILEPATH  "languages/languages.json"
+#define APP_LANG_FILEPATH       "languages/languages.json"
 #define APP_LOCK_FILEPATH       APP_TITLE "-" APP_UUID ".lock"
 
 #define DEFAULT_RENAME_PATTERN  "@ (#)"
