@@ -11,7 +11,7 @@ KeyCombinationInputer::KeyCombinationInputer(QWidget* parent)
     setAlignment(Qt::AlignmentFlag::AlignCenter);
     // 禁止编辑。
     setReadOnly(true);
-    // 设置光标图形为#PointingHandCursor。
+    // 设置光标图形为`PointingHandCursor`。
     setCursor(QCursor(Qt::CursorShape::PointingHandCursor));
     setPlaceholderText(noneKcText_);
 }
