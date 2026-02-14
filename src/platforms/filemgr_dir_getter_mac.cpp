@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <string>
 
+#include <qfileinfo.h>
+
 static std::string runCommand(const char* cmd)
 {
     char buf[256] = {0};
@@ -44,27 +46,23 @@ QString getDirectoryOfFocusedFileManager()
         end tell
     )";
 
-    try
-    {
-        std::string cmd = "osascript -e '";
-        cmd.append(script);
-        cmd.append("'");
-        std::string out = runCommand(cmd.c_str());
+    std::string cmd = "osascript -e '";
+    cmd.append(script);
+    cmd.append("'");
+    std::string out = runCommand(cmd.c_str());
 
-        QString path = QString::fromStdString(out);
-        // 去除首尾空白字符。
-        path = path.trimmed();
-        // 如果成功返回路径，其会被单引号包裹。
-        if (path.size() < 2 || !path.startsWith('\'') || !path.endsWith('\''))
-            throw std::runtime_error(std::string("Failed to get directory path from Finder: ") + out);
-        // 去除首尾引号
-        path.remove(0, 1);
-        path.chop(1);
+    QString path = QString::fromStdString(out);
+    // 去除首尾空白字符。
+    path = path.trimmed();
+    // 如果成功返回路径，其会被单引号包裹。
+    if (path.size() < 2 || !path.startsWith('\'') || !path.endsWith('\''))
+        throw std::runtime_error(std::string("Failed to get directory path from Finder"));
+    // 去除首尾引号
+    path.remove(0, 1);
+    path.chop(1);
 
-        return path;
-    }
-    catch (const std::exception& e)
-    {
-        throw std::runtime_error(std::string("Failed to run osascript: ") + e.what());
-    }
+    if (!QFileInfo(path).isAbsolute())
+        throw std::runtime_error("Failed to get directory path from Finder");
+
+    return path;
 }

@@ -88,20 +88,19 @@ void HotkeyManager::links(LinkType linkType)
         QStringList sourcePaths;
         for (const auto& url : data->urls())
             sourcePaths.append(removeLastSeparator(url.toLocalFile()));
-        QString targetDir;
+
         try
         {
-            targetDir = getDirectoryOfFocusedFileManager();
-            if (!QFileInfo(targetDir).isAbsolute())
-                throw std::runtime_error("Target directory is not absolute");
+            QString targetDir = getDirectoryOfFocusedFileManager();
             targetDir = QDir(targetDir).canonicalPath();
+
+            auto controller = new FileLinkController(linkType, sourcePaths, targetDir, settings_.linkConfig, this);
+            controller->start();
         }
         catch (const std::exception& e)
         {
             qDebug() << "Failed to getDirectoryOfFocusedFileManager():" << e.what();
             return;
         }
-        auto controller = new FileLinkController(linkType, sourcePaths, targetDir, settings_.linkConfig, this);
-        controller->start();
     }
 }
