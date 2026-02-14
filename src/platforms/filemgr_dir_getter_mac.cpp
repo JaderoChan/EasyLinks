@@ -57,7 +57,7 @@ QString getFocusedFileManagerDir()
     // 如果成功返回路径，其会被单引号包裹。
     if (path.size() < 2 || !path.startsWith('\'') || !path.endsWith('\''))
         throw std::runtime_error(std::string("Failed to get directory path from Finder"));
-    // 去除首尾引号
+    // 去除首尾引号。
     path.remove(0, 1);
     path.chop(1);
 
