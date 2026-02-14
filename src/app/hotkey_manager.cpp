@@ -73,7 +73,7 @@ void HotkeyManager::setSettings(const Settings& settings)
     settings_ = settings;
 }
 
-static QString removeLastSeparator(QString path)
+static inline QString removeLastSeparator(QString path)
 {
     while (path.endsWith('/') || path.endsWith('\\'))
         path.chop(1);
@@ -92,11 +92,14 @@ void HotkeyManager::links(LinkType linkType)
         try
         {
             targetDir = getDirectoryOfFocusedFileManager();
+            if (!QFileInfo(targetDir).isAbsolute())
+                throw std::runtime_error("Target directory is not absolute");
             targetDir = QDir(targetDir).canonicalPath();
+            qDebug() << "Target directory:" << targetDir;
         }
         catch (const std::exception& e)
         {
-            qDebug() << "Failed to getDirectoryOfFocusedFileManager()";
+            qDebug() << "Failed to getDirectoryOfFocusedFileManager()" << e.what();
             return;
         }
         auto controller = new FileLinkController(linkType, sourcePaths, targetDir, settings_.linkConfig, this);
