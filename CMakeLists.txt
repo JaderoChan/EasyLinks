@@ -30,7 +30,6 @@ FetchContent_Declare(
 set(GLOBAL_HOTKEY_DISABLE_REGISTER ON)
 FetchContent_MakeAvailable(global_hotkey)
 
-include(GNUInstallDirs)
 # 重定向目标文件输出目录
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE})
 
