@@ -55,8 +55,14 @@ set_target_properties(
     AUTOMOC ON
     AUTOUIC ON
     AUTORCC ON
-    WIN32_EXECUTABLE ON
 )
+
+if(WIN32)
+    set_target_properties(
+        ${PROJECT_NAME} PROPERTIES
+        WIN32_EXECUTABLE ON
+    )
+endif()
 
 if(MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /Zc:__cplusplus /permissive-)
