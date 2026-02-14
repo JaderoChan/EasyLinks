@@ -35,7 +35,7 @@ bool setLanguage(Language lang)
 #else
     QDir::setCurrent(QApplication::applicationDirPath());
 #endif
-    easytr::setLanguages(easytr::Languages::fromFile(APP_LANG_LIST_FILENAME));
+    easytr::setLanguages(easytr::Languages::fromFile(APP_LANG_LIST_FILEPATH));
     if (easytr::languages().empty())
     {
         qDebug() << "Invalid or empty Languages file";

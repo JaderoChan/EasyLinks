@@ -243,8 +243,8 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo& source, QFileInfo&
                     QString targetOriginName = target.absoluteFilePath();
                     if (removeToTrash_)
                     {
-                        QString filenameInTrash;
-                        if (!QFile::moveToTrash(targetOriginName, &filenameInTrash))
+                        QString filepathInTrash;
+                        if (!QFile::moveToTrash(targetOriginName, &filepathInTrash))
                             THROW_RTERR("Failed to move the target file to trash.");
                         try
                         {
@@ -252,7 +252,7 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo& source, QFileInfo&
                         }
                         catch(const std::exception& e)
                         {
-                            QFile::rename(filenameInTrash, targetOriginName);
+                            QFile::rename(filepathInTrash, targetOriginName);
                             THROW_RTERR(e.what());
                         }
                     }
