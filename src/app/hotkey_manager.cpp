@@ -98,7 +98,7 @@ void HotkeyManager::links(LinkType linkType)
         }
         catch (const std::exception& e)
         {
-            qDebug() << "Failed to getDirectoryOfFocusedFileManager()" << e.what();
+            qDebug() << "Failed to getDirectoryOfFocusedFileManager():" << e.what();
             return;
         }
         auto controller = new FileLinkController(linkType, sourcePaths, targetDir, settings_.linkConfig, this);
