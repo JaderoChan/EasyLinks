@@ -66,6 +66,7 @@ bool KeyCombinationInputer::isVaild(int key, Qt::KeyboardModifiers mod)
         (key >= Qt::Key::Key_Tab && key <= Qt::Key::Key_PageDown);
 
     bool modIsValid =
+        (mod & Qt::Modifier::META) ||
         (mod & Qt::Modifier::CTRL) ||
         (mod & Qt::Modifier::ALT) ||
         (mod & Qt::Modifier::SHIFT);
