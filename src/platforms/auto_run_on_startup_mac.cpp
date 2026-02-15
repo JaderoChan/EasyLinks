@@ -14,19 +14,23 @@
 #include "config.h"
 
 #define PLIST_CONTENT \
-"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-"<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" "
-"\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n"
-"<plist version=\"1.0\">\n"
-"<dict>\n"
-"    <key>Label</key>\n"
-"    <string>%1</string>\n"
-"    <key>Program</key>\n"
-"    <string>%2</string>\n"
-"    <key>RunAtLoad</key>\n"
-"    <true/>\n"
-"</dict>\n"
-"</plist>\n"
+"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" \
+"<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" " \
+"\"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n" \
+"<plist version=\"1.0\">\n" \
+"<dict>\n" \
+"    <key>AssociatedBundleIdentifiers</key>\n" \
+"    <array>\n" \
+"        <string>%1</string>\n" \
+"    </array>\n" \
+"    <key>Label</key>\n" \
+"    <string>%1</string>\n" \
+"    <key>Program</key>\n" \
+"    <string>%2</string>\n" \
+"    <key>RunAtLoad</key>\n" \
+"    <true/>\n" \
+"</dict>\n" \
+"</plist>\n" \
 
 static QString buildPlistContent(const QString& label, const QString& appPath)
 {
