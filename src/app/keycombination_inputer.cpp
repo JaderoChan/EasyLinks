@@ -65,11 +65,17 @@ bool KeyCombinationInputer::isVaild(int key, Qt::KeyboardModifiers mod)
         (key >= Qt::Key::Key_BraceLeft && key <= Qt::Key::Key_AsciiTilde) ||
         (key >= Qt::Key::Key_Tab && key <= Qt::Key::Key_PageDown);
 
+#ifdef Q_OS_MAC
     bool modIsValid =
-        (mod & Qt::Modifier::META) ||
+        (mod & Qt::Modifier::META) || // 在MacOS上`Qt::Modifier::META`实际上表示键盘上的Control键。
+        (mod & Qt::Modifier::ALT) ||
+        (mod & Qt::Modifier::SHIFT);
+#else
+    bool modIsValid =
         (mod & Qt::Modifier::CTRL) ||
         (mod & Qt::Modifier::ALT) ||
         (mod & Qt::Modifier::SHIFT);
+#endif // Q_OS_MAC
 
     return keyIsValid && modIsValid;
 }
@@ -119,7 +125,14 @@ void KeyCombinationInputer::keyPressEvent(QKeyEvent* event)
         else if (isVaild(key, mod))
         {
             isWaitingInput_ = false;
+        #ifdef Q_OS_MAC
+            // 在MacOS上如果用户按下了Control键（其为`Qt::Modifier::META`），则映射至`Qt::Modifier::CTRL`。
+            if (mod & Qt::Modifier::META)
+                mod = (mod & ~Qt::Modifier::META) | Qt::Modifier::CTRL;
             setKeyCombination(QKeyCombination(mod, static_cast<Qt::Key>(key)));
+        #else
+            setKeyCombination(QKeyCombination(mod, static_cast<Qt::Key>(key)));
+        #endif // Q_OS_MAC
             clearFocus();
         }
     }

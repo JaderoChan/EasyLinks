@@ -15,4 +15,5 @@
 - [ ] ~~优化MacOS下的进度条显示。~~
 - [x] 解决MacOS下获取焦点访达窗口所在目录路径失败的问题。
 - [ ] 解决MacOS下程序初次运行需要获取“辅助功能”权限时，GHM启动失败导致热键注册失败的问题。
-- [ ] 修复KeyCombination Inputer在MacOS上Ctrl与Meta键不一致的问题。
+- [x] 修复KeyCombination Inputer在MacOS上Ctrl与Meta键不一致的问题。
+- [ ] 修复MacOS上某些时候热键失效的问题。
