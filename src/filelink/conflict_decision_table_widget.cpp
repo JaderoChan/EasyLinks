@@ -10,8 +10,8 @@
 
 #define CLSNAME "ConflictDecisionTableWidget"
 #define HEADER_TEXT_FORMAT_STRING \
-    "<html><head/><body><p>%1 <a href='file:///%2'><span style='color:rgba(0, 100, 180, 216);" \
-    "text-decoration:none;'>%3</span></a></p></body></html>"
+"<html><head/><body><p>%1 <a href='file:///%2'><span style='color:rgba(0, 100, 180, 216);" \
+"text-decoration:none;'>%3</span></a></p></body></html>"
 
 ConflictDecisionTableWidget::ConflictDecisionTableWidget(LinkTasks& conflicts, QWidget* parent)
     : QWidget(parent), conflicts_(conflicts),

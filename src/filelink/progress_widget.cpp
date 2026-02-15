@@ -9,8 +9,8 @@
 
 #define CLSNAME "ProgressDialog"
 #define PATH_TEXT_FORMAT_STRING \
-    "<html><head/><body><p><a href='file:///%1'><span style='color:rgba(0, 100, 180, 216); text-decoration:none;'>" \
-    "%2</span></a></p></body></html>"
+"<html><head/><body><p><a href='file:///%1'><span style='color:rgba(0, 100, 180, 216); text-decoration:none;'>" \
+"%2</span></a></p></body></html>"
 
 ProgressWidget::ProgressWidget(
     LinkType linkType,
