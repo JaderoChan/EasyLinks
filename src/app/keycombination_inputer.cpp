@@ -128,7 +128,7 @@ void KeyCombinationInputer::keyPressEvent(QKeyEvent* event)
         #ifdef Q_OS_MAC
             // 在MacOS上如果用户按下了Control键（其为`Qt::Modifier::META`），则映射至`Qt::Modifier::CTRL`。
             if (mod & Qt::Modifier::META)
-                mod = (mod & ~Qt::Modifier::META) | Qt::Modifier::CTRL;
+                mod = Qt::KeyboardModifiers((mod & ~Qt::Modifier::META) | Qt::Modifier::CTRL);
             setKeyCombination(QKeyCombination(mod, static_cast<Qt::Key>(key)));
         #else
             setKeyCombination(QKeyCombination(mod, static_cast<Qt::Key>(key)));
