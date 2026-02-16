@@ -1,6 +1,5 @@
 #include "language.h"
 
-#include <qapplication.h>
 #include <qdir.h>
 #include <qevent.h>
 
@@ -30,11 +29,7 @@ Language currentSystemLang()
 
 bool setLanguage(Language lang)
 {
-#if defined(Q_OS_MAC) && defined(IS_MACOSX_BUNDLE)
-    QDir::setCurrent(QApplication::applicationDirPath() + "/../Resources");
-#else
-    QDir::setCurrent(QApplication::applicationDirPath());
-#endif
+    QDir::setCurrent(APP_RESOURCE_DIRPATH);
     easytr::setLanguages(easytr::Languages::fromFile(APP_LANG_FILEPATH));
     if (easytr::languages().empty())
     {
