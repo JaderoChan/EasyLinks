@@ -6,6 +6,7 @@
 
 #include "config.h"
 #include "app_manager.h"
+#include "platforms/permission_manager.h"
 
 int main(int argc, char* argv[])
 {
@@ -20,6 +21,13 @@ int main(int argc, char* argv[])
     a.setApplicationVersion(APP_VERSION);
     a.setWindowIcon(QIcon(":/icons/app.ico"));
     a.setQuitOnLastWindowClosed(false);
+
+    if (!PermissionManager::hasPermission())
+    {
+        qDebug() << "Permission denied.";
+        // TODO: 权限获取弹窗
+        return 1;
+    }
 
     AppManager mgr;
 

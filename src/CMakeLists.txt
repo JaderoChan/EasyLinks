@@ -46,6 +46,11 @@ target_link_libraries(
     easy_translate::easy_translate
 )
 
+if(APPLE)
+    find_package(APPLICATION_SERVICES ApplicationServices)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${APPLICATION_SERVICES})
+endif()
+
 ###############
 # 配置生成目标 #
 ###############
@@ -97,7 +102,7 @@ elseif(APPLE)
 
     target_sources(${PROJECT_NAME} PRIVATE ${APP_ICON})
 else()
-    # todo
+    # TODO
 endif()
 
 set(SCRIPTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/platforms/scripts)
