@@ -100,6 +100,15 @@ else()
     # todo
 endif()
 
+set(SCRIPTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/platforms/scripts)
+# 配置MacOS下脚本文件
+if(APPLE)
+    set_source_files_properties(
+        ${SCRIPTS_DIR}/mac/get_focused_finder_dir.sh PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources/scripts"
+    )
+endif()
+
 # 配置MacOS下Bundle属性
 if(APPLE)
     set(IS_MACOSX_BUNDLE TRUE)
