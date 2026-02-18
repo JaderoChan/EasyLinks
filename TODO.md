@@ -17,3 +17,4 @@
 - [ ] 解决MacOS下程序初次运行需要获取“辅助功能”权限时，GHM启动失败导致热键注册失败的问题。
 - [x] 修复KeyCombination Inputer在MacOS上Ctrl与Meta键不一致的问题。
 - [ ] 修复MacOS上不在控制台启动应用时热键失效的问题。
+- [ ] 加入文件日志记录。
