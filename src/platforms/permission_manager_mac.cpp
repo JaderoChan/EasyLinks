@@ -1,10 +1,12 @@
 #include "permission_manager.h"
 
+#include <unistd.h> // getuid
+
 #include <ApplicationServices/ApplicationServices.h>
 
 bool PermissionManager::hasPermission()
 {
-    return AXIsProcessTrusted();
+    return getuid() == 0 || AXIsProcessTrustedWithOptions(NULL);
 }
 
 void PermissionManager::requestPermission()
