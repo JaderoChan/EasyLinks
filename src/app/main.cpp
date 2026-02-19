@@ -8,7 +8,7 @@
 #include "config.h"
 #include "app_manager.h"
 #include "file_log_manager.h"
-#include "platform/permission_manager.h"
+#include "platforms/permission_manager.h"
 
 int main(int argc, char* argv[])
 {

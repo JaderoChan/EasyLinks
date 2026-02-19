@@ -46,4 +46,21 @@ set(APP_UUID "53c90f08-cf31-4998-83f0-2eeb408406f9")
 set(DEFAULT_RENAME_PATTERN "@ (#)")
 set(MAX_LOG_COUNT 1000)
 
+###############
+# 定义常用路径 #
+###############
+
+# CMake文件夹
+set(CMAKE_DIR ${CMAKE_SOURCE_DIR}/cmake)
+# CMake模板文件夹
+set(CMAKE_TEMPLATE_DIR ${CMAKE_DIR}/template)
+# 语言文件夹路径
+set(LANGUAGES_DIR ${CMAKE_SOURCE_DIR}/languages)
+# 资源文件夹路径
+set(RESOURCES_DIR ${CMAKE_SOURCE_DIR}/resources)
+# 图标文件夹路径
+set(ICONS_DIR ${RESOURCES_DIR}/icons)
+# 脚本文件夹路径
+set(SCRIPTS_DIR ${RESOURCES_DIR}/scripts)
+
 add_subdirectory(src)

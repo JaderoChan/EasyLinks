@@ -2,13 +2,14 @@
 <RCC version="1.0">
   <qresource prefix="/">
     <file>icons/cancel.ico</file>
-    <file>icons/keep.ico</file>
-    <file>icons/details.png</file>
-    <file>icons/pause.ico</file>
+    <file>icons/app.ico</file>
     <file>icons/decide.ico</file>
-    <file>icons/replace.ico</file>
+    <file>icons/keep.ico</file>
+    <file>icons/pause.ico</file>
     <file>icons/play.ico</file>
+    <file>icons/replace.ico</file>
     <file>icons/skip.ico</file>
+    <file>icons/details.png</file>
     <file>stylesheets/table_view.qss</file>
   </qresource>
 </RCC>

@@ -4,24 +4,30 @@ cmake_minimum_required(VERSION 3.17)
 # 收集源文件 #
 #############
 
+# 配置config头文件
 configure_file(
-    ${CMAKE_SOURCE_DIR}/cmake/template/config.h.in
+    ${CMAKE_TEMPLATE_DIR}/config.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/include/config.h
     @ONLY
 )
 
+# 头文件（可用于在VS IDE的项目文件树中显示头文件）
 file(GLOB_RECURSE HEADER ${CMAKE_CURRENT_SOURCE_DIR}/*.h ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
+# 源文件
 file(GLOB_RECURSE SRC ${CMAKE_CURRENT_SOURCE_DIR}/app/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/filelink/*.cpp)
+# 平台相关的代码
 if(WIN32)
-    file(GLOB PLATFORM_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platform/*_win.cpp)
+    file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_win.cpp)
 elseif(APPLE)
-    file(GLOB PLATFORM_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platform/*_mac.cpp)
+    file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_mac.cpp)
 else()
-    file(GLOB PLATFORM_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platform/*_linux.cpp)
+    file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_linux.cpp)
 endif()
-list(APPEND SRC ${PLATFORM_SRC})
+list(APPEND SRC ${PLATFORMS_SRC})
+# UI文件
 file(GLOB_RECURSE UI ${CMAKE_CURRENT_SOURCE_DIR}/*.ui)
-file(GLOB_RECURSE QRC ${CMAKE_CURRENT_SOURCE_DIR}/*qrc)
+# QRC文件
+set(QRC ${RESOURCES_DIR}/app.qrc)
 set(PROJECT_SOURCE ${HEADER} ${SRC} ${UI} ${QRC})
 
 ###########
@@ -35,10 +41,13 @@ qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCE})
 # 配置依赖 #
 ###########
 
+# 配置头文件路径
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}/include
 )
+
+# 链接依赖库
 target_link_libraries(
     ${PROJECT_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
@@ -62,6 +71,7 @@ set_target_properties(
     AUTORCC ON
 )
 
+# 指定为GUI应用程序
 if(WIN32)
     set_target_properties(
         ${PROJECT_NAME} PROPERTIES
@@ -73,6 +83,7 @@ if(MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /Zc:__cplusplus /permissive-)
 endif()
 
+# 程序是否自动更新语言文件（开发时使用）
 option(UPDATE_TRANSLATIONS_FILES OFF)
 target_compile_definitions(
     ${PROJECT_NAME} PRIVATE
@@ -80,11 +91,11 @@ target_compile_definitions(
 )
 
 # 设置应用文件图标
-set(APP_ICON ${CMAKE_CURRENT_SOURCE_DIR}/app/icons/app.ico)
+set(APP_ICON ${ICONS_DIR}/app.ico)
 if(WIN32)
     set(RC_FILE ${CMAKE_CURRENT_BINARY_DIR}/app.rc)
     configure_file(
-        ${CMAKE_SOURCE_DIR}/cmake/template/app.rc.in
+        ${CMAKE_TEMPLATE_DIR}/app.rc.in
         ${RC_FILE}
         @ONLY
     )
@@ -105,11 +116,12 @@ else()
     # TODO
 endif()
 
-set(SCRIPTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/platform/scripts)
 # 配置MacOS下脚本文件
 if(APPLE)
     set_source_files_properties(
-        ${SCRIPTS_DIR}/mac/get_focused_finder_dir.sh PROPERTIES
+        ${SCRIPTS_DIR}/mac/get_focused_finder_dir.sh
+        ${SCRIPTS_DIR}/mac/formatted_auto_run_on_startup.plist
+        PROPERTIES
         MACOSX_PACKAGE_LOCATION "Resources/scripts"
     )
 endif()
@@ -131,7 +143,7 @@ endif()
 
 # 配置MacOS下语言文件
 if(APPLE AND IS_MACOSX_BUNDLE)
-    file(GLOB LANG_FILES ${CMAKE_CURRENT_SOURCE_DIR}/languages/*)
+    file(GLOB LANG_FILES ${LANGUAGES_DIR}/*)
     set_source_files_properties(
         ${LANG_FILES} PROPERTIES
         MACOSX_PACKAGE_LOCATION "Resources/languages"
@@ -150,6 +162,6 @@ if(NOT APPLE OR NOT IS_MACOSX_BUNDLE)
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_CURRENT_SOURCE_DIR}/languages ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/languages
+        ${LANGUAGES_DIR} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/languages
     )
 endif()

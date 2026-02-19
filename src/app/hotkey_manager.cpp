@@ -6,7 +6,7 @@
 #include <qmimedata.h>
 
 #include "filelink/controller.h"
-#include "platform/filemgr_dir_getter.h"
+#include "platforms/filemgr_dir_getter.h"
 
 HotkeyManager::HotkeyManager(QObject* parent)
     : QObject(parent),
