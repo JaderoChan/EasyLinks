@@ -1,5 +1,8 @@
 #include "app_manager.h"
 
+#include <qdesktopservices.h>
+#include <qmessagebox.h>
+
 #include <easy_translate.hpp>
 
 #include "platform/auto_run_on_startup.h"
@@ -13,6 +16,7 @@ AppManager::AppManager(QObject* parent)
 
     connect(sti_, &SystemTrayIcon::settingsActionTriggered, this, &AppManager::showSettingsWidget);
     connect(sti_, &SystemTrayIcon::aboutActionTriggered, this, &AppManager::showAboutDialog);
+    connect(sti_, &SystemTrayIcon::openLogDirActionTriggered, this, &AppManager::openLogDirectory);
     connect(sti_, &SystemTrayIcon::exitActionTriggered, qApp, &QApplication::quit);
 
     setSettings(loadSettings());
@@ -62,4 +66,17 @@ void AppManager::showSettingsWidget()
     wgt->setAttribute(Qt::WA_DeleteOnClose);
     connect(wgt, &SettingsWidget::settingsChanged, this, &AppManager::setSettings);
     wgt->showAndActivate();
+}
+
+void AppManager::openLogDirectory()
+{
+    if (!QDesktopServices::openUrl(QUrl::fromLocalFile(APP_LOG_DIRPATH)))
+    {
+        QMessageBox::warning(
+            nullptr,
+            EASYTR("Common.Error"),
+            EASYTR("AppManager.MessageBox.Text.FailOpenLogDir"),
+            EASYTR("Common.Ok")
+        );
+    }
 }

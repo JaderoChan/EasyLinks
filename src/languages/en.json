@@ -3,8 +3,10 @@
     "AboutDialog.AuthorText": "Author",
     "AboutDialog.ContactText": "Contact me",
     "AboutDialog.WindowTitle": "About",
-    "CommonButton.Cancel": "Cancel",
-    "CommonButton.Ok": "Ok",
+    "AppManager.MessageBox.Text.FailOpenLogDir": "Failed to open log directory",
+    "Common.Cancel": "Cancel",
+    "Common.Error": "Error",
+    "Common.Ok": "Ok",
     "ConflictDecisionDialog.CheckBox.SkipSameDateSize": "Skip %1 entries with the same date and size",
     "ConflictDecisionDialog.Label.HeaderText1": "Which entries do you want to keep?",
     "ConflictDecisionDialog.Label.HeaderText2": "If you select two entries, a numerical sequence will be added to the name of the target file.",
@@ -56,5 +58,6 @@
     "SettingsWidget.WindowTitle": "Settings",
     "SystemTrayIcon.Action.About": "About",
     "SystemTrayIcon.Action.Exit": "Exit",
+    "SystemTrayIcon.Action.OpenLogDir": "Open Log Directory",
     "SystemTrayIcon.Action.Settings": "Settings"
 }

@@ -3,8 +3,10 @@
     "AboutDialog.AuthorText": "作者",
     "AboutDialog.ContactText": "联系方式",
     "AboutDialog.WindowTitle": "关于",
-    "CommonButton.Cancel": "取消",
-    "CommonButton.Ok": "确认",
+    "AppManager.MessageBox.Text.FailOpenLogDir": "无法打开日志目录",
+    "Common.Cancel": "取消",
+    "Common.Error": "错误",
+    "Common.Ok": "确认",
     "ConflictDecisionDialog.CheckBox.SkipSameDateSize": "跳过 %1 个具有相同日期与大小的条目",
     "ConflictDecisionDialog.Label.HeaderText1": "你想保留哪些条目？",
     "ConflictDecisionDialog.Label.HeaderText2": "如果你选择了两个条目，目标文件将在名称后加上数字序号。",
@@ -56,5 +58,6 @@
     "SettingsWidget.WindowTitle": "设置",
     "SystemTrayIcon.Action.About": "关于",
     "SystemTrayIcon.Action.Exit": "退出",
+    "SystemTrayIcon.Action.OpenLogDir": "打开日志目录",
     "SystemTrayIcon.Action.Settings": "设置"
 }

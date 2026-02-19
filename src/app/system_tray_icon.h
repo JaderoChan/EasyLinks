@@ -16,6 +16,7 @@ public:
 signals:
     void settingsActionTriggered();
     void aboutActionTriggered();
+    void openLogDirActionTriggered();
     void exitActionTriggered();
 
 protected:
@@ -25,5 +26,6 @@ private:
     QMenu menu_;
     QAction settingsAction_;
     QAction aboutAction_;
+    QAction openLogDirAction_;
     QAction exitAction_;
 };

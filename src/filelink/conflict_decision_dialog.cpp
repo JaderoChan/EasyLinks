@@ -27,8 +27,8 @@ void ConflictDecisionDialog::updateText()
     ui.headerText1->setText(EASYTR(CLSNAME ".Label.HeaderText1"));
     ui.headerText2->setText(EASYTR(CLSNAME ".Label.HeaderText2"));
     ui.skipSameDateSizeCb->setText(QString(EASYTR(CLSNAME ".CheckBox.SkipSameDateSize")).arg(sameDateSizeEntries_));
-    ui.okBtn->setText(EASYTR("CommonButton.Ok"));
-    ui.cancelBtn->setText(EASYTR("CommonButton.Cancel"));
+    ui.okBtn->setText(EASYTR("Common.Ok"));
+    ui.cancelBtn->setText(EASYTR("Common.Cancel"));
 }
 
 void ConflictDecisionDialog::changeEvent(QEvent* event)

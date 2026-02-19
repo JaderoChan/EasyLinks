@@ -20,6 +20,7 @@ public:
 protected:
     void showAboutDialog();
     void showSettingsWidget();
+    void openLogDirectory();
 
 private:
     Settings settings_;

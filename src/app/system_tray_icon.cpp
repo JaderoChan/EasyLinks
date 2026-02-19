@@ -9,7 +9,7 @@
 SystemTrayIcon::SystemTrayIcon(QObject* parent)
     : QSystemTrayIcon(QIcon(":/icons/app.ico"), parent)
 {
-    menu_.addActions({&settingsAction_, &aboutAction_});
+    menu_.addActions({&settingsAction_, &aboutAction_, &openLogDirAction_});
     menu_.addSeparator();
     menu_.addAction(&exitAction_);
 
@@ -18,6 +18,7 @@ SystemTrayIcon::SystemTrayIcon(QObject* parent)
     connect(this, &QSystemTrayIcon::activated, this, &SystemTrayIcon::onActivated);
     connect(&settingsAction_, &QAction::triggered, this, [=]() { emit settingsActionTriggered(); });
     connect(&aboutAction_, &QAction::triggered, this, [=]() { emit aboutActionTriggered(); });
+    connect(&openLogDirAction_, &QAction::triggered, this, [=]() { emit openLogDirActionTriggered(); });
     connect(&exitAction_, &QAction::triggered, this, [=]() { emit exitActionTriggered(); });
 
     show();
@@ -29,6 +30,7 @@ void SystemTrayIcon::updateText()
     setToolTip(EASYTR("App.Title"));
     settingsAction_.setText(EASYTR("SystemTrayIcon.Action.Settings"));
     aboutAction_.setText(EASYTR("SystemTrayIcon.Action.About"));
+    openLogDirAction_.setText(EASYTR("SystemTrayIcon.Action.OpenLogDir"));
     exitAction_.setText(EASYTR("SystemTrayIcon.Action.Exit"));
 }
 
