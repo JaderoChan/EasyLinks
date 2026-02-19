@@ -72,11 +72,10 @@ void AppManager::openLogDirectory()
 {
     if (!QDesktopServices::openUrl(QUrl::fromLocalFile(APP_LOG_DIRPATH)))
     {
-        QMessageBox::warning(
-            nullptr,
+        QMessageBox msgBox(
+            QMessageBox::Critical,
             EASYTR("Common.Error"),
-            EASYTR("AppManager.MessageBox.Text.FailOpenLogDir"),
-            EASYTR("Common.Ok")
+            EASYTR("AppManager.MessageBox.Text.FailOpenLogDir")
         );
     }
 }
