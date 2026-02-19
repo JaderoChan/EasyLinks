@@ -487,7 +487,6 @@
  </widget>
  <resources>
   <include location="../../resources/app.qrc"/>
-  <include location="app.qrc"/>
  </resources>
  <connections/>
 </ui>
