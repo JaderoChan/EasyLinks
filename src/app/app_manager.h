@@ -15,6 +15,8 @@ class AppManager : public QObject
 public:
     explicit AppManager(QObject* parent = nullptr);
 
+    void setSettings(const Settings& settings);
+
 protected:
     void showAboutDialog();
     void showSettingsWidget();
