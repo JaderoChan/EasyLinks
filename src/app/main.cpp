@@ -13,10 +13,12 @@
 
 int main(int argc, char* argv[])
 {
+    // 确保单例运行
     QLockFile lock(QDir::temp().absoluteFilePath(APP_LOCK_FILEPATH));
     if (lock.isLocked() || !lock.tryLock(200))
         return 1;
 
+    // 设置程序全局属性
     QApplication a(argc, argv);
     a.setOrganizationDomain(APP_ORGANIZATION_DOMAIN);
     a.setOrganizationName(APP_ORGANIZATION);
@@ -25,6 +27,7 @@ int main(int argc, char* argv[])
     a.setWindowIcon(QIcon(":/icons/app.ico"));
     a.setQuitOnLastWindowClosed(false);
 
+    // 配置日志输出文件
     QDir logDir = QDir(APP_LOG_DIRPATH);
     if (!logDir.exists())
     {
@@ -36,6 +39,10 @@ int main(int argc, char* argv[])
     if (!logMgr.setup(APP_LOG_FILEPATH))
         qCritical() << "Failed to set up log file:" << APP_LOG_FILEPATH;
 
+    // 应用主体
+    AppManager mgr;
+
+    // 检查应用权限
     if (!PermissionManager::hasPermission())
     {
         qInfo() << "No permission, requesting...";
@@ -54,10 +61,9 @@ int main(int argc, char* argv[])
         }
     }
 
-    AppManager mgr;
-
     int ret = a.exec();
 
+    // 更新翻译文件（实际上由编译选项`UPDATE_TRANSLATIONS_FILES`决定是否真正更新）
     easytr::updateTranslationsFiles();
 
     return ret;
