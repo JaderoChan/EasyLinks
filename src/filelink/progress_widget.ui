@@ -444,7 +444,7 @@ QPushButton:pressed
 }</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="filelink.qrc">
+                   <iconset resource="../../resources/app.qrc">
                     <normaloff>:/icons/pause.ico</normaloff>:/icons/pause.ico</iconset>
                   </property>
                   <property name="flat">
@@ -498,7 +498,7 @@ QPushButton:pressed
 }</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="filelink.qrc">
+                   <iconset resource="../../resources/app.qrc">
                     <normaloff>:/icons/cancel.ico</normaloff>:/icons/cancel.ico</iconset>
                   </property>
                   <property name="flat">
@@ -1193,7 +1193,7 @@ QPushButton:pressed
                 <string>Replace All</string>
                </property>
                <property name="icon">
-                <iconset resource="filelink.qrc">
+                <iconset resource="../../resources/app.qrc">
                  <normaloff>:/icons/replace.ico</normaloff>:/icons/replace.ico</iconset>
                </property>
                <property name="shortcut">
@@ -1278,7 +1278,7 @@ QPushButton:pressed
                 <string>Skip All</string>
                </property>
                <property name="icon">
-                <iconset resource="filelink.qrc">
+                <iconset resource="../../resources/app.qrc">
                  <normaloff>:/icons/skip.ico</normaloff>:/icons/skip.ico</iconset>
                </property>
                <property name="shortcut">
@@ -1363,7 +1363,7 @@ QPushButton:pressed
                 <string>Keep All</string>
                </property>
                <property name="icon">
-                <iconset resource="filelink.qrc">
+                <iconset resource="../../resources/app.qrc">
                  <normaloff>:/icons/keep.ico</normaloff>:/icons/keep.ico</iconset>
                </property>
                <property name="shortcut">
@@ -1445,7 +1445,7 @@ QPushButton:pressed
                 <string>Decide All</string>
                </property>
                <property name="icon">
-                <iconset resource="filelink.qrc">
+                <iconset resource="../../resources/app.qrc">
                  <normaloff>:/icons/decide.ico</normaloff>:/icons/decide.ico</iconset>
                </property>
                <property name="shortcut">
@@ -1732,7 +1732,7 @@ QPushButton:pressed
                   <string>Details</string>
                  </property>
                  <property name="icon">
-                  <iconset resource="filelink.qrc">
+                  <iconset resource="../../resources/app.qrc">
                    <normaloff>:/icons/details.png</normaloff>:/icons/details.png</iconset>
                  </property>
                  <property name="flat">
@@ -1768,7 +1768,7 @@ QPushButton:pressed
   </layout>
  </widget>
  <resources>
-  <include location="filelink.qrc"/>
+  <include location="../../resources/app.qrc"/>
  </resources>
  <connections/>
 </ui>
