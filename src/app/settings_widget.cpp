@@ -130,7 +130,7 @@ void SettingsWidget::onRenamePatternChanged(QString renamePattern)
     {
         QMessageBox msgBox(
             QMessageBox::Warning,
-            EASYTR("SettingsWidget.MessageBox.IllegalRenamePattern.Title"),
+            EASYTR("Common.Warning"),
             EASYTR("SettingsWidget.MessageBox.IllegalRenamePattern.Text"),
             QMessageBox::Ok,
             this
@@ -198,7 +198,7 @@ void SettingsWidget::alertSameHotkey()
 {
     QMessageBox msgBox(
         QMessageBox::Warning,
-        EASYTR("SettingsWidget.MessageBox.AlertSameHotkey.Title"),
+        EASYTR("Common.Warning"),
         EASYTR("SettingsWidget.MessageBox.AlertSameHotkey.Text"),
         QMessageBox::Ok,
         this
