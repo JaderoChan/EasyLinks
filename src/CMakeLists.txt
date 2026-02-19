@@ -56,7 +56,8 @@ target_link_libraries(
 )
 
 if(APPLE)
-    target_link_libraries(${PROJECT_NAME} PRIVATE "-framework ApplicationServices")
+    find_library(APPLICATION_SERVICES_LIBRARY ApplicationServices)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${APPLICATION_SERVICES_LIBRARY})
 endif()
 
 ###############
