@@ -4,7 +4,7 @@
 
 #include <easy_translate.hpp>
 
-#include "app_defines.h"
+#include "config.h"
 
 SystemTrayIcon::SystemTrayIcon(QObject* parent)
     : QSystemTrayIcon(QIcon(":/icons/app.ico"), parent)

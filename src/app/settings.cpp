@@ -2,7 +2,7 @@
 
 #include <qsettings.h>
 
-#include "app_defines.h"
+#include "config.h"
 #include "filelink/rename_pattern.h"
 
 #define READ_KC(settings, key, defaultValue) \

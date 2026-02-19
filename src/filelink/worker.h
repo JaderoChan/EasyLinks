@@ -9,7 +9,7 @@
 #include <qelapsedtimer.h>
 
 #include "types.h"
-#include "config.h" // DEFAULT_RENAME_PATTERN
+#include "config.h"
 
 class FileLinkWorker : public QObject
 {

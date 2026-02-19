@@ -5,7 +5,7 @@
 
 #include <easy_translate.hpp>
 
-#include "app_defines.h"
+#include "config.h"
 
 QString languageStringId(Language lang)
 {
