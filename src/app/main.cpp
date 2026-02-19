@@ -8,6 +8,7 @@
 #include "config.h"
 #include "app_manager.h"
 #include "file_log_manager.h"
+#include "require_permission_dialog.h"
 #include "platforms/permission_manager.h"
 
 int main(int argc, char* argv[])
@@ -37,9 +38,20 @@ int main(int argc, char* argv[])
 
     if (!PermissionManager::hasPermission())
     {
-        qWarning() << "Permission denied.";
-        // TODO: 权限获取弹窗
-        return 1;
+        qInfo() << "No permission, requesting...";
+
+        RequirePermissionDialog dlg;
+        int ret = dlg.exec();
+        switch (ret)
+        {
+            case RequirePermissionDialog::GotPermission:
+            case RequirePermissionDialog::ForceContinue:
+                break;
+            case RequirePermissionDialog::Exit:
+                return 0;
+            default:
+                break;
+        }
     }
 
     AppManager mgr;
