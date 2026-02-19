@@ -6,6 +6,31 @@
 
 #include "filelink/rename_pattern.h"
 
+#ifdef Q_OS_MAC
+
+namespace fix
+{
+
+static QKeyCombination swapCtrlMeta(const QKeyCombination& kc) noexcept
+{
+    Qt::KeyboardModifiers mod = kc.keyboardModifiers();
+
+    // 在MacOS上如果用户按下了Control/Meta键（其为`Qt::Modifier::META`/`Qt::Modifier::CTRL`），
+    // 则映射至`Qt::Modifier::CTRL`/`Qt::Modifier::META`。
+    if ((mod & Qt::Modifier::META) && !(mod & Qt::Modifier::CTRL))
+        mod = Qt::KeyboardModifiers((mod & ~Qt::Modifier::META) | Qt::Modifier::CTRL);
+    else if ((mod & Qt::Modifier::CTRL) && !(mod & Qt::Modifier::META))
+        mod = Qt::KeyboardModifiers((mod & ~Qt::Modifier::CTRL) | Qt::Modifier::META);
+    else
+        return kc;
+
+    return QKeyCombination(mod, kc.key());
+};
+
+} // namespace fix
+
+#endif // Q_OS_MAC
+
 SettingsWidget::SettingsWidget(const Settings& settings, QWidget* parent)
     : QWidget(parent), settings_(settings)
 {
@@ -122,16 +147,26 @@ void SettingsWidget::onRenamePatternChanged(QString renamePattern)
 
 void SettingsWidget::onSymlinkHotkeyChanged(QKeyCombination qkc)
 {
+    // 由于使用的是Hook GHM，可以同时存在多个相同的全局热键，故需要要额外判断当前新热键是否已重复。
     if (qkc == ui.hardlinkHotkeyInputer->keyCombination())
     {
         // Roll back
         auto qks = QKeySequence::fromString(settings_.symlinkHotkey.toString().c_str());
-        ui.symlinkHotkeyInputer->setKeyCombination(qks);
+        qkc = qks.isEmpty() ? QKeyCombination() : qks[0];
+    #ifdef Q_OS_MAC
+        // MacOS下交换Ctrl与Meta修饰键。
+        qkc = fix::swapCtrlMeta(qkc);
+    #endif // Q_OS_MAC
+        ui.symlinkHotkeyInputer->setKeyCombination(qkc);
 
         alertSameHotkey();
         return;
     }
 
+#ifdef Q_OS_MAC
+    // MacOS下交换Ctrl与Meta修饰键。
+    qkc = fix::swapCtrlMeta(qkc);
+#endif // Q_OS_MAC
     settings_.symlinkHotkey = gbhk::KeyCombination::fromString(QKeySequence(qkc).toString().toStdString());
     emit settingsChanged(settings_);
 }
@@ -142,12 +177,19 @@ void SettingsWidget::onHardlinkHotkeyChanged(QKeyCombination qkc)
     {
         // Roll back
         auto qks = QKeySequence::fromString(settings_.hardlinkHotkey.toString().c_str());
-        ui.hardlinkHotkeyInputer->setKeyCombination(qks);
+        auto qkc = qks.isEmpty() ? QKeyCombination() : qks[0];
+    #ifdef Q_OS_MAC
+        qkc = fix::swapCtrlMeta(qkc);
+    #endif // Q_OS_MAC
+        ui.hardlinkHotkeyInputer->setKeyCombination(qkc);
 
         alertSameHotkey();
         return;
     }
 
+#ifdef Q_OS_MAC
+    qkc = fix::swapCtrlMeta(qkc);
+#endif // Q_OS_MAC
     settings_.hardlinkHotkey = gbhk::KeyCombination::fromString(QKeySequence(qkc).toString().toStdString());
     emit settingsChanged(settings_);
 }

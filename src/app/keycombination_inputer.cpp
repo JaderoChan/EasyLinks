@@ -119,14 +119,6 @@ void KeyCombinationInputer::keyPressEvent(QKeyEvent* event)
         else if (isVaild(key, mod))
         {
             isWaitingInput_ = false;
-        #ifdef Q_OS_MAC
-            // 在MacOS上如果用户按下了Control/Meta键（其为`Qt::Modifier::META`/`Qt::Modifier::CTRL`），
-            // 则映射至`Qt::Modifier::CTRL`/`Qt::Modifier::META`。
-            if ((mod & Qt::Modifier::META) && !(mod & Qt::Modifier::CTRL))
-                mod = Qt::KeyboardModifiers((mod & ~Qt::Modifier::META) | Qt::Modifier::CTRL);
-            else if ((mod & Qt::Modifier::CTRL) && !(mod & Qt::Modifier::META))
-                mod = Qt::KeyboardModifiers((mod & ~Qt::Modifier::CTRL) | Qt::Modifier::META);
-        #endif // Q_OS_MAC
             setKeyCombination(QKeyCombination(mod, static_cast<Qt::Key>(key)));
             clearFocus();
         }
