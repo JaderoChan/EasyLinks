@@ -115,16 +115,6 @@ else()
     # TODO
 endif()
 
-# 配置MacOS下脚本文件
-if(APPLE)
-    set_source_files_properties(
-        ${SCRIPTS_DIR}/mac/get_focused_finder_dir.sh
-        ${SCRIPTS_DIR}/mac/auto_run_on_startup_format.plist
-        PROPERTIES
-        MACOSX_PACKAGE_LOCATION "Resources/scripts"
-    )
-endif()
-
 # 配置MacOS下Bundle属性
 if(APPLE)
     set(IS_MACOSX_BUNDLE TRUE)
@@ -137,6 +127,15 @@ if(APPLE)
         MACOSX_BUNDLE_BUNDLE_VERSION ${APP_VERSION}
         MACOSX_BUNDLE_SHORT_VERSION_STRING ${APP_VERSION}
         MACOSX_BUNDLE_COPYRIGHT ${APP_COPYRIGHT_TEXT}
+    )
+endif()
+
+# 配置MacOS下脚本文件
+if(APPLE)
+    file(GLOB SCRIPT_FILES ${SCRIPTS_DIR}/mac/*)
+    set_source_files_properties(
+        ${SCRIPT_FILES} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources/scripts"
     )
 endif()
 
