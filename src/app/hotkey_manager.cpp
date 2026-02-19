@@ -41,7 +41,7 @@ void HotkeyManager::setSettings(const Settings& settings)
                     qCritical() << QString("Failed to replace hotkey from %1 to %2, error message: %3").arg(
                         oldHotkey.toString().c_str(),
                         newHotkey.toString().c_str(),
-                        gbhk::getReturnCodeMessage(rc).c_str());
+                        gbhk::getReturnCodeMessage(rc).c_str()).toUtf8().constData();
             }
             else
             {
@@ -49,7 +49,7 @@ void HotkeyManager::setSettings(const Settings& settings)
                 if (rc != gbhk::RC_SUCCESS)
                     qCritical() << QString("Failed to unregister hotkey %1, error message: %3").arg(
                         oldHotkey.toString().c_str(),
-                        gbhk::getReturnCodeMessage(rc).c_str());
+                        gbhk::getReturnCodeMessage(rc).c_str()).toUtf8().constData();
             }
         }
         else
@@ -60,7 +60,7 @@ void HotkeyManager::setSettings(const Settings& settings)
                 if (rc != gbhk::RC_SUCCESS)
                     qCritical() << QString("Failed to add hotkey %1, error message: %3").arg(
                         newHotkey.toString().c_str(),
-                        gbhk::getReturnCodeMessage(rc).c_str());
+                        gbhk::getReturnCodeMessage(rc).c_str()).toUtf8().constData();
             }
         }
     };
