@@ -56,7 +56,7 @@ protected:
 private:
     // 更改所有None策略的冲突项为Skip策略。
     // 如果所有冲突项均为None或Skip策略则返回true，否则返回false。
-    bool clearEcs(LinkTasks& tasks);
+    bool optimizeEcs(LinkTasks& tasks);
 
     void updateStatsDisplay();
 

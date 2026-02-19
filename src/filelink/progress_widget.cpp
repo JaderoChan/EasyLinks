@@ -202,7 +202,7 @@ void ProgressWidget::onDecideAllBtnPressed()
     if (ret == QDialog::Accepted)
     {
         // 如果所有冲突项都使用None/Skip策略则直接发送“对所有冲突项采用Skip策略”信号，以进行优化。
-        if (clearEcs(conflicts_))
+        if (optimizeEcs(conflicts_))
             emit allConflictsDecided(CES_SKIP);
         else
             emit conflictsDecided(conflicts_);
@@ -214,7 +214,7 @@ void ProgressWidget::onDecideAllBtnPressed()
     }
 }
 
-bool ProgressWidget::clearEcs(LinkTasks& tasks)
+bool ProgressWidget::optimizeEcs(LinkTasks& tasks)
 {
     int counter = 0;
     for (auto& task : tasks)
