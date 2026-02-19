@@ -15,10 +15,11 @@
 
 static QString buildPlistContent(const QString& label, const QString& appPath)
 {
-    static const QString content =
-        QFile(APP_)
-        QString(PLIST_CONTENT).arg(label, appPath);
-    return content;
+    QString rawContent =
+        QFile(APP_RESOURCE_DIRPATH + "/scripts/auto_run_on_startup_format.plist").readAll();
+    QString formattedContent =
+        rawContent.arg(label, appPath);
+    return formattedContent;
 }
 
 static const QString plistName = QString("%1.%2").arg(APP_ORGANIZATION_DOMAIN, APP_TITLE);

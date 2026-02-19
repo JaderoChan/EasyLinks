@@ -120,7 +120,7 @@ endif()
 if(APPLE)
     set_source_files_properties(
         ${SCRIPTS_DIR}/mac/get_focused_finder_dir.sh
-        ${SCRIPTS_DIR}/mac/formatted_auto_run_on_startup.plist
+        ${SCRIPTS_DIR}/mac/auto_run_on_startup_format.plist
         PROPERTIES
         MACOSX_PACKAGE_LOCATION "Resources/scripts"
     )
