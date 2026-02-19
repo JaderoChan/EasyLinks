@@ -21,8 +21,8 @@ AboutDialog::AboutDialog(QWidget* parent) :
 void AboutDialog::showAndActivate()
 {
     show();
-    activateWindow();
     raise();
+    activateWindow();
 }
 
 void AboutDialog::updateText()

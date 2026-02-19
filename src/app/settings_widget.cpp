@@ -61,8 +61,8 @@ SettingsWidget::SettingsWidget(const Settings& settings, QWidget* parent)
 void SettingsWidget::showAndActivate()
 {
     show();
-    activateWindow();
     raise();
+    activateWindow();
 }
 
 void SettingsWidget::updateText()

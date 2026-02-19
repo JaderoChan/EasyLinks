@@ -114,8 +114,8 @@ void ProgressWidget::onWorkFinished()
 void ProgressWidget::showAndActivate()
 {
     show();
-    activateWindow();
     raise();
+    activateWindow();
 }
 
 void ProgressWidget::laterShowAndActivate(int ms)
