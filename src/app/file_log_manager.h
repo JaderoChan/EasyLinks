@@ -6,10 +6,10 @@
 #include <qobject.h>
 
 // 单例类
-class LogManager : public QObject
+class FileLogManager : public QObject
 {
 public:
-    static LogManager& getInstance();
+    static FileLogManager& getInstance();
 
     bool setup(const QString& filepath);
     void cleanup();
@@ -19,11 +19,11 @@ protected:
     static void customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg);
 
 private:
-    explicit LogManager(QObject* parent = nullptr);
-    ~LogManager();
+    explicit FileLogManager(QObject* parent = nullptr);
+    ~FileLogManager();
 
-    LogManager(const LogManager&) = delete;
-    LogManager& operator=(const LogManager&) = delete;
+    FileLogManager(const FileLogManager&) = delete;
+    FileLogManager& operator=(const FileLogManager&) = delete;
 
     QFile file_;
     QTextStream stream_;

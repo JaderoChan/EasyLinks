@@ -1,23 +1,23 @@
-#include "log_manager.h"
+#include "file_log_manager.h"
 
 #include <qdatetime.h>
 
-LogManager::LogManager(QObject* parent)
+FileLogManager::FileLogManager(QObject* parent)
     : QObject(parent)
 {}
 
-LogManager::~LogManager()
+FileLogManager::~FileLogManager()
 {
     cleanup();
 }
 
-LogManager& LogManager::getInstance()
+FileLogManager& FileLogManager::getInstance()
 {
-    static LogManager instance;
+    static FileLogManager instance;
     return instance;
 }
 
-bool LogManager::setup(const QString& filepath)
+bool FileLogManager::setup(const QString& filepath)
 {
     file_.setFileName(filepath);
     if (file_.open(QIODevice::Append | QIODevice::Text))
@@ -29,14 +29,14 @@ bool LogManager::setup(const QString& filepath)
     return false;
 }
 
-void LogManager::cleanup()
+void FileLogManager::cleanup()
 {
     qInstallMessageHandler(nullptr);
     if (file_.isOpen())
         file_.close();
 }
 
-QString LogManager::messageTypeString(QtMsgType type)
+QString FileLogManager::messageTypeString(QtMsgType type)
 {
     switch (type)
     {
@@ -55,7 +55,7 @@ QString LogManager::messageTypeString(QtMsgType type)
     }
 }
 
-void LogManager::customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
+void FileLogManager::customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
     QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss.zzz");
     QString logMessage = QString("%1 [%2] %3").arg(timestamp, messageTypeString(type), msg);

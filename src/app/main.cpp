@@ -7,7 +7,7 @@
 
 #include "config.h"
 #include "app_manager.h"
-#include "log_manager.h"
+#include "file_log_manager.h"
 #include "platform/permission_manager.h"
 
 int main(int argc, char* argv[])
@@ -16,15 +16,6 @@ int main(int argc, char* argv[])
     if (lock.isLocked() || !lock.tryLock(200))
         return 1;
 
-    LogManager& logMgr = LogManager::getInstance();
-    QDir logDir = QDir(APP_LOG_DIRPATH);
-    if (!logDir.exists())
-    {
-        if (!logDir.mkpath("."))
-            qCritical() << "Failed to create log directory:" << APP_LOG_DIRPATH;
-    }
-    logMgr.setup(APP_LOG_FILEPATH);
-
     QApplication a(argc, argv);
     a.setOrganizationDomain(APP_ORGANIZATION_DOMAIN);
     a.setOrganizationName(APP_ORGANIZATION);
@@ -32,6 +23,17 @@ int main(int argc, char* argv[])
     a.setApplicationVersion(APP_VERSION);
     a.setWindowIcon(QIcon(":/icons/app.ico"));
     a.setQuitOnLastWindowClosed(false);
+
+    QDir logDir = QDir(APP_LOG_DIRPATH);
+    if (!logDir.exists())
+    {
+        if (!logDir.mkpath("."))
+            qCritical() << "Failed to create log directory:" << APP_LOG_DIRPATH;
+    }
+
+    FileLogManager& logMgr = FileLogManager::getInstance();
+    if (!logMgr.setup(APP_LOG_FILEPATH))
+        qCritical() << "Failed to set up log file:" << APP_LOG_FILEPATH;
 
     if (!PermissionManager::hasPermission())
     {
