@@ -51,13 +51,13 @@ set(MAX_LOG_COUNT 1000)
 ###############
 
 # CMake文件夹
-set(CMAKE_DIR ${CMAKE_SOURCE_DIR}/cmake)
+set(CMAKE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 # CMake模板文件夹
 set(CMAKE_TEMPLATE_DIR ${CMAKE_DIR}/template)
 # 语言文件夹路径
-set(LANGUAGES_DIR ${CMAKE_SOURCE_DIR}/languages)
+set(LANGUAGES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/languages)
 # 资源文件夹路径
-set(RESOURCES_DIR ${CMAKE_SOURCE_DIR}/resources)
+set(RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources)
 # 图标文件夹路径
 set(ICONS_DIR ${RESOURCES_DIR}/icons)
 # 脚本文件夹路径
