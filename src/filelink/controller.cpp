@@ -22,6 +22,13 @@ FileLinkController::FileLinkController(
     progress_ = new ProgressWidget(linkType, sourceDir, targetDir, config_.keepDialogOnErrorOccurred);
     progress_->setAttribute(Qt::WA_DeleteOnClose);
 
+    qInfo() << QString("%1 %2 entries in %3 to %4 directory").arg(
+        linkType == LinkType::LT_SYMLINK ? "Creating symbolic links for" : "Creating hard links for",
+        QString::number(sourcePaths.size()),
+        sourceDir,
+        targetDir
+    );
+
     connect(worker_, &FileLinkWorker::progressUpdated, progress_, &ProgressWidget::updateProgress);
     connect(worker_, &FileLinkWorker::errorOccurred, progress_, &ProgressWidget::appendErrorLog);
     connect(worker_, &FileLinkWorker::conflictsDecisionWaited, progress_, &ProgressWidget::decideConflicts);
@@ -50,7 +57,6 @@ void FileLinkController::start()
 {
     if (worker_ && progress_)
     {
-        // progress_->showAndActivate();    // for dev
         progress_->laterShowAndActivate(200);
         workerThread_.start();
         emit operate();
