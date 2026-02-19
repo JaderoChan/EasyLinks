@@ -4,7 +4,7 @@
 
 #include <easy_translate.hpp>
 
-#include "config.h"
+#include "app_defines.h"
 #include "app_manager.h"
 #include "platform/permission_manager.h"
 

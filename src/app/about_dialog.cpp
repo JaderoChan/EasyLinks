@@ -2,7 +2,7 @@
 
 #include <easy_translate.hpp>
 
-#include "config.h"
+#include "app_defines.h"
 
 AboutDialog::AboutDialog(QWidget* parent) :
     QDialog(parent)

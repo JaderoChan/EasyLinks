@@ -4,7 +4,7 @@
 
 #include <easy_translate.hpp>
 
-#include "config.h"
+#include "config.h" // MAX_LOG_COUNT
 
 #define CLSNAME "ErrorLogDialog"
 #define ERROR_LOG_FORMAT_STRING \

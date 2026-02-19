@@ -4,6 +4,12 @@ cmake_minimum_required(VERSION 3.17)
 # 收集源文件 #
 #############
 
+configure_file(
+    ${CMAKE_SOURCE_DIR}/cmake/template/config.h.in
+    ${CMAKE_CURRENT_BINARY_DIR}/include/config.h
+    @ONLY
+)
+
 file(GLOB_RECURSE HEADER ${CMAKE_CURRENT_SOURCE_DIR}/*.h ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
 file(GLOB_RECURSE SRC ${CMAKE_CURRENT_SOURCE_DIR}/app/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/filelink/*.cpp)
 if(WIN32)
@@ -28,12 +34,6 @@ qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCE})
 ###########
 # 配置依赖 #
 ###########
-
-configure_file(
-    ${CMAKE_SOURCE_DIR}/cmake/template/config.h.in
-    ${CMAKE_CURRENT_BINARY_DIR}/include/config.h
-    @ONLY
-)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}

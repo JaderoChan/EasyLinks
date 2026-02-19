@@ -1,6 +1,6 @@
 #pragma once
 
-#include "config.h"
+#include "config.h" // DEFAULT_RENAME_PATTERN
 
 struct LinkConfig
 {

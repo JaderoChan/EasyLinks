@@ -1,8 +1,5 @@
 #pragma once
 
-#include <qapplication.h>
-#include <qstring.h>
-
 #define APP_ORGANIZATION        "@APP_ORGANIZATION@"
 #define APP_ORGANIZATION_DOMAIN "@APP_ORGANIZATION_DOMAIN@"
 #define APP_TITLE               "@APP_TITLE@"
@@ -12,16 +9,6 @@
 #define APP_COPYRIGHT_TEXT      "@APP_COPYRIGHT_TEXT@"
 #define APP_UUID                "@APP_UUID@"
 
-#define APP_LANG_FILEPATH       "languages/languages.json"
-#define APP_LOCK_FILEPATH       APP_TITLE "-" APP_UUID ".lock"
+#define MAX_LOG_COUNT           @MAX_LOG_COUNT@
 
-#define DEFAULT_RENAME_PATTERN  "@ (#)"
-
-#define MAX_LOG_COUNT           1000
-
-#define APP_DIRPATH             QApplication::applicationDirPath()
-#if defined(Q_OS_MAC) && defined(IS_MACOSX_BUNDLE)
-    #define APP_RESOURCE_DIRPATH    APP_DIRPATH + "/../Resources";
-#else
-    #define APP_RESOURCE_DIRPATH    APP_DIRPATH
-#endif // Q_OS_MAC
+#define DEFAULT_RENAME_PATTERN  "@DEFAULT_RENAME_PATTERN@"

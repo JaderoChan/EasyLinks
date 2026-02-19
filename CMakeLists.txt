@@ -43,4 +43,7 @@ set(APP_AUTHOR_EMAIL "c_dl_cn@outlook.com")
 set(APP_COPYRIGHT_TEXT "Copyright (c) 2025 JaderoChan")
 set(APP_UUID "53c90f08-cf31-4998-83f0-2eeb408406f9")
 
+set(DEFAULT_RENAME_PATTERN "@ (#)")
+set(MAX_LOG_COUNT 1000)
+
 add_subdirectory(src)
