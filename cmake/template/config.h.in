@@ -1,6 +1,7 @@
 #pragma once
 
 #include <qapplication.h>
+#include <qdatetime.h>
 #include <qstandardpaths.h>
 #include <qstring.h>
 
@@ -17,7 +18,7 @@
 #define APP_LOCK_FILEPATH       (APP_TITLE "-" APP_UUID ".lock")
 
 #define APP_LOG_DIRPATH         (QStandardPaths::writableLocation(QStandardPaths::AppDataLocation))
-#define APP_LOG_FILENAME        (APP_TITLE ".log")
+#define APP_LOG_FILENAME        (QDate::currentDate().toString("yyyy-MM-dd") + ".log")
 #define APP_LOG_FILEPATH        (APP_LOG_DIRPATH + "/" + APP_LOG_FILENAME)
 
 #define APP_DIRPATH QApplication::applicationDirPath()

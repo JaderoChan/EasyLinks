@@ -14,7 +14,7 @@ HotkeyManager::HotkeyManager(QObject* parent)
 {
     int rc = ghm_.run();
     if (rc != gbhk::RC_SUCCESS)
-        qDebug() << "Failed to run the Global Hotkey Manager";
+        qCritical() << "Failed to run the Global Hotkey Manager";
     connect(this, &HotkeyManager::shouldLinks, this, &HotkeyManager::links);
 }
 
@@ -22,7 +22,7 @@ HotkeyManager::~HotkeyManager()
 {
     int rc = ghm_.stop();
     if (rc != gbhk::RC_SUCCESS)
-        qDebug() << "Failed to stop the Global Hotkey Manager";
+        qCritical() << "Failed to stop the Global Hotkey Manager";
 }
 
 void HotkeyManager::setSettings(const Settings& settings)
@@ -38,7 +38,7 @@ void HotkeyManager::setSettings(const Settings& settings)
             {
                 int rc = ghm_.replaceHotkey(oldHotkey, newHotkey);
                 if (rc != gbhk::RC_SUCCESS)
-                    qDebug() << QString("Failed to replace hotkey from %1 to %2, error message: %3").arg(
+                    qCritical() << QString("Failed to replace hotkey from %1 to %2, error message: %3").arg(
                         oldHotkey.toString().c_str(),
                         newHotkey.toString().c_str(),
                         gbhk::getReturnCodeMessage(rc).c_str());
@@ -47,7 +47,7 @@ void HotkeyManager::setSettings(const Settings& settings)
             {
                 int rc = ghm_.unregisterHotkey(oldHotkey);
                 if (rc != gbhk::RC_SUCCESS)
-                    qDebug() << QString("Failed to unregister hotkey %1, error message: %3").arg(
+                    qCritical() << QString("Failed to unregister hotkey %1, error message: %3").arg(
                         oldHotkey.toString().c_str(),
                         gbhk::getReturnCodeMessage(rc).c_str());
             }
@@ -58,7 +58,7 @@ void HotkeyManager::setSettings(const Settings& settings)
             {
                 int rc = ghm_.registerHotkey(newHotkey, [=]() { emit shouldLinks(linkType); });
                 if (rc != gbhk::RC_SUCCESS)
-                    qDebug() << QString("Failed to add hotkey %1, error message: %3").arg(
+                    qCritical() << QString("Failed to add hotkey %1, error message: %3").arg(
                         newHotkey.toString().c_str(),
                         gbhk::getReturnCodeMessage(rc).c_str());
             }
@@ -99,7 +99,7 @@ void HotkeyManager::links(LinkType linkType)
         }
         catch (const std::exception& e)
         {
-            qDebug() << "Failed to getFocusedFileManagerDir():" << e.what();
+            qWarning() << "Failed to getFocusedFileManagerDir():" << e.what();
             return;
         }
     }

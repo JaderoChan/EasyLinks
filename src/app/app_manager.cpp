@@ -9,13 +9,13 @@ AppManager::AppManager(QObject* parent)
     : QObject(parent), settings_(loadSettings())
 {
     if (!setLanguage(settings_.language))
-        qDebug() << QString("Failed to set language to %1").arg(
+        qWarning() << QString("Failed to set language to %1").arg(
             languageStringId(settings_.language));
 
     if (settings_.autoRunOnStartUp != isAutoRunOnStartUp())
     {
         if (!setAutoRunOnStartUp(settings_.autoRunOnStartUp))
-            qDebug() << QString("Failed to %1 auto run on start up").arg(
+            qWarning() << QString("Failed to %1 auto run on start up").arg(
                 settings_.autoRunOnStartUp ? "set" : "unset");
     }
 
@@ -47,7 +47,7 @@ void AppManager::showSettingsWidget()
         if (settings.language != settings_.language)
         {
             if (!setLanguage(settings.language))
-                qDebug() << QString("Failed to set language to %1").arg(
+                qWarning() << QString("Failed to set language to %1").arg(
                     languageStringId(settings.language));
             sti_->updateText();
             qApp->setApplicationDisplayName(EASYTR("App.Title"));
@@ -56,7 +56,7 @@ void AppManager::showSettingsWidget()
         if (settings.autoRunOnStartUp != settings_.autoRunOnStartUp)
         {
             if (!setAutoRunOnStartUp(settings.autoRunOnStartUp))
-                qDebug() << QString("Failed to %1 auto run on start up").arg(
+                qWarning() << QString("Failed to %1 auto run on start up").arg(
                     settings.autoRunOnStartUp ? "set" : "unset");
         }
 

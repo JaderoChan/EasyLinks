@@ -32,17 +32,11 @@ bool setLanguage(Language lang)
     QDir::setCurrent(APP_RESOURCE_DIRPATH);
     easytr::setLanguages(easytr::Languages::fromFile(APP_LANG_FILEPATH));
     if (easytr::languages().empty())
-    {
-        qDebug() << "Invalid or empty Languages file";
         return false;
-    }
 
     std::string id = languageStringId(lang).toStdString();
     if (!easytr::hasLanguage(id))
-    {
-        qDebug() << "Expected language is missing";
         return false;
-    }
 
     easytr::setCurrentLanguage(id);
 
