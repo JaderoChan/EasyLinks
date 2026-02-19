@@ -18,3 +18,4 @@
 - [x] 修复KeyCombination Inputer在MacOS上Ctrl与Meta键不一致的问题。
 - [ ] 修复MacOS上不在控制台启动应用时热键失效的问题。
 - [x] 加入文件日志记录。
+- [ ] 使用Service Management替代plist实现开机自启动。
