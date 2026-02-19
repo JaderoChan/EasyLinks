@@ -27,7 +27,7 @@ FileLinkController::FileLinkController(
         QString::number(sourcePaths.size()),
         sourceDir,
         targetDir
-    ).constData();
+    );
 
     connect(worker_, &FileLinkWorker::progressUpdated, progress_, &ProgressWidget::updateProgress);
     connect(worker_, &FileLinkWorker::errorOccurred, progress_, &ProgressWidget::appendErrorLog);
