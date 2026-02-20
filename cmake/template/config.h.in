@@ -22,7 +22,7 @@
 #define APP_LOG_FILEPATH        (APP_LOG_DIRPATH + "/" + APP_LOG_FILENAME)
 
 #define APP_DIRPATH QApplication::applicationDirPath()
-#if defined(Q_OS_MAC) && defined(IS_MACOSX_BUNDLE)
+#ifdef Q_OS_MAC
     #define APP_RESOURCE_DIRPATH    (APP_DIRPATH + "/../Resources")
 #else
     #define APP_RESOURCE_DIRPATH    APP_DIRPATH

@@ -62,7 +62,12 @@ target_link_libraries(
 
 if(APPLE)
     find_library(APPLICATION_SERVICES_LIBRARY ApplicationServices)
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${APPLICATION_SERVICES_LIBRARY})
+    find_library(APP_KIT_LIBRARY AppKit)
+    target_link_libraries(
+        ${PROJECT_NAME} PRIVATE
+        ${APPLICATION_SERVICES_LIBRARY}
+        ${APP_KIT_LIBRARY}
+    )
 endif()
 
 ###############
@@ -95,9 +100,11 @@ target_compile_definitions(
     $<$<BOOL:UPDATE_TRANSLATIONS_FILES>:EASY_TRANSLATE_UPDATE_TRANSLATIONS_FILES>
 )
 
-# 设置应用文件图标
+# 配置应用资源/属性
 set(APP_ICON ${ICONS_DIR}/app.ico)
 if(WIN32)
+    # Windows
+
     set(RC_FILE ${CMAKE_CURRENT_BINARY_DIR}/app.rc)
     configure_file(
         ${CMAKE_TEMPLATE_DIR}/app.rc.in
@@ -106,46 +113,65 @@ if(WIN32)
     )
     target_sources(${PROJECT_NAME} PRIVATE ${RC_FILE})
 elseif(APPLE)
+    # Apple
+
+    set(MACOSX_BUNDLE_GUI_IDENTIFIER ${APP_ORGANIZATION_DOMAIN}.${APP_TITLE})
+    set(MACOSX_BUNDLE_BUNDLE_NAME ${APP_TITLE})
+    set(MACOSX_BUNDLE_EXECUTABLE_NAME ${APP_TITLE})
+    set(MACOSX_BUNDLE_BUNDLE_VERSION ${APP_VERSION})
+    set(MACOSX_BUNDLE_SHORT_VERSION_STRING ${APP_VERSION})
+    set(MACOSX_BUNDLE_COPYRIGHT ${APP_COPYRIGHT_TEXT})
+
+    # Info Plist Strings
+    set(INFO_PLIST_STRINGS_NAMES
+        en.lproj
+        zh_CN.lproj
+    )
+    foreach(INFO_PLST_STRINGS_NAME ${INFO_PLIST_STRINGS_NAMES})
+        configure_file(
+            ${CMAKE_TEMPLATE_DIR}/InfoPlistStrings/${INFO_PLIST_STRINGS_NAME}/InfoPlist.strings
+            ${CMAKE_CURRENT_BINARY_DIR}/${INFO_PLIST_STRINGS_NAME}/InfoPlist.strings
+            @ONLY
+        )
+    endforeach()
+    foreach(INFO_PLIST_STRINGS_NAME ${INFO_PLIST_STRINGS_NAMES})
+        set(INFO_PLIST_STRINGS_FILE ${CMAKE_CURRENT_BINARY_DIR}/${INFO_PLIST_STRINGS_NAME}/InfoPlist.strings)
+        set_source_files_properties(
+            ${INFO_PLIST_STRINGS_FILE} PROPERTIES
+            MACOSX_BUNDLE_LOCATION "Resource/${INFO_PLIST_STRINGS_NAME}"
+        )
+        target_sources(${PROJECT_NAME} PRIVATE ${INFO_PLIST_STRINGS_FILE})
+    endforeach()
+
+    # Info Plist
+    set(MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_BINARY_DIR}/Info.plist)
+    configure_file(
+        ${CMAKE_TEMPLATE_DIR}/Info.plist.in
+        ${MACOSX_BUNDLE_INFO_PLIST}
+        @ONLY
+    )
+
     set_target_properties(
         ${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE ON
         MACOSX_BUNDLE_ICON_FILE "app.ico"
+        MACOSX_BUNDLE_GUI_IDENTIFIER ${MACOSX_BUNDLE_GUI_IDENTIFIER}
+        MACOSX_BUNDLE_BUNDLE_NAME ${MACOSX_BUNDLE_BUNDLE_NAME}
+        MACOSX_BUNDLE_EXECUTABLE_NAME ${MACOSX_BUNDLE_EXECUTABLE_NAME}
+        MACOSX_BUNDLE_BUNDLE_VERSION ${MACOSX_BUNDLE_BUNDLE_VERSION}
+        MACOSX_BUNDLE_SHORT_VERSION_STRING ${MACOSX_BUNDLE_SHORT_VERSION_STRING}
+        MACOSX_BUNDLE_COPYRIGHT ${MACOSX_BUNDLE_COPYRIGHT}
+        MACOSX_BUNDLE_INFO_PLIST ${MACOSX_BUNDLE_INFO_PLIST}
     )
+
+    # 应用图标
     set_source_files_properties(
         ${APP_ICON} PROPERTIES
         MACOSX_PACKAGE_LOCATION "Resources"
     )
     target_sources(${PROJECT_NAME} PRIVATE ${APP_ICON})
-else()
-    # TODO
-endif()
 
-# 配置MacOS下Bundle属性
-if(APPLE)
-    set(IS_MACOSX_BUNDLE TRUE)
-    set_target_properties(
-        ${PROJECT_NAME} PROPERTIES
-        MACOSX_BUNDLE ${IS_MACOSX_BUNDLE}
-        MACOSX_BUNDLE_GUI_IDENTIFIER ${APP_ORGANIZATION_DOMAIN}.${APP_TITLE}
-        MACOSX_BUNDLE_BUNDLE_NAME ${APP_TITLE}
-        MACOSX_BUNDLE_EXECUTABLE_NAME ${APP_TITLE}
-        MACOSX_BUNDLE_BUNDLE_VERSION ${APP_VERSION}
-        MACOSX_BUNDLE_SHORT_VERSION_STRING ${APP_VERSION}
-        MACOSX_BUNDLE_COPYRIGHT ${APP_COPYRIGHT_TEXT}
-    )
-endif()
-
-# 配置MacOS下脚本文件
-if(APPLE)
-    file(GLOB SCRIPT_FILES ${SCRIPTS_DIR}/mac/*)
-    set_source_files_properties(
-        ${SCRIPT_FILES} PROPERTIES
-        MACOSX_PACKAGE_LOCATION "Resources/scripts"
-    )
-    target_sources(${PROJECT_NAME} PRIVATE ${SCRIPT_FILES})
-endif()
-
-# 配置MacOS下语言文件
-if(APPLE AND IS_MACOSX_BUNDLE)
+    # 语言文件
     file(GLOB LANG_FILES ${LANGUAGES_DIR}/*)
     set_source_files_properties(
         ${LANG_FILES} PROPERTIES
@@ -153,7 +179,15 @@ if(APPLE AND IS_MACOSX_BUNDLE)
     )
     target_sources(${PROJECT_NAME} PRIVATE ${LANG_FILES})
 
-    target_compile_definitions(${PROJECT_NAME} PRIVATE IS_MACOSX_BUNDLE)
+    # 脚本文件
+    file(GLOB SCRIPT_FILES ${SCRIPTS_DIR}/mac/*)
+    set_source_files_properties(
+        ${SCRIPT_FILES} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources/scripts"
+    )
+    target_sources(${PROJECT_NAME} PRIVATE ${SCRIPT_FILES})
+else()
+    # TODO
 endif()
 
 #################
@@ -161,7 +195,7 @@ endif()
 #################
 
 # 复制语言文件至输出目录
-if(NOT APPLE OR NOT IS_MACOSX_BUNDLE)
+if(NOT APPLE)
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -170,7 +204,8 @@ if(NOT APPLE OR NOT IS_MACOSX_BUNDLE)
 endif()
 
 # MacOS DMG打包
-if(APPLE AND IS_MACOSX_BUNDLE)
+option(MAKE_DMG "Create DMG for MacOS" OFF)
+if(APPLE AND MAKE_DMG)
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_SOURCE_DIR}/scripts/create_dmg.sh

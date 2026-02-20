@@ -1,0 +1,1 @@
+"NSAppleEventsUsageDescription" = "@MACOSX_BUNDLE_BUNDLE_NAME@ 需要辅助功能权限来监控键盘和鼠标事件，以及控制 Finder、System Events 等应用来管理文件和系统操作。";
