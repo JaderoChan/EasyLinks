@@ -18,7 +18,7 @@
 - [x] 修复KeyCombination Inputer在MacOS上Ctrl与Meta键不一致的问题。
 - [ ] ~~修复MacOS上不在控制台启动应用时热键失效的问题。~~（权限获取失败）
 - [x] 加入文件日志记录。
-- [ ] 使用Service Management替代plist实现开机自启动。
+- [x] 使用Service Management替代plist实现开机自启动。
 - [x] 解决MacOS下脚本文件配置失败的问题。
 - [ ] ~~解决MacOS上有时权限已授予但检测为未授予权限的问题。~~
 - [x] 修复MacOS下某些时候程序启动多个实例的问题（初步判断与“开机自启动”脚本相关）（main函数中的LockFile被销毁了）
