@@ -27,9 +27,8 @@ static std::string runCommand(const std::string& cmd)
 
 QString getFocusedFileManagerDir()
 {
-    static const std::string script =
+    static const std::string cmd =
         readAllFromFile(APP_RESOURCE_DIRPATH + "/scripts/get_focused_finder_dir.sh").toStdString();
-    static const std::string cmd = "osascript -e '" + script + "'";
     std::string out = runCommand(cmd);
 
     QString path = QString::fromStdString(out);

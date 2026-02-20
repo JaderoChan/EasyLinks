@@ -1,4 +1,4 @@
-tell application "System Events"
+osascript -e 'tell application "System Events"
     set frontApp to name of first application process where it is frontmost
 end tell
 
@@ -17,4 +17,4 @@ tell application "Finder"
     end if
 
     return targetFolder
-end tell
+end tell'
