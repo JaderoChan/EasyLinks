@@ -43,9 +43,12 @@ bool setAutoRunOnStartUp(bool enable)
 
     if (enable)
     {
-        QDir launchAgentPlistDir = QDir(launchAgentPlistPath).absolutePath();
-        if (!launchAgentPlistDir.exists() && !launchAgentPlistDir.mkpath("."))
-            return false;
+        QDir launchAgentPlistDir = QDir(QFileInfo(launchAgentPlistPath).absolutePath());
+        if (!launchAgentPlistDir.exists())
+        {
+            if (launchAgentPlistDir.mkpath("."))
+                return false;
+        }
 
         QFile file(launchAgentPlistPath);
         if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text))
