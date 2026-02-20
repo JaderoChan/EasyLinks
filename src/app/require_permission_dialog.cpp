@@ -9,7 +9,7 @@ RequirePermissionDialog::RequirePermissionDialog(QWidget* parent)
 {
     ui.setupUi(this);
 
-    checkPermissionTimer_.start(20);
+    checkPermissionTimer_.start(50);
 
     connect(&checkPermissionTimer_, &QTimer::timeout, this, &RequirePermissionDialog::onTimeOut);
     connect(ui.gotoGrantPermissionBtn, &QPushButton::clicked,
