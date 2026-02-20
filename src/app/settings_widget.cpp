@@ -170,7 +170,7 @@ void SettingsWidget::onHardlinkHotkeyChanged(QKeyCombination qkc)
     {
         // Roll back
         auto qks = QKeySequence::fromString(settings_.hardlinkHotkey.toString().c_str());
-        auto qkc = qks.isEmpty() ? QKeyCombination() : qks[0];
+        qkc = qks.isEmpty() ? QKeyCombination() : qks[0];
     #ifdef Q_OS_MAC
         qkc = fix::swapCtrlMeta(qkc);
     #endif // Q_OS_MAC

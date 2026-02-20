@@ -26,13 +26,12 @@ void ConflictDecisionTableHeader::setSpacing(int px)
 
 bool ConflictDecisionTableHeader::eventFilter(QObject* obj, QEvent* event)
 {
+    // 拦截CheckBox的鼠标按钮事件。
     bool isMouseButtonEvent =
         event->type() == QEvent::MouseButtonPress ||
         event->type() == QEvent::MouseButtonDblClick ||
         event->type() == QEvent::MouseButtonRelease;
-    if (isMouseButtonEvent)
-        return true;
-    return false;
+    return isMouseButtonEvent;
 }
 
 bool ConflictDecisionTableHeader::event(QEvent* event)

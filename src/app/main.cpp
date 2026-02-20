@@ -17,7 +17,10 @@ int main(int argc, char* argv[])
 {
     QLockFile lock(QDir::temp().absoluteFilePath(APP_LOCK_FILEPATH));
     if (lock.isLocked() || !lock.tryLock(200))
+    {
+        qCritical() << "Another instance is already running.";
         return 1;
+    }
 
     // 设置程序全局属性
     QApplication a(argc, argv);
@@ -31,23 +34,24 @@ int main(int argc, char* argv[])
     // 配置日志输出文件
     {
         QDir logDir = QDir(APP_LOG_DIRPATH);
-        if (!logDir.exists())
+        if (!logDir.exists() && !logDir.mkpath("."))
         {
-            if (!logDir.mkpath("."))
-                qCritical() << "Failed to create log directory:" << APP_LOG_DIRPATH;
+            qCritical() << "Failed to create log directory:" << APP_LOG_DIRPATH;
+            return 1;
         }
     }
 
     FileLogManager& logMgr = FileLogManager::getInstance();
     if (!logMgr.setup(APP_LOG_FILEPATH))
+    {
         qCritical() << "Failed to set up log file:" << APP_LOG_FILEPATH;
+        return 1;
+    }
 
     // 设置语言
     {
         Settings settings = loadSettings();
-        if (!setLanguage(settings.language))
-            qWarning() << QString("Failed to set language to %1").arg(
-                languageStringId(settings.language)).toUtf8().constData();
+        setLanguage(settings.language);
     }
 
     // 检查应用权限

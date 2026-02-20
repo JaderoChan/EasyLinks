@@ -27,30 +27,23 @@ AppManager::AppManager(QObject* parent)
 
 void AppManager::setSettings(const Settings& settings)
 {
-    // Language changed
+    // Language changed.
     if (settings.language != settings_.language)
     {
-        if (!setLanguage(settings.language))
-            qWarning() << QString("Failed to set language to %1").arg(
-                languageStringId(settings.language)).toUtf8().constData();
-
+        setLanguage(settings.language);
         sti_->updateText();
         qApp->setApplicationDisplayName(EASYTR("App.Title"));
     }
 
-    // Auto run on start up changed
+    // Auto run on start up changed.
     if (settings.autoRunOnStartUp != settings_.autoRunOnStartUp)
-    {
-        if (!setAutoRunOnStartUp(settings.autoRunOnStartUp))
-            qWarning() << QString("Failed to %1 auto run on start up").arg(
-                settings.autoRunOnStartUp ? "set" : "unset").toUtf8().constData();
-    }
+        setAutoRunOnStartUp(settings.autoRunOnStartUp);
 
-    // Update own settings
+    // Update own settings.
     settings_ = settings;
-    // Sync settings in storage
+    // Sync settings in storage.
     saveSettings(settings_);
-    // 让HotkeyManager处理潜在的热键更新
+    // 让HotkeyManager处理潜在的热键更新。
     hotkeyMgr_->setSettings(settings_);
 }
 
@@ -78,5 +71,6 @@ void AppManager::openLogDirectory()
             EASYTR("Common.Error"),
             EASYTR("AppManager.MessageBox.Text.FailOpenLogDir")
         );
+        msgBox.exec();
     }
 }

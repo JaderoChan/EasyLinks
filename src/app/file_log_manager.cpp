@@ -19,6 +19,8 @@ FileLogManager& FileLogManager::getInstance()
 
 bool FileLogManager::setup(const QString& filepath)
 {
+    QMutexLocker locker(&getInstance().mutex_);
+
     file_.setFileName(filepath);
     if (file_.open(QIODevice::Append | QIODevice::Text))
     {
@@ -31,6 +33,8 @@ bool FileLogManager::setup(const QString& filepath)
 
 void FileLogManager::cleanup()
 {
+    QMutexLocker locker(&getInstance().mutex_);
+
     qInstallMessageHandler(nullptr);
     if (file_.isOpen())
         file_.close();
@@ -57,6 +61,8 @@ QString FileLogManager::messageTypeString(QtMsgType type)
 
 void FileLogManager::customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
+    QMutexLocker locker(&getInstance().mutex_);
+
     QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss.zzz");
     QString logMessage = QString("%1 [%2] %3").arg(timestamp, messageTypeString(type), msg);
 

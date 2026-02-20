@@ -49,6 +49,8 @@ FileLinkController::FileLinkController(
 FileLinkController::~FileLinkController()
 {
     stop();
+    if (workerThread_.isRunning())
+        workerThread_.wait();
     if (worker_)
         delete worker_;
 }

@@ -32,7 +32,7 @@ signals:
     void keyCombinationChanged(QKeyCombination keyCombination);
 
 protected:
-    virtual bool isVaild(int key, Qt::KeyboardModifiers mod);
+    virtual bool isValid(int key, Qt::KeyboardModifiers mod);
 
     // 如果获得焦点，则进入组合键的输入状态。
     void focusInEvent(QFocusEvent* event) override;

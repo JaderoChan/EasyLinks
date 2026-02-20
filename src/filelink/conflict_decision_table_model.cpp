@@ -137,6 +137,10 @@ bool ConflictDecisionTableModel::setChecked(const QModelIndex& idx, bool checked
         data(index(row, 1), Qt::CheckStateRole).value<Qt::CheckState>());
     conflicts_[row].ces = getEcsByCheckState(source, target);
 
+    auto left = index(row, 0);
+    auto right = index(row, 1);
+    emit dataChanged(left, right, {Qt::CheckStateRole});
+
     return true;
 }
 

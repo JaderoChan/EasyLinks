@@ -1,5 +1,6 @@
 #include "language.h"
 
+#include <qapplication.h>
 #include <qdir.h>
 #include <qevent.h>
 
@@ -27,18 +28,53 @@ Language currentSystemLang()
     }
 }
 
+class DirectoryScope
+{
+public:
+    explicit DirectoryScope(const QString& path)
+    {
+        originDir_ = QDir::currentPath();
+        QDir::setCurrent(path);
+    }
+
+    ~DirectoryScope()
+    {
+        QDir::setCurrent(originDir_);
+    }
+
+private:
+    QString originDir_;
+};
+
 bool setLanguage(Language lang)
 {
-    QDir::setCurrent(APP_RESOURCE_DIRPATH);
-    easytr::setLanguages(easytr::Languages::fromFile(APP_LANG_FILEPATH));
+    {
+        DirectoryScope dirScope(APP_RESOURCE_DIRPATH);
+        easytr::setLanguages(easytr::Languages::fromFile(APP_LANG_FILEPATH));
+    }
     if (easytr::languages().empty())
+    {
+        qWarning() << "Failed to load languages or languages list is empty.";
         return false;
+    }
 
     std::string id = languageStringId(lang).toStdString();
     if (!easytr::hasLanguage(id))
+    {
+        qWarning() << QString("Language %1 is not available.").arg(
+            QString::fromStdString(id)).toUtf8().constData();
         return false;
+    }
 
-    easytr::setCurrentLanguage(id);
+    {
+        DirectoryScope dirScope(APP_RESOURCE_DIRPATH);
+        if (!easytr::setCurrentLanguage(id))
+        {
+            qWarning() << QString("Failed to set the current language to %1.").arg(
+                QString::fromStdString(id)).toUtf8().constData();
+            return false;
+        }
+    }
 
     QEvent event(QEvent::Type::LanguageChange);
     qApp->sendEvent(qApp, &event);

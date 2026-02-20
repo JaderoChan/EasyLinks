@@ -115,10 +115,7 @@ void ProgressWidget::onWorkFinished()
 
 void ProgressWidget::laterShowAndActivate(int ms)
 {
-    auto timer = new QTimer(this);
-    timer->start(ms);
-    connect(timer, &QTimer::timeout, this, [=]() { showAndActivate(this); });
-    connect(timer, &QTimer::timeout, this, [=]() { delete timer; });
+    QTimer::singleShot(ms, this, [=]() { showAndActivate(this); });
 }
 
 void ProgressWidget::updateText()

@@ -1,5 +1,16 @@
 #include "rename_pattern.h"
 
+static bool isLegalPathChar(QChar ch)
+{
+    return (
+        ch != '/' && ch != '\\' &&
+        ch != ':' && ch != '*' &&
+        ch != '?' && ch != '"' &&
+        ch != '<' && ch != '>' &&
+        ch != '|'
+    );
+}
+
 bool isLegalRenamePattern(const QString& renamePattern)
 {
     bool hasAt = false;
@@ -8,24 +19,38 @@ bool isLegalRenamePattern(const QString& renamePattern)
     bool isEscape = false;
     for (QChar ch : renamePattern)
     {
+        if (!isLegalPathChar(ch) && ch != '\\')
+            return false;
+
         if (ch == '\\')
         {
             isEscape = true;
             continue;
         }
-
-        if (!isEscape)
+        else if (ch == '@')
         {
-            if (ch == '@')
+            if (!isEscape)
                 hasAt = true;
-            else if (ch == '#')
+            else
+                isEscape = false;
+        }
+        else if (ch == '#')
+        {
+            if (!isEscape)
                 hasSharp = true;
+            else
+                isEscape = false;
+        }
+        else
+        {
+            if (isEscape)
+                return false;
         }
 
         isEscape = false;
     }
 
-    return hasAt && hasSharp;
+    return hasAt && hasSharp && !isEscape;
 }
 
 QString parseRenamePattern(const QString& renamePattern, const QString& str, int num)

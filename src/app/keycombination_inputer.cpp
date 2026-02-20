@@ -29,6 +29,7 @@ void KeyCombinationInputer::setWaitingText(const QString& text)
 
 void KeyCombinationInputer::setNoneKeyCombinationText(const QString& text)
 {
+    noneKcText_ = text;
     setPlaceholderText(noneKcText_);
 }
 
@@ -54,7 +55,7 @@ void KeyCombinationInputer::setKeyCombination(const QKeySequence& keySequence)
     updateText();
 }
 
-bool KeyCombinationInputer::isVaild(int key, Qt::KeyboardModifiers mod)
+bool KeyCombinationInputer::isValid(int key, Qt::KeyboardModifiers mod)
 {
     bool keyIsValid =
         (key >= Qt::Key::Key_A && key <= Qt::Key::Key_Z) ||
@@ -65,6 +66,7 @@ bool KeyCombinationInputer::isVaild(int key, Qt::KeyboardModifiers mod)
         (key >= Qt::Key::Key_BraceLeft && key <= Qt::Key::Key_AsciiTilde) ||
         (key >= Qt::Key::Key_Tab && key <= Qt::Key::Key_PageDown);
 
+    // 至少要求一个修饰键。
     bool modIsValid =
         (mod & Qt::Modifier::META) ||
         (mod & Qt::Modifier::CTRL) ||
@@ -116,7 +118,7 @@ void KeyCombinationInputer::keyPressEvent(QKeyEvent* event)
             clearFocus();
         }
         // 等待一个有效输入。
-        else if (isVaild(key, mod))
+        else if (isValid(key, mod))
         {
             isWaitingInput_ = false;
             setKeyCombination(QKeyCombination(mod, static_cast<Qt::Key>(key)));

@@ -4,6 +4,7 @@
 #include <qstring.h>
 #include <qtextstream.h>
 #include <qobject.h>
+#include <qmutex.h>
 
 // 单例类
 class FileLogManager : public QObject
@@ -25,6 +26,7 @@ private:
     FileLogManager(const FileLogManager&) = delete;
     FileLogManager& operator=(const FileLogManager&) = delete;
 
+    QMutex mutex_;
     QFile file_;
     QTextStream stream_;
 };
