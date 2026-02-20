@@ -24,7 +24,11 @@ file(
 if(WIN32)
     file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_win.cpp)
 elseif(APPLE)
-    file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_mac.cpp)
+    file(
+        GLOB PLATFORMS_SRC
+        ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_mac.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_mac.mm
+    )
 else()
     file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_linux.cpp)
 endif()
@@ -47,7 +51,8 @@ qt_add_executable(${PROJECT_NAME} ${PROJECT_SOURCE})
 ###########
 
 # 配置头文件路径
-target_include_directories(${PROJECT_NAME} PRIVATE
+target_include_directories(
+    ${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}/include
 )
@@ -63,10 +68,14 @@ target_link_libraries(
 if(APPLE)
     find_library(APPLICATION_SERVICES_LIBRARY ApplicationServices)
     find_library(APP_KIT_LIBRARY AppKit)
+    find_library(COCOA_LIBRARY Cocoa)
+    find_library(SERVICE_MANAGEMENT_LIBRARY ServiceManagement)
     target_link_libraries(
         ${PROJECT_NAME} PRIVATE
         ${APPLICATION_SERVICES_LIBRARY}
         ${APP_KIT_LIBRARY}
+        ${COCOA_LIBRARY}
+        ${SERVICE_MANAGEMENT_LIBRARY}
     )
 endif()
 
@@ -116,7 +125,8 @@ elseif(APPLE)
     # Apple
 
     # Info Plist Strings
-    set(INFO_PLIST_STRINGS_NAMES
+    set(
+        INFO_PLIST_STRINGS_NAMES
         en.lproj
         zh_CN.lproj
     )
