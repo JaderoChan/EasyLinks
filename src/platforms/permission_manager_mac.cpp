@@ -14,6 +14,12 @@ bool PermissionManager::hasPermission()
 
 void PermissionManager::requestPermission()
 {
+    // 请求自动化 Finder、System Events 权限
+    const char* finder = "osascript -e 'tell application \"Finder\" to activate'";
+    const char* systemEvents = "osascript -e 'tell application \"System Events\" to activate'";
+    system(finder);
+    system(systemEvents);
+
     // MacOS下需要“辅助功能”权限以支持Hook全局热键。
     CFStringRef keys[] = {kAXTrustedCheckOptionPrompt};
     CFTypeRef values[] = {kCFBooleanTrue};
@@ -26,10 +32,4 @@ void PermissionManager::requestPermission()
 
     AXIsProcessTrustedWithOptions(options);
     CFRelease(options);
-
-    // 请求自动化 Finder、System Events 权限
-    const char* finder = "osascript -e 'tell application \"Finder\" to activate'";
-    const char* systemEvents = "osascript -e 'tell application \"System Events\" to activate'";
-    system(finder);
-    system(systemEvents);
 }
