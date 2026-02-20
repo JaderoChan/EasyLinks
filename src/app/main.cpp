@@ -8,15 +8,19 @@
 #include "config.h"
 #include "app_manager.h"
 #include "file_log_manager.h"
+#include "language.h"
 #include "require_permission_dialog.h"
+#include "settings.h"
 #include "platforms/permission_manager.h"
 
 int main(int argc, char* argv[])
 {
     // 确保单例运行
-    QLockFile lock(QDir::temp().absoluteFilePath(APP_LOCK_FILEPATH));
-    if (lock.isLocked() || !lock.tryLock(200))
-        return 1;
+    {
+        QLockFile lock(QDir::temp().absoluteFilePath(APP_LOCK_FILEPATH));
+        if (lock.isLocked() || !lock.tryLock(200))
+            return 1;
+    }
 
     // 设置程序全局属性
     QApplication a(argc, argv);
@@ -28,16 +32,26 @@ int main(int argc, char* argv[])
     a.setQuitOnLastWindowClosed(false);
 
     // 配置日志输出文件
-    QDir logDir = QDir(APP_LOG_DIRPATH);
-    if (!logDir.exists())
     {
-        if (!logDir.mkpath("."))
-            qCritical() << "Failed to create log directory:" << APP_LOG_DIRPATH;
+        QDir logDir = QDir(APP_LOG_DIRPATH);
+        if (!logDir.exists())
+        {
+            if (!logDir.mkpath("."))
+                qCritical() << "Failed to create log directory:" << APP_LOG_DIRPATH;
+        }
     }
 
     FileLogManager& logMgr = FileLogManager::getInstance();
     if (!logMgr.setup(APP_LOG_FILEPATH))
         qCritical() << "Failed to set up log file:" << APP_LOG_FILEPATH;
+
+    // 设置语言
+    {
+        Settings settings = loadSettings();
+        if (!setLanguage(settings.language))
+            qWarning() << QString("Failed to set language to %1").arg(
+                languageStringId(settings.language)).toUtf8().constData();
+    }
 
     // 检查应用权限
     if (!PermissionManager::hasPermission())
