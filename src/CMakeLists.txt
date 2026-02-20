@@ -11,7 +11,7 @@ configure_file(
     @ONLY
 )
 
-# 头文件（可用于在VS IDE的项目文件树中显示头文件）
+# 头文件（可用于在Visual Studio IDE的项目文件树中显示头文件）
 file(GLOB_RECURSE HEADER ${CMAKE_CURRENT_SOURCE_DIR}/*.h ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
 # 源文件
 file(GLOB_RECURSE SRC ${CMAKE_CURRENT_SOURCE_DIR}/app/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/filelink/*.cpp)
@@ -105,12 +105,10 @@ elseif(APPLE)
         ${PROJECT_NAME} PROPERTIES
         MACOSX_BUNDLE_ICON_FILE "app.ico"
     )
-
     set_source_files_properties(
         ${APP_ICON} PROPERTIES
         MACOSX_PACKAGE_LOCATION "Resources"
     )
-
     target_sources(${PROJECT_NAME} PRIVATE ${APP_ICON})
 else()
     # TODO
@@ -138,6 +136,7 @@ if(APPLE)
         ${SCRIPT_FILES} PROPERTIES
         MACOSX_PACKAGE_LOCATION "Resources/scripts"
     )
+    target_sources(${PROJECT_NAME} PRIVATE ${SCRIPT_FILES})
 endif()
 
 # 配置MacOS下语言文件
