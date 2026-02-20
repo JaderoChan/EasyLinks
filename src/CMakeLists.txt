@@ -138,7 +138,7 @@ elseif(APPLE)
         set(INFO_PLIST_STRINGS_FILE ${CMAKE_CURRENT_BINARY_DIR}/${INFO_PLIST_STRINGS_NAME}/InfoPlist.strings)
         set_source_files_properties(
             ${INFO_PLIST_STRINGS_FILE} PROPERTIES
-            MACOSX_BUNDLE_LOCATION "Resources/${INFO_PLIST_STRINGS_NAME}"
+            MACOSX_PACKAGE_LOCATION "Resources/${INFO_PLIST_STRINGS_NAME}"
         )
         target_sources(${PROJECT_NAME} PRIVATE ${INFO_PLIST_STRINGS_FILE})
     endforeach()
