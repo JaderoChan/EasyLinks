@@ -15,12 +15,9 @@
 
 int main(int argc, char* argv[])
 {
-    // 确保单例运行
-    {
-        QLockFile lock(QDir::temp().absoluteFilePath(APP_LOCK_FILEPATH));
-        if (lock.isLocked() || !lock.tryLock(200))
-            return 1;
-    }
+    QLockFile lock(QDir::temp().absoluteFilePath(APP_LOCK_FILEPATH));
+    if (lock.isLocked() || !lock.tryLock(200))
+        return 1;
 
     // 设置程序全局属性
     QApplication a(argc, argv);
