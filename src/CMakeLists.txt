@@ -129,7 +129,7 @@ elseif(APPLE)
     )
     foreach(INFO_PLST_STRINGS_NAME ${INFO_PLIST_STRINGS_NAMES})
         configure_file(
-            ${CMAKE_TEMPLATE_DIR}/InfoPlistStrings/${INFO_PLIST_STRINGS_NAME}/InfoPlist.strings
+            ${CMAKE_TEMPLATE_DIR}/InfoPlistStrings/${INFO_PLIST_STRINGS_NAME}/InfoPlist.strings.in
             ${CMAKE_CURRENT_BINARY_DIR}/${INFO_PLIST_STRINGS_NAME}/InfoPlist.strings
             @ONLY
         )
