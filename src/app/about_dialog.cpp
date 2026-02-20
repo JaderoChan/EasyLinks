@@ -18,13 +18,6 @@ AboutDialog::AboutDialog(QWidget* parent) :
     updateText();
 }
 
-void AboutDialog::showAndActivate()
-{
-    show();
-    raise();
-    activateWindow();
-}
-
 void AboutDialog::updateText()
 {
     setWindowTitle(EASYTR("AboutDialog.WindowTitle"));

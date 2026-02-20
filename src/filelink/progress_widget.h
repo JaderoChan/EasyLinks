@@ -31,7 +31,6 @@ public:
 
     void onWorkFinished();
 
-    void showAndActivate();
     void laterShowAndActivate(int ms);
 
 signals:

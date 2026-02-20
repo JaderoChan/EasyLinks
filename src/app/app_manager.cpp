@@ -5,8 +5,9 @@
 
 #include <easy_translate.hpp>
 
-#include "platforms/auto_run_on_startup.h"
 #include "language.h"
+#include "platforms/auto_run_on_startup.h"
+#include "utils/qwidget_utils.h"
 
 AppManager::AppManager(QObject* parent)
     : QObject(parent)
@@ -57,7 +58,7 @@ void AppManager::showAboutDialog()
 {
     auto dlg = new AboutDialog();
     dlg->setAttribute(Qt::WA_DeleteOnClose);
-    dlg->showAndActivate();
+    showAndActivate(dlg);
 }
 
 void AppManager::showSettingsWidget()
@@ -65,7 +66,7 @@ void AppManager::showSettingsWidget()
     auto wgt = new SettingsWidget(settings_);
     wgt->setAttribute(Qt::WA_DeleteOnClose);
     connect(wgt, &SettingsWidget::settingsChanged, this, &AppManager::setSettings);
-    wgt->showAndActivate();
+    showAndActivate(wgt);
 }
 
 void AppManager::openLogDirectory()

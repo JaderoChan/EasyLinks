@@ -58,13 +58,6 @@ SettingsWidget::SettingsWidget(const Settings& settings, QWidget* parent)
     updateText();
 }
 
-void SettingsWidget::showAndActivate()
-{
-    show();
-    raise();
-    activateWindow();
-}
-
 void SettingsWidget::updateText()
 {
     setWindowTitle(EASYTR("SettingsWidget.WindowTitle"));

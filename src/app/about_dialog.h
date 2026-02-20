@@ -10,8 +10,6 @@ class AboutDialog : public QDialog
 public:
     explicit AboutDialog(QWidget* parent = nullptr);
 
-    void showAndActivate();
-
 protected:
     virtual void updateText();
     void changeEvent(QEvent* event) override;

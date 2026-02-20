@@ -6,6 +6,7 @@
 
 #include "conflict_decision_dialog.h"
 #include "utils/string_format.h"
+#include "utils/qwidget_utils.h"
 
 #define CLSNAME "ProgressDialog"
 #define PATH_TEXT_FORMAT_STRING \
@@ -92,7 +93,7 @@ void ProgressWidget::appendErrorLog(LinkType linkType, const EntryPair& entryPai
 void ProgressWidget::decideConflicts(const LinkTasks& conflicts)
 {
     conflicts_ = conflicts;
-    showAndActivate();
+    showAndActivate(this);
     pageToEcsWidget();
 }
 
@@ -112,18 +113,11 @@ void ProgressWidget::onWorkFinished()
     updateSpeedRemainingTimeDisplay();
 }
 
-void ProgressWidget::showAndActivate()
-{
-    show();
-    raise();
-    activateWindow();
-}
-
 void ProgressWidget::laterShowAndActivate(int ms)
 {
     auto timer = new QTimer(this);
     timer->start(ms);
-    connect(timer, &QTimer::timeout, this, &ProgressWidget::showAndActivate);
+    connect(timer, &QTimer::timeout, this, [=]() { showAndActivate(this); });
     connect(timer, &QTimer::timeout, this, [=]() { delete timer; });
 }
 
@@ -303,7 +297,7 @@ void ProgressWidget::updateFailedCountDisplay()
     {
         ui.errorWgt->setEnabled(true);
         if (keepWhenErrorOccurred_)
-            showAndActivate();
+            showAndActivate(this);
     }
 }
 

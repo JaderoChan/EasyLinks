@@ -13,8 +13,6 @@ class SettingsWidget : public QWidget
 public:
     explicit SettingsWidget(const Settings& settings, QWidget* parent = nullptr);
 
-    void showAndActivate();
-
 signals:
     void settingsChanged(Settings settings);
 
