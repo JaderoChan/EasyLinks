@@ -41,7 +41,7 @@
     "ProgressDialog.Label.Speed": "Speed: ",
     "ProgressDialog.Label.SpeedUnit": "entries/s",
     "RequirePermissionDialog.Text.Message": "Permission denied! Please grant the necessary permissions to activate the Hook Global Hotkey!",
-    "RequirePermissionDialog.Text.Message.Mac": "Permission denied! Please grant the necessary permissions to activate the Hook Global Hotkey and automation scripts!",
+    "RequirePermissionDialog.Text.Message.Mac": "Permission denied! Please grant the necessary permissions to activate the Hook Global Hotkey and automation scripts (\"System Preferences -> Security & Privacy -> Automation\" enable EasyLinks access to Finder and System Events) !",
     "RequirePermissionDialog.Button.GotoGrantPermission": "Go to Grant Permission",
     "RequirePermissionDialog.Button.Exit": "Exit Application",
     "RequirePermissionDialog.Button.ForceContinue": "Force Continue",
