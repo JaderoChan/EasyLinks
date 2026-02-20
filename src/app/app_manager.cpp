@@ -12,7 +12,7 @@ AppManager::AppManager(QObject* parent)
     : QObject(parent)
 {
     hotkeyMgr_ = new HotkeyManager(this);
-    sti_ = new SystemTrayIcon(this);;
+    sti_ = new SystemTrayIcon(this);
 
     connect(sti_, &SystemTrayIcon::settingsActionTriggered, this, &AppManager::showSettingsWidget);
     connect(sti_, &SystemTrayIcon::aboutActionTriggered, this, &AppManager::showAboutDialog);
