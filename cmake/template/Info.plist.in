@@ -2,33 +2,39 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <!-- 应用基本信息 -->
-    <key>CFBundleExecutable</key>
-    <string>@MACOSX_BUNDLE_EXECUTABLE_NAME@</string>
-
-    <key>CFBundleIdentifier</key>
-    <string>@MACOSX_BUNDLE_GUI_IDENTIFIER@</string>
-
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
 
-    <key>CFBundleName</key>
-    <string>@MACOSX_BUNDLE_BUNDLE_NAME@</string>
-
     <key>CFBundlePackageType</key>
     <string>APPL</string>
-
-    <key>CFBundleShortVersionString</key>
-    <string>@MACOSX_BUNDLE_SHORT_VERSION_STRING@</string>
-
-    <key>CFBundleVersion</key>
-    <string>@MACOSX_BUNDLE_BUNDLE_VERSION@</string>
 
     <key>LSMinimumSystemVersion</key>
     <string>10.14</string>
 
     <key>NSHighResolutionCapable</key>
     <true/>
+
+    <!-- 应用基本信息 -->
+    <key>CFBundleIconFile</key>
+    <string>@APP_ICON@</string>
+
+    <key>CFBundleIdentifier</key>
+    <string>@APP_ORGANIZATION_DOMAIN@.@APP_TITLE@</string>
+
+    <key>CFBundleName</key>
+    <string>@APP_TITLE@</string>
+
+    <key>CFBundleExecutable</key>
+    <string>@APP_TITLE@</string>
+
+    <key>CFBundleVersion</key>
+    <string>@APP_VERSION@</string>
+
+    <key>CFBundleShortVersionString</key>
+    <string>@APP_VERSION@</string>
+
+    <key>CFBundleCopyRight</key>
+    <string>@APP_COPYRIGHT_TEXT</string>
 
     <!-- 辅助功能权限说明 -->
     <key>NSAppleEventsUsageDescription</key>
@@ -37,6 +43,7 @@
     <key>NSAppleScriptEnabled</key>
     <true/>
 
+    <!-- 本地化支持 -->
     <key>CFBundleLocalizations</key>
     <array>
         <string>en</string>
