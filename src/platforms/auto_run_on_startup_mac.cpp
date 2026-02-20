@@ -4,7 +4,7 @@
 
 #include <unistd.h> // getuid
 
-#include <qcoreapplication.h>
+#include <qapplication.h>
 #include <qdir.h>
 #include <qfile.h>
 #include <qfileinfo.h>
@@ -34,7 +34,7 @@ bool isAutoRunOnStartUp()
 
 bool setAutoRunOnStartUp(bool enable)
 {
-    auto appPath = QCoreApplication::applicationFilePath();
+    auto appPath = QApplication::applicationFilePath();
     if (appPath.isEmpty())
         return false;
 
@@ -43,8 +43,8 @@ bool setAutoRunOnStartUp(bool enable)
 
     if (enable)
     {
-        QDir dir(QDir::homePath() + "/Library/LaunchAgents");
-        if (!dir.exists() && !dir.mkpath("."))
+        QDir launchAgentPlistDir = QDir(launchAgentPlistPath).absolutePath();
+        if (!launchAgentPlistDir.exists() && !launchAgentPlistDir.mkpath("."))
             return false;
 
         QFile file(launchAgentPlistPath);
@@ -56,14 +56,14 @@ bool setAutoRunOnStartUp(bool enable)
         file.close();
 
         QString cmd = QString("launchctl bootstrap %1 \"%2\"").arg(guiDomain, launchAgentPlistPath);
-        int rc = std::system(cmd.toUtf8().constData());
+        int rc = system(cmd.toUtf8().constData());
 
         return rc == 0;
     }
     else
     {
         QString cmd = QString("launchctl bootout %1 \"%2\"").arg(guiDomain, launchAgentPlistPath);
-        std::system(cmd.toUtf8().constData());
+        system(cmd.toUtf8().constData());
 
         if (QFile::exists(launchAgentPlistPath))
             return QFile::remove(launchAgentPlistPath);

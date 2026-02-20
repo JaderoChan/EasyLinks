@@ -10,8 +10,8 @@ bool isAutoRunOnStartUp()
     QSettings settings(
         "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
         QSettings::NativeFormat);
-    QString appName = QCoreApplication::applicationName();
-    QString appPath = "\"" + QDir::toNativeSeparators(QCoreApplication::applicationFilePath()) + "\"";
+    QString appName = QApplication::applicationName();
+    QString appPath = "\"" + QDir::toNativeSeparators(QApplication::applicationFilePath()) + "\"";
     if (settings.contains(appName) && settings.value(appName) == appPath)
         return true;
     return false;
@@ -22,8 +22,8 @@ bool setAutoRunOnStartUp(bool enable)
     QSettings settings(
         "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
         QSettings::NativeFormat);
-    QString appName = QCoreApplication::applicationName();
-    QString appPath = "\"" + QDir::toNativeSeparators(QCoreApplication::applicationFilePath()) + "\"";
+    QString appName = QApplication::applicationName();
+    QString appPath = "\"" + QDir::toNativeSeparators(QApplication::applicationFilePath()) + "\"";
     if (enable)
         settings.setValue(appName, appPath);
     else
