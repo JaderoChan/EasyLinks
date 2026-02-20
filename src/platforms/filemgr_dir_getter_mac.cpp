@@ -8,6 +8,7 @@
 #include <qfileinfo.h>
 
 #include "config.h"
+#include "utils/file_io.h"
 
 static std::string runCommand(const std::string& cmd)
 {
@@ -27,7 +28,7 @@ static std::string runCommand(const std::string& cmd)
 QString getFocusedFileManagerDir()
 {
     static const std::string script =
-        QFile(APP_RESOURCE_DIRPATH + "/scripts/get_focused_finder_dir.sh").readAll().toStdString();
+        readAllFromFile(APP_RESOURCE_DIRPATH + "/scripts/get_focused_finder_dir.sh").toStdString();
     static const std::string cmd = "osascript -e '" + script + "'";
     std::string out = runCommand(cmd);
 

@@ -39,9 +39,6 @@ int main(int argc, char* argv[])
     if (!logMgr.setup(APP_LOG_FILEPATH))
         qCritical() << "Failed to set up log file:" << APP_LOG_FILEPATH;
 
-    // 应用主体
-    AppManager mgr;
-
     // 检查应用权限
     if (!PermissionManager::hasPermission())
     {
@@ -60,6 +57,9 @@ int main(int argc, char* argv[])
                 break;
         }
     }
+
+    // 应用主体
+    AppManager mgr;
 
     int ret = a.exec();
 

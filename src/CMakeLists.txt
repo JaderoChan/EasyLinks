@@ -14,7 +14,12 @@ configure_file(
 # 头文件（可用于在Visual Studio IDE的项目文件树中显示头文件）
 file(GLOB_RECURSE HEADER ${CMAKE_CURRENT_SOURCE_DIR}/*.h ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
 # 源文件
-file(GLOB_RECURSE SRC ${CMAKE_CURRENT_SOURCE_DIR}/app/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/filelink/*.cpp)
+file(
+    GLOB_RECURSE SRC
+    ${CMAKE_CURRENT_SOURCE_DIR}/app/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/filelink/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/*.cpp
+)
 # 平台相关的代码
 if(WIN32)
     file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_win.cpp)

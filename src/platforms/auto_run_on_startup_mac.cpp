@@ -12,14 +12,14 @@
 #include <qtextstream.h>
 
 #include "config.h"
+#include "utils/file_io.h"
 
 static QString buildPlistContent(const QString& label, const QString& appPath)
 {
-    QString rawContent =
-        QFile(APP_RESOURCE_DIRPATH + "/scripts/auto_run_on_startup_format.plist").readAll();
-    QString formattedContent =
-        rawContent.arg(label, appPath);
-    return formattedContent;
+    QString content =
+        readAllFromFile(APP_RESOURCE_DIRPATH + "/scripts/auto_run_on_startup_format.plist")
+        .arg(label, appPath);
+    return content;
 }
 
 static const QString plistName = QString("%1.%2").arg(APP_ORGANIZATION_DOMAIN, APP_TITLE);
