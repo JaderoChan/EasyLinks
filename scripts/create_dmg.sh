@@ -1,6 +1,6 @@
 APP="$1"
 BUILD_DIR="$2"
-DMG_NAME="${APP}.dmg"
+DMG_NAME="${BUILD_DIR}/${APP}.dmg"
 DMG_TEMP_DIR="dmg_temp"
 
 echo "Creating DMG..."
