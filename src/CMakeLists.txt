@@ -168,3 +168,14 @@ if(NOT APPLE OR NOT IS_MACOSX_BUNDLE)
         ${LANGUAGES_DIR} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/languages
     )
 endif()
+
+# MacOS DMG打包
+if(APPLE AND IS_MACOSX_BUNDLE)
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_SOURCE_DIR}/scripts/create_dmg.sh
+        ${PROJECT_NAME}
+        ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        VERBATIM
+    )
+endif()
