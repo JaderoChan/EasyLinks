@@ -5,6 +5,7 @@
 #include <easy_translate.hpp>
 
 #include "conflict_decision_dialog.h"
+#include "utils/string_format.h"
 
 #define CLSNAME "ProgressDialog"
 #define PATH_TEXT_FORMAT_STRING \
@@ -251,10 +252,6 @@ void ProgressWidget::updateSpeedRemainingTimeDisplay()
     lastProcessedEntries_ = stats_.processedEntries;
     ui.speedValue->setText(QString::number(speed_));
 
-    // 保证数字具有两位，使用0进行左补位。
-    static auto formatNumberString = [](int num) -> QString
-    { return (num < 10 ? "0" : "") + QString::number(num); };
-
     int remainingTime = (speed_ == 0 ? 0 : (stats_.totalEntries - stats_.processedEntries) / speed_);
     if (speed_ == 0)
     {
@@ -267,9 +264,9 @@ void ProgressWidget::updateSpeedRemainingTimeDisplay()
         int sec = remainingTime % 60;
         int min = ((remainingTime - sec) / 60) % 60;
         int hour = remainingTime / 3600;
-        ui.remainingTimeHourValue->setText(formatNumberString(hour));
-        ui.remainingTimeMinValue->setText(formatNumberString(min));
-        ui.remainingTimeSecValue->setText(formatNumberString(sec));
+        ui.remainingTimeHourValue->setText(getPreferredNumberString(hour));
+        ui.remainingTimeMinValue->setText(getPreferredNumberString(min));
+        ui.remainingTimeSecValue->setText(getPreferredNumberString(sec));
     }
 }
 

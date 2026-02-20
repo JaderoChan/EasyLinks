@@ -5,6 +5,7 @@
 #include <easy_translate.hpp>
 
 #include "config.h"
+#include "utils/string_format.h"
 
 #define CLSNAME "ErrorLogDialog"
 #define ERROR_LOG_FORMAT_STRING \
@@ -54,17 +55,14 @@ void ErrorLogDialog::changeEvent(QEvent* event)
 
 QString ErrorLogDialog::currentTimeString()
 {
-    static auto formatNumberString = [](int num) -> QString
-    { return (num < 10 ? "0" : "") + QString::number(num); };
-
     auto dt = QDateTime::currentDateTime();
     return QString("%1-%2-%3 %4:%5:%6.%7").arg(
-        formatNumberString(dt.date().year()),
-        formatNumberString(dt.date().month()),
-        formatNumberString(dt.date().day()),
-        formatNumberString(dt.time().hour()),
-        formatNumberString(dt.time().minute()),
-        formatNumberString(dt.time().second()),
-        formatNumberString(dt.time().msec())
+        getPreferredNumberString(dt.date().year()),
+        getPreferredNumberString(dt.date().month()),
+        getPreferredNumberString(dt.date().day()),
+        getPreferredNumberString(dt.time().hour()),
+        getPreferredNumberString(dt.time().minute()),
+        getPreferredNumberString(dt.time().second()),
+        getPreferredNumberString(dt.time().msec())
     );
 }
