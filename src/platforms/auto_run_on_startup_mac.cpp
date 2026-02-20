@@ -17,8 +17,8 @@
 static QString buildPlistContent(const QString& label, const QString& appPath)
 {
     QString content =
-        readAllFromFile(APP_RESOURCE_DIRPATH + "/scripts/auto_run_on_startup_format.plist")
-        .arg(label, appPath);
+        readAllFromFile(APP_RESOURCE_DIRPATH + "/scripts/auto_run_on_startup_format.plist").arg(
+            label, appPath);
     return content;
 }
 
