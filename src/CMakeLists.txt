@@ -127,18 +127,18 @@ elseif(APPLE)
         en.lproj
         zh_CN.lproj
     )
-    foreach(INFO_PLST_STRINGS_NAME IN LISTS ${INFO_PLIST_STRINGS_NAMES})
+    foreach(INFO_PLST_STRINGS_NAME IN LISTS INFO_PLIST_STRINGS_NAMES)
         configure_file(
             ${CMAKE_TEMPLATE_DIR}/InfoPlistStrings/${INFO_PLIST_STRINGS_NAME}/InfoPlist.strings.in
             ${CMAKE_CURRENT_BINARY_DIR}/${INFO_PLIST_STRINGS_NAME}/InfoPlist.strings
             @ONLY
         )
     endforeach()
-    foreach(INFO_PLIST_STRINGS_NAME IN LISTS ${INFO_PLIST_STRINGS_NAMES})
+    foreach(INFO_PLIST_STRINGS_NAME IN LISTS INFO_PLIST_STRINGS_NAMES)
         set(INFO_PLIST_STRINGS_FILE ${CMAKE_CURRENT_BINARY_DIR}/${INFO_PLIST_STRINGS_NAME}/InfoPlist.strings)
         set_source_files_properties(
             ${INFO_PLIST_STRINGS_FILE} PROPERTIES
-            MACOSX_BUNDLE_LOCATION "Resource/${INFO_PLIST_STRINGS_NAME}"
+            MACOSX_BUNDLE_LOCATION "Resources/${INFO_PLIST_STRINGS_NAME}"
         )
         target_sources(${PROJECT_NAME} PRIVATE ${INFO_PLIST_STRINGS_FILE})
     endforeach()
@@ -150,6 +150,13 @@ elseif(APPLE)
         ${MACOSX_BUNDLE_INFO_PLIST}
         @ONLY
     )
+
+    # 应用图标
+    set_source_files_properties(
+        ${APP_ICON} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources"
+    )
+    target_sources(${PROJECT_NAME} PRIVATE ${APP_ICON})
 
     set_target_properties(
         ${PROJECT_NAME} PROPERTIES
@@ -163,13 +170,6 @@ elseif(APPLE)
         MACOSX_BUNDLE_COPYRIGHT ${MACOSX_BUNDLE_COPYRIGHT}
         MACOSX_BUNDLE_INFO_PLIST ${MACOSX_BUNDLE_INFO_PLIST}
     )
-
-    # 应用图标
-    set_source_files_properties(
-        ${APP_ICON} PROPERTIES
-        MACOSX_PACKAGE_LOCATION "Resources"
-    )
-    target_sources(${PROJECT_NAME} PRIVATE ${APP_ICON})
 
     # 语言文件
     file(GLOB LANG_FILES ${LANGUAGES_DIR}/*)
