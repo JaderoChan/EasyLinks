@@ -26,10 +26,10 @@ ProgressWidget::ProgressWidget(
     ui.setupUi(this);
     setFixedSize(width(), height());
 
-    ui.sourcePathText->setText(QString(PATH_TEXT_FORMAT_STRING).arg(
-        sourceDir, QDir(sourceDir).isRoot() ? sourceDir : QDir(sourceDir).dirName()));
-    ui.targetPathText->setText(QString(PATH_TEXT_FORMAT_STRING).arg(
-        targetDir, QDir(targetDir).isRoot() ? targetDir : QDir(targetDir).dirName()));
+    ui.sourcePathText->setText(QString(PATH_TEXT_FORMAT_STRING)
+    .arg(sourceDir, QDir(sourceDir).isRoot() ? sourceDir : QDir(sourceDir).dirName()));
+    ui.targetPathText->setText(QString(PATH_TEXT_FORMAT_STRING)
+    .arg(targetDir, QDir(targetDir).isRoot() ? targetDir : QDir(targetDir).dirName()));
 
     ui.errorWgt->setEnabled(false);
     errorLogDlg_.hide();

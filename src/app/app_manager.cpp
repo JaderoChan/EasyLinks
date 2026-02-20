@@ -30,8 +30,8 @@ void AppManager::setSettings(const Settings& settings)
     if (settings.language != settings_.language)
     {
         if (!setLanguage(settings.language))
-            qWarning() << QString("Failed to set language to %1").arg(
-                languageStringId(settings.language)).toUtf8().constData();
+            qWarning() << QString("Failed to set language to %1")
+            .arg(languageStringId(settings.language)).toUtf8().constData();
 
         sti_->updateText();
         qApp->setApplicationDisplayName(EASYTR("App.Title"));
@@ -41,8 +41,8 @@ void AppManager::setSettings(const Settings& settings)
     if (settings.autoRunOnStartUp != settings_.autoRunOnStartUp)
     {
         if (!setAutoRunOnStartUp(settings.autoRunOnStartUp))
-            qWarning() << QString("Failed to %1 auto run on start up").arg(
-                settings.autoRunOnStartUp ? "set" : "unset").toUtf8().constData();
+            qWarning() << QString("Failed to %1 auto run on start up")
+            .arg(settings.autoRunOnStartUp ? "set" : "unset").toUtf8().constData();
     }
 
     // Update own settings
