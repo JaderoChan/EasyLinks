@@ -21,5 +21,3 @@ hdiutil create -volname "$APP" \
 
 # 清理
 rm -rf "$DMG_TEMP_DIR"
-
-echo "DMG created: $DMG_NAME"
