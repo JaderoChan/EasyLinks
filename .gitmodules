@@ -1,0 +1,6 @@
+[submodule "3rdparty/easy_translate"]
+	path = 3rdparty/easy_translate
+	url = https://github.com/jaderochan/easy_translate
+[submodule "3rdparty/global_hotkey"]
+	path = 3rdparty/global_hotkey
+	url = https://github.com/jaderochan/global_hotkey
