@@ -1,0 +1,6 @@
+build/
+.vscode/
+tmp/
+temp/
+bin/
+install/
