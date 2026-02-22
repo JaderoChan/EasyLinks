@@ -17,6 +17,7 @@ Make sure Qt is configured correctly.
 ```shell
 git clone https://github/jaderochan/EasyLinks
 cd EasyLinks
+git submodule update --init --recursive
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 ```
