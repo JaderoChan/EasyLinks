@@ -3,6 +3,8 @@
 #include <qdir.h>
 #include <qfileinfo.h>
 
+#include "utils/logging.h"
+
 FileLinkController::FileLinkController(
     LinkType linkType,
     const QStringList& sourcePaths,
@@ -22,12 +24,11 @@ FileLinkController::FileLinkController(
     progress_ = new ProgressWidget(linkType, sourceDir, targetDir, config_.keepDialogOnErrorOccurred);
     progress_->setAttribute(Qt::WA_DeleteOnClose);
 
-    qInfo() << QString("%1 %2 entries in %3 to %4 directory").arg(
+    qlog(qInfo(), "[FileLink] %1 %2 entries in %3 to %4 directory",
         linkType == LinkType::LT_SYMLINK ? "Creating symbolic links for" : "Creating hard links for",
         QString::number(sourcePaths.size()),
         sourceDir,
-        targetDir
-    ).toUtf8().constData();
+        targetDir);
 
     connect(worker_, &FileLinkWorker::progressUpdated, progress_, &ProgressWidget::updateProgress);
     connect(worker_, &FileLinkWorker::errorOccurred, progress_, &ProgressWidget::appendErrorLog);

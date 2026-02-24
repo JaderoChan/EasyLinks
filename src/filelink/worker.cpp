@@ -62,7 +62,7 @@ void FileLinkWorker::createLink(LinkType linkType, const QFileInfo& source, cons
     if (!targetDir.exists())
     {
         if (!targetDir.mkpath("."))
-            THROW_RTERR("The target path cannot be created.");
+            THROW_RTERR("The target path cannot be created");
     }
 
 #ifdef Q_OS_WIN
@@ -82,7 +82,7 @@ void FileLinkWorker::createLink(LinkType linkType, const QFileInfo& source, cons
             else if (source.isDir())
                 fs::create_directory_symlink(sourcePath, targetPath);
             else
-                THROW_RTERR("The source file is of an unsupported entity type.");
+                THROW_RTERR("The source file is of an unsupported entity type");
             break;
         }
         case LT_HARDLINK:
@@ -237,7 +237,7 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo& source, QFileInfo&
                 {
                     if (source.absoluteFilePath() == target.absoluteFilePath())
                     {
-                        THROW_RTERR("The replaced file and the replacement file are the same entity.");
+                        THROW_RTERR("The replaced file and the replacement file are the same entity");
                     }
 
                     QString targetOriginName = target.absoluteFilePath();
@@ -245,7 +245,7 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo& source, QFileInfo&
                     {
                         QString filepathInTrash;
                         if (!QFile::moveToTrash(targetOriginName, &filepathInTrash))
-                            THROW_RTERR("Failed to move the target file to trash.");
+                            THROW_RTERR("Failed to move the target file to trash");
                         try
                         {
                             createLink(linkType, source, target);
@@ -260,7 +260,7 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo& source, QFileInfo&
                     {
                         QString targetTempName = target.absoluteDir().filePath(target.fileName() + APP_UUID);
                         if (!QFile::rename(targetOriginName, targetTempName))
-                            THROW_RTERR("Failed to rename the target file.");
+                            THROW_RTERR("Failed to rename the target file");
                         try
                         {
                             createLink(linkType, source, target);
@@ -286,12 +286,12 @@ bool FileLinkWorker::createLink(LinkType linkType, QFileInfo& source, QFileInfo&
         }
         else
         {
-            THROW_RTERR("The target directory exists nonregular file entities of the same name.");
+            THROW_RTERR("The target directory exists nonregular file entities of the same name");
         }
     }
     else
     {
-        THROW_RTERR("The source file does not exist.");
+        THROW_RTERR("The source file does not exist");
     }
 
     return true;

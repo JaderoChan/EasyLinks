@@ -7,6 +7,7 @@
 #include <easy_translate.hpp>
 
 #include "config.h"
+#include "utils/logging.h"
 
 QString languageStringId(Language lang)
 {
@@ -54,15 +55,14 @@ bool setLanguage(Language lang)
     }
     if (easytr::languages().empty())
     {
-        qWarning() << "Failed to load languages or languages list is empty.";
+        qlog(qWarning(), "[Language] Failed to load languages or languages list is empty.");
         return false;
     }
 
     std::string id = languageStringId(lang).toStdString();
     if (!easytr::hasLanguage(id))
     {
-        qWarning() << QString("Language %1 is not available.").arg(
-            QString::fromStdString(id)).toUtf8().constData();
+        qlog(qWarning(), "[Language] Language %1 is not available.", QString::fromStdString(id));
         return false;
     }
 
@@ -70,8 +70,7 @@ bool setLanguage(Language lang)
         DirectoryScope dirScope(APP_RESOURCE_DIRPATH);
         if (!easytr::setCurrentLanguage(id))
         {
-            qWarning() << QString("Failed to set the current language to %1.").arg(
-                QString::fromStdString(id)).toUtf8().constData();
+            qlog(qWarning(), "[Language] Failed to set the current language to %1.", QString::fromStdString(id));
             return false;
         }
     }

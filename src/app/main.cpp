@@ -1,5 +1,4 @@
 #include <qapplication.h>
-#include <qdebug.h>
 #include <qdir.h>
 #include <qlockfile.h>
 
@@ -7,18 +6,19 @@
 
 #include "config.h"
 #include "app_manager.h"
-#include "file_log_manager.h"
+#include "file_logger.h"
 #include "language.h"
 #include "require_permission_dialog.h"
 #include "settings.h"
 #include "platforms/permission_manager.h"
+#include "utils/logging.h"
 
 int main(int argc, char* argv[])
 {
     QLockFile lock(QDir::temp().absoluteFilePath(APP_LOCK_FILEPATH));
     if (lock.isLocked() || !lock.tryLock(200))
     {
-        qCritical() << "Another instance is already running.";
+        qlog(qCritical(), "[Start] Another instance is already running");
         return 1;
     }
 
@@ -31,22 +31,9 @@ int main(int argc, char* argv[])
     a.setWindowIcon(QIcon(":/icons/app.ico"));
     a.setQuitOnLastWindowClosed(false);
 
-    // 配置日志输出文件
-    {
-        QDir logDir = QDir(APP_LOG_DIRPATH);
-        if (!logDir.exists() && !logDir.mkpath("."))
-        {
-            qCritical() << "Failed to create log directory:" << APP_LOG_DIRPATH;
-            return 1;
-        }
-    }
-
-    FileLogManager& logMgr = FileLogManager::getInstance();
-    if (!logMgr.setup(APP_LOG_FILEPATH))
-    {
-        qCritical() << "Failed to set up log file:" << APP_LOG_FILEPATH;
+    FileLogger& fileLogger = FileLogger::getInstance();
+    if (!fileLogger.setup(APP_LOG_FILEPATH))
         return 1;
-    }
 
     // 设置语言
     {
@@ -57,7 +44,7 @@ int main(int argc, char* argv[])
     // 检查应用权限
     if (!PermissionManager::hasPermission())
     {
-        qInfo() << "No permission, requesting...";
+        qlog(qInfo(), "[Start] No permission, try request");
 
         RequirePermissionDialog dlg;
         int ret = dlg.exec();

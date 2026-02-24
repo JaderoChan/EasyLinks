@@ -40,10 +40,7 @@ bool setAutoRunOnStartUp(bool enable)
     if (appPath.isEmpty())
         return false;
 
-    if (enable)
-        settings.setValue(appName, appPath);
-    else
-        settings.remove(appName);
+    enable ? settings.setValue(appName, appPath) : settings.remove(appName);
 
     settings.sync();
     return settings.status() == QSettings::NoError;

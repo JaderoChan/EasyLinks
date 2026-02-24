@@ -3,7 +3,7 @@
 #import <Cocoa/Cocoa.h>
 #import <ServiceManagement/ServiceManagement.h>
 
-#include <qdebug.h>
+#include "utils/logging.h"
 
 // AI Generate
 
@@ -21,16 +21,26 @@ bool setAutoRunOnStartUp(bool enable)
     @autoreleasepool
     {
         NSError *error = nil;
-        BOOL success;
+        BOOL success = enable
+            ? [SMAppService.mainAppService registerAndReturnError:&error]
+            : [SMAppService.mainAppService unregisterAndReturnError:&error];
 
-        if (enable)
-            success = [SMAppService.mainAppService registerAndReturnError:&error];
-        else
-            success = [SMAppService.mainAppService unregisterAndReturnError:&error];
-
-        if (!success && error)
-            qDebug() << "Failed to " << (enable ? "register" : "unregister")
-                     << " login item:" << [error.localizedDescription UTF8String];
+        if (!success)
+        {
+            if (error)
+            {
+                qlog(qCritical(), "[Set Auto Run] failed to %1. Domain: %2, Code: %3, Description: %4.",
+                    enable ? "register" : "unregister",
+                    QString::fromUtf8([error.domain UTF8String]),
+                    (long) error.code,
+                    QString::fromUtf8([error.localizedDescription UTF8String]));
+            }
+            else
+            {
+                qlog(qCritical(), "[Set Auto Run] failed to %1 with unknown error.",
+                    enable ? "register" : "unregister");
+            }
+        }
 
         return success;
     }

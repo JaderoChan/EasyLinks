@@ -1,25 +1,36 @@
-#include "file_log_manager.h"
+#include "file_logger.h"
 
 #include <qdatetime.h>
+#include <qdir.h>
+#include <qfileinfo.h>
 
-FileLogManager::FileLogManager(QObject* parent)
+#include "utils/logging.h"
+
+FileLogger::FileLogger(QObject* parent)
     : QObject(parent)
 {}
 
-FileLogManager::~FileLogManager()
+FileLogger::~FileLogger()
 {
     cleanup();
 }
 
-FileLogManager& FileLogManager::getInstance()
+FileLogger& FileLogger::getInstance()
 {
-    static FileLogManager instance;
+    static FileLogger instance;
     return instance;
 }
 
-bool FileLogManager::setup(const QString& filepath)
+bool FileLogger::setup(const QString& filepath)
 {
     QMutexLocker locker(&getInstance().mutex_);
+
+    QDir dir = QFileInfo(filepath).absoluteDir();
+    if (!dir.exists() && !dir.mkpath("."))
+    {
+        qlog(qCritical(), "[File Logger] Failed to create log directory: %1.", dir.absolutePath());
+        return false;
+    }
 
     file_.setFileName(filepath);
     if (file_.open(QIODevice::Append | QIODevice::Text))
@@ -28,10 +39,14 @@ bool FileLogManager::setup(const QString& filepath)
         qInstallMessageHandler(customMessageHandler);
         return true;
     }
-    return false;
+    else
+    {
+        qlog(qCritical(), "[File Logger] Failed to open log file: %1.", file_.fileName());
+        return false;
+    }
 }
 
-void FileLogManager::cleanup()
+void FileLogger::cleanup()
 {
     QMutexLocker locker(&getInstance().mutex_);
 
@@ -40,7 +55,7 @@ void FileLogManager::cleanup()
         file_.close();
 }
 
-QString FileLogManager::messageTypeString(QtMsgType type)
+QString FileLogger::messageTypeString(QtMsgType type)
 {
     switch (type)
     {
@@ -59,7 +74,7 @@ QString FileLogManager::messageTypeString(QtMsgType type)
     }
 }
 
-void FileLogManager::customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
+void FileLogger::customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
     QMutexLocker locker(&getInstance().mutex_);
 

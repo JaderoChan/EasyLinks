@@ -7,6 +7,7 @@
 
 #include "filelink/controller.h"
 #include "platforms/filemgr_dir_getter.h"
+#include "utils/logging.h"
 
 HotkeyManager::HotkeyManager(QObject* parent)
     : QObject(parent),
@@ -14,8 +15,8 @@ HotkeyManager::HotkeyManager(QObject* parent)
 {
     int rc = ghm_.run();
     if (rc != gbhk::RC_SUCCESS)
-        qCritical() << "Failed to run the Global Hotkey Manager, error message: "
-                    << gbhk::getReturnCodeMessage(rc).c_str();
+        qlog(qCritical(), "[Hotkey Manager] Failed to run the Global Hotkey Manager. Error message: %1.",
+            gbhk::getReturnCodeMessage(rc).c_str());
     connect(this, &HotkeyManager::shouldLinks, this, &HotkeyManager::links);
 }
 
@@ -23,8 +24,8 @@ HotkeyManager::~HotkeyManager()
 {
     int rc = ghm_.stop();
     if (rc != gbhk::RC_SUCCESS)
-        qCritical() << "Failed to stop the Global Hotkey Manager, error message: "
-                    << gbhk::getReturnCodeMessage(rc).c_str();
+        qlog(qCritical(), "[Hotkey Manager] Failed to stop the Global Hotkey Manager. Error message: %1.",
+            gbhk::getReturnCodeMessage(rc).c_str());
 }
 
 void HotkeyManager::setSettings(const Settings& settings)
@@ -40,18 +41,18 @@ void HotkeyManager::setSettings(const Settings& settings)
             {
                 int rc = ghm_.replaceHotkey(oldHotkey, newHotkey);
                 if (rc != gbhk::RC_SUCCESS)
-                    qCritical() << QString("Failed to replace hotkey from '%1' to '%2', error message: %3").arg(
+                    qlog(qCritical(), "[Hotkey Manager] Failed to replace hotkey from '%1' to '%2'. Error message: %3.",
                         oldHotkey.toString().c_str(),
                         newHotkey.toString().c_str(),
-                        gbhk::getReturnCodeMessage(rc).c_str()).toUtf8().constData();
+                        gbhk::getReturnCodeMessage(rc).c_str());
             }
             else
             {
                 int rc = ghm_.unregisterHotkey(oldHotkey);
                 if (rc != gbhk::RC_SUCCESS)
-                    qCritical() << QString("Failed to unregister hotkey '%1', error message: %2").arg(
+                    qlog(qCritical(), "[Hotkey Manager] Failed to unregister hotkey '%1'. Error message: %2.",
                         oldHotkey.toString().c_str(),
-                        gbhk::getReturnCodeMessage(rc).c_str()).toUtf8().constData();
+                        gbhk::getReturnCodeMessage(rc).c_str());
             }
         }
         else
@@ -60,9 +61,9 @@ void HotkeyManager::setSettings(const Settings& settings)
             {
                 int rc = ghm_.registerHotkey(newHotkey, [=]() { emit shouldLinks(linkType); });
                 if (rc != gbhk::RC_SUCCESS)
-                    qCritical() << QString("Failed to register hotkey '%1', error message: %2").arg(
+                    qlog(qCritical(), "[Hotkey Manager] Failed to register hotkey '%1'. Error message: %2.",
                         newHotkey.toString().c_str(),
-                        gbhk::getReturnCodeMessage(rc).c_str()).toUtf8().constData();
+                        gbhk::getReturnCodeMessage(rc).c_str());
             }
         }
     };
@@ -95,7 +96,9 @@ void HotkeyManager::links(LinkType linkType)
         try { targetDir = getFocusedFileManagerDir(); }
         catch (const std::exception& e)
         {
-            qWarning() << e.what();
+            qlog(qWarning(),
+                "[Hotkey Manager] Failed to get the focused file manager directory. Error message: %1.",
+                e.what());
             return;
         }
 

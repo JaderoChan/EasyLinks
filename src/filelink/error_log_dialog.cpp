@@ -14,7 +14,7 @@
 "<a href='file:///%3' style='color:rgba(0, 100, 180, 216);text-decoration:none;'>%4</a> " \
 " to " \
 "<a href='file:///%5' style='color:rgba(0, 100, 180, 216);text-decoration:none;'>%6</a>" \
-". Error message: <a style='color:red;'>%7</a><br>" \
+". Error message: <a style='color:red;'>%7.</a><br>" \
 
 ErrorLogDialog::ErrorLogDialog(QWidget* parent)
     : QDialog(parent)

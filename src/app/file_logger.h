@@ -7,10 +7,10 @@
 #include <qmutex.h>
 
 // 单例类
-class FileLogManager : public QObject
+class FileLogger : public QObject
 {
 public:
-    static FileLogManager& getInstance();
+    static FileLogger& getInstance();
 
     bool setup(const QString& filepath);
     void cleanup();
@@ -20,11 +20,11 @@ protected:
     static void customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg);
 
 private:
-    explicit FileLogManager(QObject* parent = nullptr);
-    ~FileLogManager();
+    explicit FileLogger(QObject* parent = nullptr);
+    ~FileLogger();
 
-    FileLogManager(const FileLogManager&) = delete;
-    FileLogManager& operator=(const FileLogManager&) = delete;
+    FileLogger(const FileLogger&) = delete;
+    FileLogger& operator=(const FileLogger&) = delete;
 
     QMutex mutex_;
     QFile file_;
