@@ -28,7 +28,7 @@ bool FileLogger::setup(const QString& filepath)
     QDir dir = QFileInfo(filepath).absoluteDir();
     if (!dir.exists() && !dir.mkpath("."))
     {
-        qout(qCritical(), "[File Logger] Failed to create log directory: %1.", dir.absolutePath());
+        debugOut(qCritical(), "[File Logger] Failed to create log directory: %1.", dir.absolutePath());
         return false;
     }
 
@@ -41,7 +41,7 @@ bool FileLogger::setup(const QString& filepath)
     }
     else
     {
-        qout(qCritical(), "[File Logger] Failed to open log file: %1.", file_.fileName());
+        debugOut(qCritical(), "[File Logger] Failed to open log file: %1.", file_.fileName());
         return false;
     }
 }

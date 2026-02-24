@@ -55,14 +55,14 @@ bool setLanguage(Language lang)
     }
     if (easytr::languages().empty())
     {
-        qout(qWarning(), "[Language] Failed to load languages or languages list is empty.");
+        debugOut(qWarning(), "[Language] Failed to load languages or languages list is empty.");
         return false;
     }
 
     std::string id = languageStringId(lang).toStdString();
     if (!easytr::hasLanguage(id))
     {
-        qout(qWarning(), "[Language] Language %1 is not available.", QString::fromStdString(id));
+        debugOut(qWarning(), "[Language] Language %1 is not available.", QString::fromStdString(id));
         return false;
     }
 
@@ -70,7 +70,7 @@ bool setLanguage(Language lang)
         DirectoryScope dirScope(APP_RESOURCE_DIRPATH);
         if (!easytr::setCurrentLanguage(id))
         {
-            qout(qWarning(), "[Language] Failed to set the current language to %1.", QString::fromStdString(id));
+            debugOut(qWarning(), "[Language] Failed to set the current language to %1.", QString::fromStdString(id));
             return false;
         }
     }

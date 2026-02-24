@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
     QLockFile lock(QDir::temp().absoluteFilePath(APP_LOCK_FILEPATH));
     if (lock.isLocked() || !lock.tryLock(200))
     {
-        qout(qCritical(), "[Start] Another instance is already running.");
+        debugOut(qCritical(), "[Start] Another instance is already running.");
         return 1;
     }
 
@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
     // 检查应用权限
     if (!PermissionManager::hasPermission())
     {
-        qout(qInfo(), "[Start] No permission, try request.");
+        debugOut(qInfo(), "[Start] No permission, try request.");
 
         RequirePermissionDialog dlg;
         int ret = dlg.exec();
