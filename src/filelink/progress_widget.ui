@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>560</width>
-    <height>271</height>
+    <height>240</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>560</width>
-    <height>260</height>
+    <height>240</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -248,18 +248,6 @@
              </property>
              <item>
               <widget class="QProgressBar" name="progressBar">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>45</height>
-                </size>
-               </property>
                <property name="focusPolicy">
                 <enum>Qt::ClickFocus</enum>
                </property>
