@@ -2,15 +2,13 @@
 
 #include <cstdlib>  // system
 
-#include <unistd.h> // getuid
-
 #include <ApplicationServices/ApplicationServices.h>
 #include <CoreFoundation/CoreFoundation.h>
 
 bool PermissionManager::hasPermission()
 {
     // TODO: Check Finder and System events automation permission.
-    return getuid() == 0 || AXIsProcessTrustedWithOptions(NULL);
+    return AXIsProcessTrustedWithOptions(NULL);
 }
 
 void PermissionManager::requestPermission()
