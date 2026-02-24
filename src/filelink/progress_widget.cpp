@@ -25,7 +25,6 @@ ProgressWidget::ProgressWidget(
     keepWhenErrorOccurred_(keepWhenErrorOccurred)
 {
     ui.setupUi(this);
-    setFixedSize(width(), height());
 
     ui.sourcePathText->setText(QString(PATH_TEXT_FORMAT_STRING).arg(
         sourceDir, QDir(sourceDir).isRoot() ? sourceDir : QDir(sourceDir).dirName()));
