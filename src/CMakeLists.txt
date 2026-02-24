@@ -200,7 +200,7 @@ if(NOT APPLE)
 endif()
 
 # MacOS DMG打包
-option(CREATE_DMG "Create DMG for MacOS" OFF)
+option(CREATE_DMG "Create DMG for MacOS, create-dmg is required." OFF)
 if(APPLE AND CREATE_DMG)
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
