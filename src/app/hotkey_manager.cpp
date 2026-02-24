@@ -15,7 +15,7 @@ HotkeyManager::HotkeyManager(QObject* parent)
 {
     int rc = ghm_.run();
     if (rc != gbhk::RC_SUCCESS)
-        qlog(qCritical(), "[Hotkey Manager] Failed to run the Global Hotkey Manager. Error message: %1.",
+        qout(qCritical(), "[Hotkey Manager] Failed to run the Global Hotkey Manager. Error message: %1.",
             gbhk::getReturnCodeMessage(rc).c_str());
     connect(this, &HotkeyManager::shouldLinks, this, &HotkeyManager::links);
 }
@@ -24,7 +24,7 @@ HotkeyManager::~HotkeyManager()
 {
     int rc = ghm_.stop();
     if (rc != gbhk::RC_SUCCESS)
-        qlog(qCritical(), "[Hotkey Manager] Failed to stop the Global Hotkey Manager. Error message: %1.",
+        qout(qCritical(), "[Hotkey Manager] Failed to stop the Global Hotkey Manager. Error message: %1.",
             gbhk::getReturnCodeMessage(rc).c_str());
 }
 
@@ -41,7 +41,7 @@ void HotkeyManager::setSettings(const Settings& settings)
             {
                 int rc = ghm_.replaceHotkey(oldHotkey, newHotkey);
                 if (rc != gbhk::RC_SUCCESS)
-                    qlog(qCritical(), "[Hotkey Manager] Failed to replace hotkey from '%1' to '%2'. Error message: %3.",
+                    qout(qCritical(), "[Hotkey Manager] Failed to replace hotkey from '%1' to '%2'. Error message: %3.",
                         oldHotkey.toString().c_str(),
                         newHotkey.toString().c_str(),
                         gbhk::getReturnCodeMessage(rc).c_str());
@@ -50,7 +50,7 @@ void HotkeyManager::setSettings(const Settings& settings)
             {
                 int rc = ghm_.unregisterHotkey(oldHotkey);
                 if (rc != gbhk::RC_SUCCESS)
-                    qlog(qCritical(), "[Hotkey Manager] Failed to unregister hotkey '%1'. Error message: %2.",
+                    qout(qCritical(), "[Hotkey Manager] Failed to unregister hotkey '%1'. Error message: %2.",
                         oldHotkey.toString().c_str(),
                         gbhk::getReturnCodeMessage(rc).c_str());
             }
@@ -61,7 +61,7 @@ void HotkeyManager::setSettings(const Settings& settings)
             {
                 int rc = ghm_.registerHotkey(newHotkey, [=]() { emit shouldLinks(linkType); });
                 if (rc != gbhk::RC_SUCCESS)
-                    qlog(qCritical(), "[Hotkey Manager] Failed to register hotkey '%1'. Error message: %2.",
+                    qout(qCritical(), "[Hotkey Manager] Failed to register hotkey '%1'. Error message: %2.",
                         newHotkey.toString().c_str(),
                         gbhk::getReturnCodeMessage(rc).c_str());
             }
@@ -96,7 +96,7 @@ void HotkeyManager::links(LinkType linkType)
         try { targetDir = getFocusedFileManagerDir(); }
         catch (const std::exception& e)
         {
-            qlog(qWarning(),
+            qout(qWarning(),
                 "[Hotkey Manager] Failed to get the focused file manager directory. Error message: %1.",
                 e.what());
             return;
