@@ -202,16 +202,11 @@ endif()
 # MacOS DMG打包
 option(CREATE_DMG "Create DMG for MacOS, create-dmg is required." OFF)
 if(APPLE AND CREATE_DMG)
-    # Qt部署（需要保证macdeployqt可见）
+    # Qt部署（需要保证macdeployqt可见）与DMG打包
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND macdeployqt
         ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.app
-    )
-
-    # DMG打包
-    add_custom_command(
-        TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_SOURCE_DIR}/scripts/create_dmg.sh
         ${PROJECT_NAME}
         ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
