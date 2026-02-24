@@ -29,7 +29,7 @@ bool setAutoRunOnStartUp(bool enable)
         {
             if (error)
             {
-                qlog(qCritical(), "[Set Auto Run] failed to %1. Domain: %2, Code: %3, Description: %4.",
+                qout(qCritical(), "[Set Auto Run] failed to %1. Domain: %2, Code: %3, Description: %4.",
                     enable ? "register" : "unregister",
                     QString::fromUtf8([error.domain UTF8String]),
                     (long) error.code,
@@ -37,7 +37,7 @@ bool setAutoRunOnStartUp(bool enable)
             }
             else
             {
-                qlog(qCritical(), "[Set Auto Run] failed to %1 with unknown error.",
+                qout(qCritical(), "[Set Auto Run] failed to %1 with unknown error.",
                     enable ? "register" : "unregister");
             }
         }
