@@ -43,6 +43,9 @@
     <key>NSAppleScriptEnabled</key>
     <true/>
 
+    <key>LSUIElement</key>
+    <true/>
+
     <!-- 本地化支持 -->
     <key>CFBundleLocalizations</key>
     <array>
