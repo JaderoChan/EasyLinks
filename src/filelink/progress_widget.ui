@@ -493,7 +493,7 @@ QPushButton:pressed
                   </property>
                   <property name="icon">
                    <iconset resource="../../resources/app.qrc">
-                    <normaloff>:/icons/play.png</normaloff>:/icons/play.png</iconset>
+                    <normaloff>:/icons/cancel.png</normaloff>:/icons/cancel.png</iconset>
                   </property>
                   <property name="flat">
                    <bool>true</bool>
