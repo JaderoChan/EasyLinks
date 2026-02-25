@@ -196,17 +196,34 @@ if(NOT APPLE)
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${LANGUAGES_DIR} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/languages
+        VERBATIM
     )
 endif()
+
+# Qt部署（需要保证*deployqt可见）
+if(WIN32)
+    set(DEPLOYQT windeployqt)
+    set(OUTPUT_SUFFIX "exe")
+elseif(APPLE)
+    set(DEPLOYQT macdeployqt)
+    set(OUTPUT_SUFFIX "app")
+else()
+    # TODO
+endif()
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${DEPLOYQT}
+    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.${OUTPUT_SUFFIX}
+    $<$<BOOL:APPLE>:-codesign=->
+    VERBATIM
+)
 
 # MacOS DMG打包
 option(CREATE_DMG "Create DMG for MacOS, create-dmg is required." OFF)
 if(APPLE AND CREATE_DMG)
-    # Qt部署（需要保证macdeployqt可见）与DMG打包
+    # Qt部署与DMG打包
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND macdeployqt
-        ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.app
         COMMAND ${CMAKE_SOURCE_DIR}/scripts/create_dmg.sh
         ${PROJECT_NAME}
         ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
