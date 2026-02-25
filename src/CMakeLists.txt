@@ -197,7 +197,6 @@ if(NOT APPLE)
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${LANGUAGES_DIR} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/languages
-        VERBATIM
     )
 endif()
 
@@ -215,8 +214,7 @@ add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${DEPLOYQT}
     ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${PROJECT_NAME}.${OUTPUT_SUFFIX}
-    $<$<BOOL:APPLE>:-codesign=->
-    VERBATIM
+    $<$<PLATFORM_ID:Darwin>:-codesign=->
 )
 
 # MacOS DMG打包
@@ -228,6 +226,5 @@ if(APPLE AND CREATE_DMG)
         COMMAND ${CMAKE_SOURCE_DIR}/scripts/create_dmg.sh
         ${PROJECT_NAME}
         ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-        VERBATIM
     )
 endif()
