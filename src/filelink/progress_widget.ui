@@ -439,7 +439,7 @@ QPushButton:pressed
                   </property>
                   <property name="icon">
                    <iconset resource="../../resources/app.qrc">
-                    <normaloff>:/icons/pause.ico</normaloff>:/icons/pause.ico</iconset>
+                    <normaloff>:/icons/pause.png</normaloff>:/icons/pause.png</iconset>
                   </property>
                   <property name="flat">
                    <bool>true</bool>
@@ -493,7 +493,7 @@ QPushButton:pressed
                   </property>
                   <property name="icon">
                    <iconset resource="../../resources/app.qrc">
-                    <normaloff>:/icons/cancel.ico</normaloff>:/icons/cancel.ico</iconset>
+                    <normaloff>:/icons/play.png</normaloff>:/icons/play.png</iconset>
                   </property>
                   <property name="flat">
                    <bool>true</bool>
@@ -1188,7 +1188,7 @@ QPushButton:pressed
                </property>
                <property name="icon">
                 <iconset resource="../../resources/app.qrc">
-                 <normaloff>:/icons/replace.ico</normaloff>:/icons/replace.ico</iconset>
+                 <normaloff>:/icons/replace.png</normaloff>:/icons/replace.png</iconset>
                </property>
                <property name="shortcut">
                 <string>R</string>
@@ -1273,7 +1273,7 @@ QPushButton:pressed
                </property>
                <property name="icon">
                 <iconset resource="../../resources/app.qrc">
-                 <normaloff>:/icons/skip.ico</normaloff>:/icons/skip.ico</iconset>
+                 <normaloff>:/icons/skip.png</normaloff>:/icons/skip.png</iconset>
                </property>
                <property name="shortcut">
                 <string>S</string>
@@ -1358,7 +1358,7 @@ QPushButton:pressed
                </property>
                <property name="icon">
                 <iconset resource="../../resources/app.qrc">
-                 <normaloff>:/icons/keep.ico</normaloff>:/icons/keep.ico</iconset>
+                 <normaloff>:/icons/keep.png</normaloff>:/icons/keep.png</iconset>
                </property>
                <property name="shortcut">
                 <string>K</string>
@@ -1440,7 +1440,7 @@ QPushButton:pressed
                </property>
                <property name="icon">
                 <iconset resource="../../resources/app.qrc">
-                 <normaloff>:/icons/decide.ico</normaloff>:/icons/decide.ico</iconset>
+                 <normaloff>:/icons/decide.png</normaloff>:/icons/decide.png</iconset>
                </property>
                <property name="shortcut">
                 <string>D</string>

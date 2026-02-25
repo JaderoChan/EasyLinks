@@ -16,7 +16,7 @@
 
     <!-- 应用基本信息 -->
     <key>CFBundleIconFile</key>
-    <string>app.ico</string>
+    <string>app.icns</string>
 
     <key>CFBundleIdentifier</key>
     <string>@APP_ORGANIZATION_DOMAIN@.@APP_TITLE@</string>

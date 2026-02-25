@@ -338,9 +338,9 @@ void ProgressWidget::updateHeaderText1()
 void ProgressWidget::updatePauseResumeBtnIcon()
 {
     if (paused_)
-        ui.pauseResumeBtn->setIcon(QIcon(":/icons/play.ico"));
+        ui.pauseResumeBtn->setIcon(QIcon(":/icons/play.png"));
     else
-        ui.pauseResumeBtn->setIcon(QIcon(":/icons/pause.ico"));
+        ui.pauseResumeBtn->setIcon(QIcon(":/icons/pause.png"));
 }
 
 void ProgressWidget::updateCurrentEntryTypeText()

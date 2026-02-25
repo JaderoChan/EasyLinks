@@ -1,13 +1,12 @@
 #include "system_tray_icon.h"
 
-#include <qicon.h>
-
 #include <easy_translate.hpp>
 
 #include "config.h"
+#include "utils/logo_icon.h"
 
 SystemTrayIcon::SystemTrayIcon(QObject* parent)
-    : QSystemTrayIcon(QIcon(":/icons/app.ico"), parent)
+    : QSystemTrayIcon(getLogoIcon(), parent)
 {
     menu_.addActions({&settingsAction_, &aboutAction_, &openLogDirAction_});
     menu_.addSeparator();

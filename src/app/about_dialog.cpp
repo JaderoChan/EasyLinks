@@ -3,13 +3,14 @@
 #include <easy_translate.hpp>
 
 #include "config.h"
+#include "utils/logo_icon.h"
 
 AboutDialog::AboutDialog(QWidget* parent) :
     QDialog(parent)
 {
     ui.setupUi(this);
 
-    ui.icon->setPixmap(QPixmap(":/icons/app.ico"));
+    ui.icon->setPixmap(getLogoPixmap());
     ui.versionLbl->setText(APP_VERSION);
     ui.copyrightLbl->setText(APP_COPYRIGHT_TEXT);
     ui.authorValueLbl->setText(APP_AUTHOR);

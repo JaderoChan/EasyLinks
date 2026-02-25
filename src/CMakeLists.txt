@@ -110,9 +110,9 @@ target_compile_definitions(
 )
 
 # 配置应用资源/属性
-set(APP_ICON ${ICONS_DIR}/app.ico)
 if(WIN32)
     # Windows
+    set(APP_ICON ${APP_ICONS_DIR}/app.ico)
 
     set(RC_FILE ${CMAKE_CURRENT_BINARY_DIR}/app.rc)
     configure_file(
@@ -123,6 +123,7 @@ if(WIN32)
     target_sources(${PROJECT_NAME} PRIVATE ${RC_FILE})
 elseif(APPLE)
     # Apple
+    set(APP_ICON ${APP_ICONS_DIR}/app.icns)
 
     # Info Plist Strings
     set(

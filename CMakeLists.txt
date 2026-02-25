@@ -58,8 +58,8 @@ set(CMAKE_TEMPLATE_DIR ${CMAKE_DIR}/template)
 set(LANGUAGES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/languages)
 # 资源文件夹路径
 set(RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources)
-# 图标文件夹路径
-set(ICONS_DIR ${RESOURCES_DIR}/icons)
+# 应用图标文件夹路径
+set(APP_ICONS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/icons)
 # 脚本文件夹路径
 set(SCRIPTS_DIR ${RESOURCES_DIR}/scripts)
 

@@ -12,6 +12,7 @@
 #include "settings.h"
 #include "platforms/permission_manager.h"
 #include "utils/logging.h"
+#include "utils/logo_icon.h"
 
 int main(int argc, char* argv[])
 {
@@ -28,7 +29,7 @@ int main(int argc, char* argv[])
     a.setOrganizationName(APP_ORGANIZATION);
     a.setApplicationName(APP_TITLE);
     a.setApplicationVersion(APP_VERSION);
-    a.setWindowIcon(QIcon(":/icons/app.ico"));
+    a.setWindowIcon(getLogoIcon());
     a.setQuitOnLastWindowClosed(false);
 
     FileLogger& fileLogger = FileLogger::getInstance();
