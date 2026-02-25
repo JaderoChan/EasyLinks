@@ -3,7 +3,7 @@
 #include <easy_translate.hpp>
 
 #include "config.h"
-#include "utils/logo_icon.h"
+#include "logo_icon.h"
 
 AboutDialog::AboutDialog(QWidget* parent) :
     QDialog(parent)

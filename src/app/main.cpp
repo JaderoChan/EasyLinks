@@ -10,9 +10,9 @@
 #include "language.h"
 #include "require_permission_dialog.h"
 #include "settings.h"
+#include "logo_icon.h"
 #include "platforms/permission_manager.h"
 #include "utils/logging.h"
-#include "utils/logo_icon.h"
 
 int main(int argc, char* argv[])
 {
