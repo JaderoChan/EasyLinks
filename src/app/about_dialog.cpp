@@ -5,8 +5,8 @@
 #include "config.h"
 #include "logo_icon.h"
 
-AboutDialog::AboutDialog(QWidget* parent) :
-    QDialog(parent)
+AboutDialog::AboutDialog(QWidget* parent)
+    : QDialog(parent)
 {
     ui.setupUi(this);
 
