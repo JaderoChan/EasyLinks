@@ -1,4 +1,5 @@
-:REM 用于清理程序注册表/本地缓存条目（Used for cleaning up program registry entries）
+:REM 用于清理程序注册表/本地缓存条目
+:REM Used for cleaning up program registry entries
 
 @echo off
 reg delete "HKCU\Software\JaderoChan\EasyLinks" /f
