@@ -7,7 +7,6 @@
 
 bool PermissionManager::hasPermission()
 {
-    // TODO: Check Finder and System events automation permission.
     return AXIsProcessTrustedWithOptions(NULL);
 }
 
