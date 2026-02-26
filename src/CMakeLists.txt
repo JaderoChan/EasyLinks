@@ -217,6 +217,7 @@ if(APPLE AND CREATE_DMG)
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_SOURCE_DIR}/scripts/create_dmg.sh
         ${PROJECT_NAME}
+        ${APP_ICON}
         ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
     )
 endif()
