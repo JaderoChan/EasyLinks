@@ -15,9 +15,9 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 # 配置第三方库
 include(FetchContent)
+set(3RDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
 
 # 配置Easy Translate库
-set(3RDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
 FetchContent_Declare(
     easy_translate
     SOURCE_DIR ${3RDPARTY_DIR}/easy_translate
