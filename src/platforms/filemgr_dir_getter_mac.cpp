@@ -36,13 +36,13 @@ QString getFocusedFileManagerDir()
     path = path.trimmed();
     // 如果成功返回路径，其会被单引号包裹。
     if (path.size() < 2 || !path.startsWith('\'') || !path.endsWith('\''))
-        throw std::runtime_error(std::string("Failed to get directory path from Finder"));
+        throw std::runtime_error(std::string("Failed to get directory path from Finder: ") + out);
     // 去除首尾引号。
     path.remove(0, 1);
     path.chop(1);
 
     if (!QFileInfo(path).isAbsolute())
-        throw std::runtime_error("Failed to get directory path from Finder");
+        throw std::runtime_error(std::string("Failed to get directory path from Finder: ") + out);
 
     return path;
 }
