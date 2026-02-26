@@ -15,5 +15,7 @@
     <file>icons/play.png</file>
     <file>icons/replace.png</file>
     <file>icons/skip.png</file>
+    <file>scripts/mac/get_focused_finder_dir.sh</file>
+    <file>stylesheets/table_view.qss</file>
   </qresource>
 </RCC>

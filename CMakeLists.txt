@@ -60,7 +60,5 @@ set(LANGUAGES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/languages)
 set(RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources)
 # 应用图标文件夹路径
 set(APP_ICONS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/icons)
-# 脚本文件夹路径
-set(SCRIPTS_DIR ${RESOURCES_DIR}/scripts)
 
 add_subdirectory(src)

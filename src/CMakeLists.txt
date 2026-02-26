@@ -175,14 +175,6 @@ elseif(APPLE)
         MACOSX_PACKAGE_LOCATION "Resources/languages"
     )
     target_sources(${PROJECT_NAME} PRIVATE ${LANG_FILES})
-
-    # 脚本文件
-    file(GLOB SCRIPT_FILES ${SCRIPTS_DIR}/mac/*)
-    set_source_files_properties(
-        ${SCRIPT_FILES} PROPERTIES
-        MACOSX_PACKAGE_LOCATION "Resources/scripts"
-    )
-    target_sources(${PROJECT_NAME} PRIVATE ${SCRIPT_FILES})
 else()
     # TODO
 endif()
