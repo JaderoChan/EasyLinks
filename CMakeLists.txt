@@ -13,8 +13,10 @@ endif()
 find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
-# 配置Easy Translate库
+# 配置第三方库
 include(FetchContent)
+
+# 配置Easy Translate库
 set(3RDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
 FetchContent_Declare(
     easy_translate
