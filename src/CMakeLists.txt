@@ -12,7 +12,7 @@ configure_file(
 )
 
 # 头文件（可用于在Visual Studio IDE的项目文件树中显示头文件）
-file(GLOB_RECURSE HEADER ${CMAKE_CURRENT_SOURCE_DIR}/*.h ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp)
+file(GLOB_RECURSE HEADER ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 # 源文件
 file(
     GLOB_RECURSE SRC
