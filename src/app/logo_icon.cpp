@@ -20,6 +20,5 @@ QIcon getLogoIcon()
 
 QPixmap getLogoPixmap()
 {
-    static QPixmap pixmap(":/icons/app_512.png");
-    return pixmap;
+    return getLogoIcon().pixmap(512);
 }
