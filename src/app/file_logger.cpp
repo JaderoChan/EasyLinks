@@ -8,13 +8,7 @@
 
 FileLogger::FileLogger(QObject* parent)
     : QObject(parent)
-{
-    connect(&fileWatcher_, &QFileSystemWatcher::fileChanged, this, [=](const QString& path)
-    {
-        if (path == filePath_)
-            setFileAndStream();
-    });
-}
+{}
 
 FileLogger::~FileLogger()
 {
@@ -60,7 +54,6 @@ bool FileLogger::setup(const QString& filepath)
     QMutexLocker locker(&getInstance().mutex_);
 
     filePath_ = filepath;
-    fileWatcher_.addPath(filePath_);
     if (setFileAndStream())
     {
         qInstallMessageHandler(customMessageHandler);
@@ -73,7 +66,6 @@ void FileLogger::cleanup()
 {
     QMutexLocker locker(&getInstance().mutex_);
 
-    fileWatcher_.removePath(filePath_);
     filePath_.clear();
     stream_.setDevice(nullptr);
     qInstallMessageHandler(nullptr);
