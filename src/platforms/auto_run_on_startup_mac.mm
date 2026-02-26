@@ -5,8 +5,6 @@
 
 #include "utils/logging.h"
 
-// AI Generate
-
 bool isAutoRunOnStartUp()
 {
     @autoreleasepool
