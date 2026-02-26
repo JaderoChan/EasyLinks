@@ -13,7 +13,10 @@ endif()
 find_package(QT NAMES Qt5 Qt6 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
-# 配置第三方库
+###############
+# 配置第三方库 #
+###############
+
 include(FetchContent)
 set(3RDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty)
 
@@ -32,10 +35,10 @@ FetchContent_Declare(
 set(GLOBAL_HOTKEY_DISABLE_REGISTER ON)
 FetchContent_MakeAvailable(global_hotkey)
 
-# 重定向目标文件输出目录
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE})
+###############
+# 设置程序信息 #
+###############
 
-# 设置程序信息
 set(APP_ORGANIZATION "JaderoChan")
 set(APP_ORGANIZATION_DOMAIN "io.github.jaderochan")
 set(APP_TITLE ${PROJECT_NAME})
@@ -62,5 +65,12 @@ set(LANGUAGES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/languages)
 set(RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources)
 # 应用图标文件夹路径
 set(APP_ICONS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/icons)
+
+# 重定向目标文件输出目录
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE})
+
+#############
+# 添加子目录 #
+#############
 
 add_subdirectory(src)
