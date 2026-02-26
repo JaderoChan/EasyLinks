@@ -26,6 +26,9 @@ private:
     FileLogger(const FileLogger&) = delete;
     FileLogger& operator=(const FileLogger&) = delete;
 
+    bool setFileAndStream();
+
+    QString filePath_;
     QMutex mutex_;
     QFile file_;
     QTextStream stream_;

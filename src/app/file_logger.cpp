@@ -15,28 +15,22 @@ FileLogger::~FileLogger()
     cleanup();
 }
 
-FileLogger& FileLogger::getInstance()
+bool FileLogger::setFileAndStream()
 {
-    static FileLogger instance;
-    return instance;
-}
+    if (filePath_.isEmpty())
+        return false;
 
-bool FileLogger::setup(const QString& filepath)
-{
-    QMutexLocker locker(&getInstance().mutex_);
-
-    QDir dir = QFileInfo(filepath).absoluteDir();
+    QDir dir = QFileInfo(filePath_).absoluteDir();
     if (!dir.exists() && !dir.mkpath("."))
     {
         debugOut(qCritical(), "[File Logger] Failed to create log directory: %1.", dir.absolutePath());
         return false;
     }
 
-    file_.setFileName(filepath);
+    file_.setFileName(filePath_);
     if (file_.open(QIODevice::Append | QIODevice::Text))
     {
         stream_.setDevice(&file_);
-        qInstallMessageHandler(customMessageHandler);
         return true;
     }
     else
@@ -46,10 +40,30 @@ bool FileLogger::setup(const QString& filepath)
     }
 }
 
+FileLogger& FileLogger::getInstance()
+{
+    static FileLogger instance;
+    return instance;
+}
+
+bool FileLogger::setup(const QString& filepath)
+{
+    QMutexLocker locker(&getInstance().mutex_);
+    filePath_ = filepath;
+    if (setFileAndStream())
+    {
+        qInstallMessageHandler(customMessageHandler);
+        return true;
+    }
+    return false;
+}
+
 void FileLogger::cleanup()
 {
     QMutexLocker locker(&getInstance().mutex_);
 
+    filePath_.clear();
+    stream_.setDevice(nullptr);
     qInstallMessageHandler(nullptr);
     if (file_.isOpen())
         file_.close();
@@ -81,6 +95,8 @@ void FileLogger::customMessageHandler(QtMsgType type, const QMessageLogContext& 
     QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss.zzz");
     QString logMessage = QString("%1 [%2] %3").arg(timestamp, messageTypeString(type), msg);
 
+    if (!getInstance().stream_.device() && !getInstance().setFileAndStream())
+            return;
     getInstance().stream_ << logMessage << "\n";
     getInstance().stream_.flush();
 }
