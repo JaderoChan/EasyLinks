@@ -1,6 +1,7 @@
 #pragma once
 
 #include <qfile.h>
+#include <qfilesystemwatcher.h>
 #include <qstring.h>
 #include <qtextstream.h>
 #include <qobject.h>
@@ -32,4 +33,5 @@ private:
     QMutex mutex_;
     QFile file_;
     QTextStream stream_;
+    QFileSystemWatcher fileWatcher_;
 };

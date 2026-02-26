@@ -8,7 +8,13 @@
 
 FileLogger::FileLogger(QObject* parent)
     : QObject(parent)
-{}
+{
+    connect(&fileWatcher_, &QFileSystemWatcher::fileChanged, this, [=](const QString& path)
+    {
+        if (path == filePath_)
+            setFileAndStream();
+    });
+}
 
 FileLogger::~FileLogger()
 {
@@ -48,8 +54,13 @@ FileLogger& FileLogger::getInstance()
 
 bool FileLogger::setup(const QString& filepath)
 {
+    if (filepath.isEmpty())
+        return false;
+
     QMutexLocker locker(&getInstance().mutex_);
+
     filePath_ = filepath;
+    fileWatcher_.addPath(filePath_);
     if (setFileAndStream())
     {
         qInstallMessageHandler(customMessageHandler);
@@ -62,6 +73,7 @@ void FileLogger::cleanup()
 {
     QMutexLocker locker(&getInstance().mutex_);
 
+    fileWatcher_.removePath(filePath_);
     filePath_.clear();
     stream_.setDevice(nullptr);
     qInstallMessageHandler(nullptr);
@@ -95,8 +107,6 @@ void FileLogger::customMessageHandler(QtMsgType type, const QMessageLogContext& 
     QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss.zzz");
     QString logMessage = QString("%1 [%2] %3").arg(timestamp, messageTypeString(type), msg);
 
-    if (!getInstance().stream_.device() && !getInstance().setFileAndStream())
-            return;
     getInstance().stream_ << logMessage << "\n";
     getInstance().stream_.flush();
 }

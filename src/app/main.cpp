@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
 
     FileLogger& fileLogger = FileLogger::getInstance();
     if (!fileLogger.setup(APP_LOG_FILEPATH))
-        return 1;
+        debugOut(qWarning(), "[Start] Failed to setup file logger.");
 
     // 设置语言
     {
