@@ -103,7 +103,7 @@ if(MSVC)
 endif()
 
 # 程序是否自动更新语言文件（开发时使用）
-option(UPDATE_TRANSLATIONS_FILES OFF)
+option(UPDATE_TRANSLATIONS_FILES "Whether update the translations files. Only for dev." OFF)
 target_compile_definitions(
     ${PROJECT_NAME} PRIVATE
     $<$<BOOL:UPDATE_TRANSLATIONS_FILES>:EASY_TRANSLATE_UPDATE_TRANSLATIONS_FILES>
