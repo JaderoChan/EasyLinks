@@ -97,7 +97,7 @@ void HotkeyManager::links(LinkType linkType)
         catch (const std::exception& e)
         {
             debugOut(qWarning(),
-                "[Hotkey Manager] Failed to get the focused file manager directory. Error message: %1.",
+                "[Hotkey Triggered] Failed to get the focused file manager directory. Error message: %1.",
                 e.what());
             return;
         }
