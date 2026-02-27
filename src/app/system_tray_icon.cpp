@@ -20,7 +20,7 @@ SystemTrayIcon::SystemTrayIcon(QObject* parent)
     connect(&openLogDirAction_, &QAction::triggered, this, [=]() { emit openLogDirActionTriggered(); });
     connect(&exitAction_, &QAction::triggered, this, [=]() { emit exitActionTriggered(); });
 
-    show();
+    show(); // 先进行显示再更新文本可以防止 Tool Tip 设置失败。
     updateText();
 }
 
