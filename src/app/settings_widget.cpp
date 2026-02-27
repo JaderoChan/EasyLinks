@@ -31,6 +31,29 @@ static QKeyCombination swapCtrlMeta(const QKeyCombination& kc) noexcept
 
 #endif // Q_OS_MAC
 
+static QKeyCombination gbhkKcToQtKc(const gbhk::KeyCombination& kc)
+{
+    auto qks = QKeySequence::fromString(kc.toString().c_str());
+    if (qks.count() == 0)
+        return QKeyCombination();
+#ifdef Q_OS_MAC
+    // MacOS下交换Ctrl与Meta修饰键。
+    return fix::swapCtrlMeta(qks[0]);
+#else
+    return qks[0];
+#endif // Q_OS_MAC
+}
+
+static gbhk::KeyCombination qtKcToGbhkKc(const QKeyCombination& qkc)
+{
+#ifdef Q_OS_MAC
+    QString kcStr = QKeySequence(fix::swapCtrlMeta(qkc)).toString();
+#else
+    QString kcStr = QKeySequence(qkc).toString();
+#endif // Q_OS_MAC
+    return gbhk::KeyCombination::fromString(kcStr.toStdString());
+}
+
 SettingsWidget::SettingsWidget(const Settings& settings, QWidget* parent)
     : QWidget(parent), settings_(settings)
 {
@@ -41,10 +64,8 @@ SettingsWidget::SettingsWidget(const Settings& settings, QWidget* parent)
     ui.keepDialogOnErrorOccurredCb->setChecked(settings_.linkConfig.keepDialogOnErrorOccurred);
     ui.removeToTrashCb->setChecked(settings_.linkConfig.removeToTrash);
     ui.renamePatternLe->setText(settings_.linkConfig.renamePattern);
-    auto symlinkQks = QKeySequence::fromString(settings_.symlinkHotkey.toString().c_str());
-    ui.symlinkHotkeyInputer->setKeyCombination(symlinkQks.isEmpty() ? QKeyCombination() : symlinkQks[0]);
-    auto hardlinkQks = QKeySequence::fromString(settings_.hardlinkHotkey.toString().c_str());
-    ui.hardlinkHotkeyInputer->setKeyCombination(hardlinkQks.isEmpty() ? QKeyCombination() : hardlinkQks[0]);
+    ui.symlinkHotkeyInputer->setKeyCombination(gbhkKcToQtKc(settings_.symlinkHotkey));
+    ui.hardlinkHotkeyInputer->setKeyCombination(gbhkKcToQtKc(settings_.hardlinkHotkey));
 
     ui.renamePatternLe->installEventFilter(this);
 
@@ -144,23 +165,12 @@ void SettingsWidget::onSymlinkHotkeyChanged(QKeyCombination qkc)
     if (qkc == ui.hardlinkHotkeyInputer->keyCombination())
     {
         // Roll back
-        auto qks = QKeySequence::fromString(settings_.symlinkHotkey.toString().c_str());
-        qkc = qks.isEmpty() ? QKeyCombination() : qks[0];
-    #ifdef Q_OS_MAC
-        // MacOS下交换Ctrl与Meta修饰键。
-        qkc = fix::swapCtrlMeta(qkc);
-    #endif // Q_OS_MAC
-        ui.symlinkHotkeyInputer->setKeyCombination(qkc);
-
+        ui.symlinkHotkeyInputer->setKeyCombination(qtKcToGbhkKc(qkc));
         alertSameHotkey();
         return;
     }
 
-#ifdef Q_OS_MAC
-    // MacOS下交换Ctrl与Meta修饰键。
-    qkc = fix::swapCtrlMeta(qkc);
-#endif // Q_OS_MAC
-    settings_.symlinkHotkey = gbhk::KeyCombination::fromString(QKeySequence(qkc).toString().toStdString());
+    settings_.symlinkHotkey = qtKcToGbhkKc(qkc);
     emit settingsChanged(settings_);
 }
 
@@ -169,21 +179,12 @@ void SettingsWidget::onHardlinkHotkeyChanged(QKeyCombination qkc)
     if (qkc == ui.symlinkHotkeyInputer->keyCombination())
     {
         // Roll back
-        auto qks = QKeySequence::fromString(settings_.hardlinkHotkey.toString().c_str());
-        qkc = qks.isEmpty() ? QKeyCombination() : qks[0];
-    #ifdef Q_OS_MAC
-        qkc = fix::swapCtrlMeta(qkc);
-    #endif // Q_OS_MAC
-        ui.hardlinkHotkeyInputer->setKeyCombination(qkc);
-
+        ui.hardlinkHotkeyInputer->setKeyCombination(qtKcToGbhkKc(qkc));
         alertSameHotkey();
         return;
     }
 
-#ifdef Q_OS_MAC
-    qkc = fix::swapCtrlMeta(qkc);
-#endif // Q_OS_MAC
-    settings_.hardlinkHotkey = gbhk::KeyCombination::fromString(QKeySequence(qkc).toString().toStdString());
+    settings_.hardlinkHotkey = qtKcToGbhkKc(qkc);
     emit settingsChanged(settings_);
 }
 
