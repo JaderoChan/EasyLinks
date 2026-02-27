@@ -11,8 +11,8 @@ gbhk::KeyCombination(settings.value(key, defaultValue).toString().toStdString())
 Settings loadSettings()
 {
     Settings settings;
-
     QSettings qsettings(QSettings::NativeFormat, QSettings::UserScope, APP_ORGANIZATION, APP_TITLE);
+
     settings.language = qsettings.value("Language", currentSystemLang()).value<Language>();
     settings.autoRunOnStartUp = qsettings.value("AutoRunOnStartUp", false).toBool();
 #ifdef Q_OS_MAC
@@ -37,6 +37,7 @@ Settings loadSettings()
 void saveSettings(const Settings& settings)
 {
     QSettings qsettings(QSettings::NativeFormat, QSettings::UserScope, APP_ORGANIZATION, APP_TITLE);
+
     qsettings.setValue("Language", settings.language);
     qsettings.setValue("AutoRunOnStartUp", settings.autoRunOnStartUp);
     qsettings.setValue("SymlinkHotkey", settings.symlinkHotkey.toString().c_str());
