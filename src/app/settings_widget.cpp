@@ -165,7 +165,7 @@ void SettingsWidget::onSymlinkHotkeyChanged(QKeyCombination qkc)
     if (qkc == ui.hardlinkHotkeyInputer->keyCombination())
     {
         // Roll back
-        ui.symlinkHotkeyInputer->setKeyCombination(qtKcToGbhkKc(qkc));
+        ui.symlinkHotkeyInputer->setKeyCombination(gbhkKcToQtKc(settings_.symlinkHotkey));
         alertSameHotkey();
         return;
     }
@@ -179,7 +179,7 @@ void SettingsWidget::onHardlinkHotkeyChanged(QKeyCombination qkc)
     if (qkc == ui.symlinkHotkeyInputer->keyCombination())
     {
         // Roll back
-        ui.hardlinkHotkeyInputer->setKeyCombination(qtKcToGbhkKc(qkc));
+        ui.hardlinkHotkeyInputer->setKeyCombination(gbhkKcToQtKc(settings_.hardlinkHotkey));
         alertSameHotkey();
         return;
     }
