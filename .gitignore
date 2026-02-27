@@ -6,3 +6,5 @@ temp/
 backup/
 
 .DS_Store
+
+test.sh
