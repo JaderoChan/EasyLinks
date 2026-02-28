@@ -4,7 +4,7 @@
 
 An easy-to-use file linking tool, through a visual interface and global shortcut keys, helps you easily create symbolic links and hard links for files/folders.
 
-Support Windows and MacOS!
+Support **Windows** and **MacOS**!
 
 ## Mind
 
@@ -12,19 +12,19 @@ As a cyber hamster, I enjoy collecting all kinds of electronic files. When the n
 
 ## How to build?
 
-Make sure Qt is configured correctly.
+Make sure `Qt` is configured correctly.
 
 ```shell
 git clone https://github/jaderochan/EasyLinks
 cd EasyLinks
 git submodule update --init --recursive
 cmake -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build
+cmake --build build -j --config Release
 ```
 
 ## Application Usage
 
-In the file Manager, select multiple entries (files/folders) and copy them. In the target directory you want to link to, press **Ctrl+H** or **Ctrl+S** (**Option+H** or **Alt+S** on MacOS) to perform hard link or symbolic link operations (the shortcut keys can be changed).
+In the file Manager, select multiple entries (files/folders) and copy them. In the target directory you want to link to, press `Ctrl+H` or `Ctrl+S` (`Option+H` on **MacOS**) to perform hard link or symbolic link operations (the shortcut keys can be changed).
 
 ## Notes
 
