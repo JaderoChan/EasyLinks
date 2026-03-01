@@ -17,18 +17,18 @@
 namespace fix
 {
 
-static bool isUnc(const std::filesystem::path& p) noexcept
+static inline bool isUnc(const std::filesystem::path& p) noexcept
 {
     auto pathStr = p.native();
     return pathStr.size() < 2 ? false : (pathStr[0] == L'\\' && pathStr[1] == L'\\');
 }
 
-static bool isNeeded(const std::filesystem::path& p) noexcept
+static inline bool isNeeded(const std::filesystem::path& p) noexcept
 {
 	return p.is_absolute() && !isUnc(p);
 }
 
-static std::filesystem::path apply(const std::filesystem::path& p) noexcept
+static inline std::filesystem::path apply(const std::filesystem::path& p) noexcept
 {
 	return LR"(\\?\)" + p.lexically_normal().native();
 }

@@ -11,7 +11,7 @@
 namespace fix
 {
 
-static QKeyCombination swapCtrlMeta(const QKeyCombination& kc) noexcept
+static inline QKeyCombination swapCtrlMeta(const QKeyCombination& kc) noexcept
 {
     Qt::KeyboardModifiers mod = kc.keyboardModifiers();
 
