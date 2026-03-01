@@ -4,7 +4,7 @@
 
 易于使用的文件链接工具，通过可视化界面，全局快捷键，帮助您轻松创建文件/文件夹的符号链接与硬链接。
 
-支持Windows和MacOS！
+支持 **Windows** 和 **MacOS**！
 
 ## 初衷
 
@@ -12,19 +12,19 @@
 
 ## 如何构建
 
-确保Qt被正确配置。
+确保 `Qt` 被正确配置。
 
 ```shell
 git clone https://github/jaderochan/EasyLinks
 cd EasyLinks
 git submodule update --init --recursive
 cmake -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build
+cmake --build build -j --config Release
 ```
 
 ## 应用使用
 
-在文件管理器中选中多个条目（文件/文件夹）并进行复制，在你想要链接至的目标目录中按下**Ctrl+H**或**Ctrl+S**（MacOS下使用**Option+H**或**Alt+S**）进行硬链接或符号链接操作（快捷键可以进行更改）。
+在文件管理器中选中多个条目（文件/文件夹）并进行复制，在你想要链接至的目标目录中按下 `Ctrl+H` 或 `Ctrl+S`（**MacOS** 下使用 `Option+H`）进行硬链接或符号链接操作（快捷键可以进行更改）。
 
 ## 注意点
 
@@ -33,25 +33,25 @@ cmake --build build
 
 ## 文件重命名模式
 
-默认重命名模式为`@ (#)`。
+默认重命名模式为 `@ (#)`。
 
 ### 可用占位符
 
 - `@`：原文件名
 - `#`：数字序号
 
-如果需要插入占位符，可使用反斜杠`\`对占位符转义。
+如果需要插入占位符，可使用反斜杠 `\` 对占位符转义。
 
-占位符`@`与`#`是必须的。
+占位符 `@` 与 `#` 是必须的。
 
 ### 示例
 
-原文件名为`file.ext`，经过模式`@-linked-#`重命名后可能的文件名为`file-linked-1.ext`。
+原文件名为 `file.ext`，经过模式 `@-linked-#` 重命名后可能的文件名为 `file-linked-1.ext`。
 
 ## 应用截图
 
-![progress_dialog](screenshots/progress_dialog_zh.png)
+![progress_dialog](doc/screenshots/progress_dialog_zh.png)
 
-![conflict_entry_strategy](screenshots/conflict_entry_strategy_zh.png)
+![conflict_entry_strategy](doc/screenshots/conflict_entry_strategy_zh.png)
 
-![conflict_decision_dialog](screenshots/conflict_decision_dialog_zh.png)
+![conflict_decision_dialog](doc/screenshots/conflict_decision_dialog_zh.png)
