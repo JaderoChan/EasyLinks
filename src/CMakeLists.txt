@@ -220,7 +220,6 @@ add_custom_command(
 # MacOS DMG打包
 option(CREATE_DMG "Create DMG for MacOS, create-dmg is required." OFF)
 if(APPLE AND CREATE_DMG)
-    # Qt部署与DMG打包
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_SOURCE_DIR}/scripts/create_dmg.sh
