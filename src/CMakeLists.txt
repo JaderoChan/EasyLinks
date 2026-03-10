@@ -22,17 +22,17 @@ file(
 )
 # 平台相关的代码
 if(WIN32)
-    file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_win.cpp)
+    file(GLOB PLATFORM_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_win.cpp)
 elseif(APPLE)
     file(
-        GLOB PLATFORMS_SRC
+        GLOB PLATFORM_SRC
         ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_mac.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_mac.mm
     )
 else()
-    file(GLOB PLATFORMS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_linux.cpp)
+    file(GLOB PLATFORM_SRC ${CMAKE_CURRENT_SOURCE_DIR}/platforms/*_linux.cpp)
 endif()
-list(APPEND SRC ${PLATFORMS_SRC})
+list(APPEND SRC ${PLATFORM_SRC})
 # UI文件
 file(GLOB_RECURSE UI ${CMAKE_CURRENT_SOURCE_DIR}/*.ui)
 # QRC文件
