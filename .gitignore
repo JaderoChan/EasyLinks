@@ -1,10 +1,24 @@
 .vscode/
+.vs/
+__pycache__/
+
 build/
-vs/
-data/
+*.app/
+
+tmp/
 temp/
 backup/
+install/
 
 .DS_Store
 
-test.sh
+*.a
+*.so
+*.o
+*.lib
+*.dll
+*.bin
+*.exe
+*.pdb
+
+*.log
