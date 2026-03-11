@@ -45,7 +45,7 @@ set(APP_TITLE ${PROJECT_NAME})
 set(APP_VERSION ${PROJECT_VERSION})
 set(APP_AUTHOR "頔珞 JaderoChan")
 set(APP_AUTHOR_EMAIL "c_dl_cn@outlook.com")
-set(APP_COPYRIGHT_TEXT "Copyright (c) 2025 JaderoChan")
+set(APP_COPYRIGHT_TEXT "Copyright (c) 2026 JaderoChan")
 set(APP_UUID "c6b748b2-7c0a-4327-9a2a-6bd53c13dc3a")
 
 set(DEFAULT_RENAME_PATTERN "@ (#)")
