@@ -1,6 +1,7 @@
 #pragma once
 
 #include <atomic>
+#include <mutex>
 #include <condition_variable>
 
 #include <qfileinfo.h>
@@ -93,8 +94,9 @@ private:
     LinkTasks tasks_;
     LinkStats stats_;
 
-    std::condition_variable pausedCondition_;
     std::atomic<bool> paused_{false};
+    mutable std::mutex pausedMtx_;
+    std::condition_variable pausedCondition_;
     std::atomic<bool> cancelled_{false};
     std::atomic<bool> cesApplyToAll_{false};
     std::atomic<ConflictingEntryStrategy> cesOfAll_{CES_NONE};

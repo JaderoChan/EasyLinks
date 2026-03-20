@@ -179,19 +179,26 @@ void FileLinkWorker::setConflictsDecision(const LinkTasks& tasks)
 
 void FileLinkWorker::pause()
 {
+    std::lock_guard<std::mutex> locker(pausedMtx_);
     paused_ = true;
 }
 
 void FileLinkWorker::resume()
 {
-    paused_ = false;
+    {
+        std::lock_guard<std::mutex> locker(pausedMtx_);
+        paused_ = false;
+    }
     pausedCondition_.notify_all();
 }
 
 void FileLinkWorker::cancel()
 {
     cancelled_ = true;
-    paused_ = false;
+    {
+        std::lock_guard<std::mutex> locker(pausedMtx_);
+        paused_ = false;
+    }
     pausedCondition_.notify_all();
 }
 
@@ -200,8 +207,7 @@ bool FileLinkWorker::processPauseAndCancel()
     if (cancelled_)
         return true;
 
-    std::mutex dummyMutex;
-    std::unique_lock<std::mutex> locker(dummyMutex);
+    std::unique_lock<std::mutex> locker(pausedMtx_);
     pausedCondition_.wait(locker, [=]() { return !paused_.load(); });
 
     return cancelled_;
