@@ -1,5 +1,7 @@
 #pragma once
 
+#include <atomic>
+
 #include <qfile.h>
 #include <qstring.h>
 #include <qtextstream.h>
@@ -12,8 +14,11 @@ class FileLogger : public QObject
 public:
     static FileLogger& getInstance();
 
-    bool setup(const QString& filepath);
-    void cleanup();
+    QString filepath() const;
+    void setFilepath(const QString& filepath);
+
+    void install();
+    void uninstall();
 
 protected:
     static QString messageTypeString(QtMsgType type);
@@ -26,10 +31,12 @@ private:
     FileLogger(const FileLogger&) = delete;
     FileLogger& operator=(const FileLogger&) = delete;
 
-    bool setFileAndStream();
+    bool setup();
+    bool isSetup() const;
 
-    QString filePath_;
-    QMutex mutex_;
+    std::atomic<bool> isSetup_{false};
+    mutable QMutex mutex_;
+    QString filepath_;
     QFile file_;
     QTextStream stream_;
 };

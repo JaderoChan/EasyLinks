@@ -12,25 +12,69 @@ FileLogger::FileLogger(QObject* parent)
 
 FileLogger::~FileLogger()
 {
-    cleanup();
+    filepath_.clear();
+    stream_.setDevice(nullptr);
+    if (file_.isOpen())
+        file_.close();
+    qInstallMessageHandler(nullptr);
+    isSetup_.store(false);
 }
 
-bool FileLogger::setFileAndStream()
+FileLogger& FileLogger::getInstance()
 {
-    if (filePath_.isEmpty())
+    static FileLogger instance;
+    return instance;
+}
+
+QString FileLogger::filepath() const
+{
+    QMutexLocker locker(&mutex_);
+    return filepath_;
+}
+
+void FileLogger::setFilepath(const QString& filepath)
+{
+    QMutexLocker locker(&mutex_);
+    filepath_ = filepath;
+}
+
+void FileLogger::install()
+{
+    qInstallMessageHandler(customMessageHandler);
+}
+
+void FileLogger::uninstall()
+{
+    qInstallMessageHandler(nullptr);
+
+    QMutexLocker locker(&mutex_);
+
+    filepath_.clear();
+    stream_.setDevice(nullptr);
+    if (file_.isOpen())
+        file_.close();
+    isSetup_.store(false);
+}
+
+bool FileLogger::setup()
+{
+    QMutexLocker locker(&mutex_);
+
+    if (filepath_.isEmpty())
         return false;
 
-    QDir dir = QFileInfo(filePath_).absoluteDir();
+    QDir dir = QFileInfo(filepath_).absoluteDir();
     if (!dir.exists() && !dir.mkpath("."))
     {
         debugOut(qCritical(), "[File Logger] Failed to create log directory: %1.", dir.absolutePath());
         return false;
     }
 
-    file_.setFileName(filePath_);
+    file_.setFileName(filepath_);
     if (file_.open(QIODevice::Append | QIODevice::Text))
     {
         stream_.setDevice(&file_);
+        isSetup_.store(true);
         return true;
     }
     else
@@ -40,37 +84,9 @@ bool FileLogger::setFileAndStream()
     }
 }
 
-FileLogger& FileLogger::getInstance()
+bool FileLogger::isSetup() const
 {
-    static FileLogger instance;
-    return instance;
-}
-
-bool FileLogger::setup(const QString& filepath)
-{
-    if (filepath.isEmpty())
-        return false;
-
-    QMutexLocker locker(&getInstance().mutex_);
-
-    filePath_ = filepath;
-    if (setFileAndStream())
-    {
-        qInstallMessageHandler(customMessageHandler);
-        return true;
-    }
-    return false;
-}
-
-void FileLogger::cleanup()
-{
-    QMutexLocker locker(&getInstance().mutex_);
-
-    filePath_.clear();
-    stream_.setDevice(nullptr);
-    qInstallMessageHandler(nullptr);
-    if (file_.isOpen())
-        file_.close();
+    return isSetup_.load();
 }
 
 QString FileLogger::messageTypeString(QtMsgType type)
@@ -94,6 +110,15 @@ QString FileLogger::messageTypeString(QtMsgType type)
 
 void FileLogger::customMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
+    if (!getInstance().isSetup())
+    {
+        if (!getInstance().setup())
+        {
+            debugOut(qWarning(), "Failed to setup File Logger.");
+            return;
+        }
+    }
+
     QMutexLocker locker(&getInstance().mutex_);
 
     QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss.zzz");
