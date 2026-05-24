@@ -2,6 +2,7 @@
 
 #include <qobject.h>
 
+#include "filelink/types.h"
 #include "about_dialog.h"
 #include "hotkey_manager.h"
 #include "settings.h"
@@ -21,6 +22,8 @@ protected:
     void showAboutDialog();
     void showSettingsWidget();
     void openLogDirectory();
+
+    void onLinkCompleted(LinkType lt, const QString& targetDir, const LinkStats& stats);
 
 private:
     Settings settings_;

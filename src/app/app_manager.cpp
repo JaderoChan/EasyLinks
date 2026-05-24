@@ -1,11 +1,13 @@
 #include "app_manager.h"
 
 #include <qdesktopservices.h>
+#include <qdir.h>
 #include <qmessagebox.h>
 
 #include <easy_translate.hpp>
 
 #include "language.h"
+#include "logo_icon.h"
 #include "platforms/auto_run_on_startup.h"
 #include "utils/qwidget_utils.h"
 
@@ -19,6 +21,9 @@ AppManager::AppManager(QObject* parent)
     connect(sti_, &SystemTrayIcon::aboutActionTriggered, this, &AppManager::showAboutDialog);
     connect(sti_, &SystemTrayIcon::openLogDirActionTriggered, this, &AppManager::openLogDirectory);
     connect(sti_, &SystemTrayIcon::exitActionTriggered, qApp, &QApplication::quit);
+
+    // 链接操作完成后发送通知。
+    connect(hotkeyMgr_, &HotkeyManager::linkCompleted, this, &AppManager::onLinkCompleted);
 
     setSettings(loadSettings());
 
@@ -73,4 +78,36 @@ void AppManager::openLogDirectory()
         );
         msgBox.exec();
     }
+}
+
+void AppManager::onLinkCompleted(LinkType lt, const QString& targetDir, const LinkStats& stats)
+{
+    int successEntries = stats.processedEntries - stats.failedEntries;
+
+    QString linkTypeName(EASYTR(lt == LT_HARDLINK ? "LinkType.Hardlink" : "LinkType.Symlink"));
+    QString dirName = QDir(targetDir).isRoot() ? targetDir : QDir(targetDir).dirName();
+    QString text;
+
+    if (successEntries == stats.processedEntries)           // All success
+        text = QString(EASYTR("Notification.LinkCompleted.SuccessOnly"))
+            .arg(linkTypeName)
+            .arg(successEntries)
+            .arg(dirName);
+    else if (stats.failedEntries == stats.processedEntries) // All failed
+    {
+        text = QString(EASYTR("Notification.LinkCompleted.FailedOnly"))
+            .arg(linkTypeName)
+            .arg(stats.failedEntries)
+            .arg(dirName);
+    }
+    else
+    {
+        text = QString(EASYTR("Notification.LinkCompleted.SuccessFailed"))
+            .arg(linkTypeName)
+            .arg(successEntries)
+            .arg(dirName)
+            .arg(stats.failedEntries);
+    }
+
+    sti_->showMessage(QString(EASYTR("App.Title")), text, getLogoIcon(), 3000);
 }

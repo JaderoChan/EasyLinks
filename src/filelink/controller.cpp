@@ -16,6 +16,9 @@ FileLinkController::FileLinkController(
     if (sourcePaths.isEmpty())
         return;
 
+    linkType_ = linkType;
+    targetDir_ = targetDir;
+
     worker_ = new FileLinkWorker();
     worker_->setParameters(linkType, sourcePaths, targetDir, config_.renamePattern, config_.removeToTrash);
     worker_->moveToThread(&workerThread_);
@@ -31,9 +34,13 @@ FileLinkController::FileLinkController(
         targetDir);
 
     connect(worker_, &FileLinkWorker::progressUpdated, progress_, &ProgressWidget::updateProgress);
+    connect(worker_, &FileLinkWorker::progressUpdated, this, [this](const EntryPair&, const LinkStats& stats)
+    { lastStats_ = stats; });
     connect(worker_, &FileLinkWorker::errorOccurred, progress_, &ProgressWidget::appendErrorLog);
     connect(worker_, &FileLinkWorker::conflictsDecisionWaited, progress_, &ProgressWidget::decideConflicts);
     connect(worker_, &FileLinkWorker::finished, progress_, &ProgressWidget::onWorkFinished);
+    connect(worker_, &FileLinkWorker::finished, this, [this]()
+    { emit linkFinished(linkType_, targetDir_, lastStats_); });
     connect(worker_, &FileLinkWorker::finished, &workerThread_, &QThread::quit);
 
     connect(progress_, &ProgressWidget::pauseTriggered, worker_, &FileLinkWorker::pause, Qt::DirectConnection);

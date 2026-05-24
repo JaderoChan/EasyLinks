@@ -27,10 +27,15 @@ public:
 
 signals:
     void operate();
+    void linkFinished(LinkType linkType, QString targetDir, LinkStats stats);
 
 private:
     QThread workerThread_;
     LinkConfig config_;
     FileLinkWorker* worker_ = nullptr;
     ProgressWidget* progress_ = nullptr;
+
+    LinkType linkType_ = LT_SYMLINK;
+    QString targetDir_;
+    LinkStats lastStats_;
 };

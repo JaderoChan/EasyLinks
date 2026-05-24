@@ -36,6 +36,10 @@
     <key>CFBundleCopyRight</key>
     <string>@APP_COPYRIGHT_TEXT</string>
 
+    <!-- 通知样式（alert = 常驻需手动关闭，banner = 自动消失） -->
+    <key>NSUserNotificationAlertStyle</key>
+    <string>banner</string>
+
     <!-- 辅助功能权限说明 -->
     <key>NSAppleEventsUsageDescription</key>
     <string>NSAppleEventsUsageDescription</string>

@@ -19,6 +19,7 @@ public:
 
 signals:
     void shouldLinks(LinkType linkType);
+    void linkCompleted(LinkType linkType, QString targetDir, LinkStats stats);
 
 private:
     void links(LinkType linkType);

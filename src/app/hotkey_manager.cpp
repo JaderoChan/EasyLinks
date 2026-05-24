@@ -105,6 +105,8 @@ void HotkeyManager::links(LinkType linkType)
         targetDir = QDir(targetDir).canonicalPath();
         // 任务结束后，其会自动释放。
         auto controller = new FileLinkController(linkType, sourcePaths, targetDir, settings_.linkConfig, this);
+        connect(controller, &FileLinkController::linkFinished, this,
+        [=](LinkType lt, const QString& dir, const LinkStats& stats) { emit linkCompleted(lt, dir, stats); });
         controller->start();
     }
 }
