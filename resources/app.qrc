@@ -1,20 +1,20 @@
-<!DOCTYPE RCC>
 <RCC version="1.0">
-  <qresource prefix="/">
-    <file>icons/app_32.png</file>
-    <file>icons/app_256.png</file>
-    <file>icons/app_512.png</file>
-    <file>icons/app_128.png</file>
-    <file>icons/app_64.png</file>
-    <file>icons/cancel.png</file>
-    <file>icons/decide.png</file>
-    <file>icons/details.png</file>
-    <file>icons/keep.png</file>
-    <file>icons/app_16.png</file>
-    <file>icons/pause.png</file>
-    <file>icons/play.png</file>
-    <file>icons/replace.png</file>
-    <file>icons/skip.png</file>
-    <file>stylesheets/table_view.qss</file>
-  </qresource>
+    <qresource prefix="/">
+        <file>icons/app_32.png</file>
+        <file>icons/app_256.png</file>
+        <file>icons/app_512.png</file>
+        <file>icons/app_128.png</file>
+        <file>icons/app_64.png</file>
+        <file>icons/cancel.png</file>
+        <file>icons/decide.png</file>
+        <file>icons/details.png</file>
+        <file>icons/keep.png</file>
+        <file>icons/app_16.png</file>
+        <file>icons/pause.png</file>
+        <file>icons/play.png</file>
+        <file>icons/replace.png</file>
+        <file>icons/skip.png</file>
+        <file>stylesheets/table_view.qss</file>
+        <file>icons/info.png</file>
+    </qresource>
 </RCC>
