@@ -187,17 +187,17 @@ bool DirectorySelectDialog::eventFilter(QObject* obj, QEvent* event)
 
 void DirectorySelectDialog::updateText()
 {
-    setWindowTitle(EASYTR("Pattern automation hardlink"));
-    ui.tipTextLabel->setText(QString(EASYTR("%1 directorys")).arg(dirs_.count()));
+    setWindowTitle(EASYTR("DirectorySelectDialog.Title"));
+    ui.tipTextLabel->setText(QString(EASYTR("DirectorySelectDialog.TipText.Text")).arg(dirs_.count()));
     ui.tipIconLabel->setToolTip(EASYTR("DirectorySelectDialog.TipIcon.ToolTip"));
-    ui.addButton->setText(EASYTR("Add"));
-    ui.removeButton->setText(EASYTR("Remove"));
-    ui.startButton->setText(EASYTR("Start"));
+    ui.addButton->setText(EASYTR("DirectorySelectDialog.AddButton.Text"));
+    ui.removeButton->setText(EASYTR("DirectorySelectDialog.RemoveButton.Text"));
+    ui.startButton->setText(EASYTR("DirectorySelectDialog.StartButton.Text"));
 }
 
 void DirectorySelectDialog::updateUi()
 {
-    ui.tipTextLabel->setText(QString(EASYTR("%1 directorys")).arg(dirs_.count()));
+    ui.tipTextLabel->setText(QString(EASYTR("DirectorySelectDialog.TipText.Text")).arg(dirs_.count()));
     ui.removeButton->setEnabled(!ui.listWidget->selectedItems().isEmpty());
     ui.startButton->setEnabled(!dirs_.isEmpty());
 }
