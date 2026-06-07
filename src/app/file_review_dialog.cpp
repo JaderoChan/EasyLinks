@@ -188,11 +188,11 @@ void FileReviewDialog::applyConfirmedSelection()
 
 void FileReviewDialog::updateText()
 {
-    setWindowTitle(EASYTR("FileReviewDialog.Title"));
+    setWindowTitle(EASYTR("FileReviewDialog.WindowTitle"));
     ui.tipTextLabel->setText(
-        QString(EASYTR("FileReviewDialog.TipText.Text"))
+        QString(EASYTR("FileReviewDialog.Text.Tip"))
         .arg(filecount_)
         .arg(entryGroups_.count()));
-    ui.selectAllCheckBox->setText(EASYTR("FileReviewDialog.SelectAllCheckBox.Text"));
-    ui.confirmButton->setText(EASYTR("FileReviewDialog.ConfirmButton.Text"));
+    ui.selectAllCheckBox->setText(EASYTR("FileReviewDialog.CheckBox.SelectAll"));
+    ui.confirmButton->setText(EASYTR("FileReviewDialog.Button.Confirm"));
 }

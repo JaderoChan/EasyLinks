@@ -187,17 +187,17 @@ bool DirectorySelectDialog::eventFilter(QObject* obj, QEvent* event)
 
 void DirectorySelectDialog::updateText()
 {
-    setWindowTitle(EASYTR("DirectorySelectDialog.Title"));
-    ui.tipTextLabel->setText(QString(EASYTR("DirectorySelectDialog.TipText.Text")).arg(dirs_.count()));
-    ui.tipIconLabel->setToolTip(EASYTR("DirectorySelectDialog.TipIcon.ToolTip"));
-    ui.addButton->setText(EASYTR("DirectorySelectDialog.AddButton.Text"));
-    ui.removeButton->setText(EASYTR("DirectorySelectDialog.RemoveButton.Text"));
-    ui.startButton->setText(EASYTR("DirectorySelectDialog.StartButton.Text"));
+    setWindowTitle(EASYTR("DirectorySelectDialog.WindowTitle"));
+    ui.tipTextLabel->setText(QString(EASYTR("DirectorySelectDialog.Text.TipText")).arg(dirs_.count()));
+    ui.tipIconLabel->setToolTip(EASYTR("DirectorySelectDialog.ToolTip.TipIcon"));
+    ui.addButton->setText(EASYTR("DirectorySelectDialog.Button.Add"));
+    ui.removeButton->setText(EASYTR("DirectorySelectDialog.Button.Remove"));
+    ui.startButton->setText(EASYTR("DirectorySelectDialog.Button.Start"));
 }
 
 void DirectorySelectDialog::updateUi()
 {
-    ui.tipTextLabel->setText(QString(EASYTR("DirectorySelectDialog.TipText.Text")).arg(dirs_.count()));
+    ui.tipTextLabel->setText(QString(EASYTR("DirectorySelectDialog.Text.TipText")).arg(dirs_.count()));
     ui.removeButton->setEnabled(!ui.listWidget->selectedItems().isEmpty());
     ui.startButton->setEnabled(!dirs_.isEmpty());
 }
