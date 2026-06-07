@@ -15,6 +15,7 @@ Settings loadSettings()
 
     settings.language = qsettings.value("Language", currentSystemLang()).value<Language>();
     settings.autoRunOnStartUp = qsettings.value("AutoRunOnStartUp", false).toBool();
+    settings.patterns = qsettings.value("Patterns", DEFAULT_PATTERNS).toInt();
 #ifdef Q_OS_MAC
     settings.symlinkHotkey = READ_KC(qsettings, "SymlinkHotkey", "Alt+S");
     settings.hardlinkHotkey = READ_KC(qsettings, "HardlinkHotkey", "Alt+H");
@@ -40,6 +41,7 @@ void saveSettings(const Settings& settings)
 
     qsettings.setValue("Language", settings.language);
     qsettings.setValue("AutoRunOnStartUp", settings.autoRunOnStartUp);
+    qsettings.setValue("Patterns", settings.patterns);
     qsettings.setValue("SymlinkHotkey", settings.symlinkHotkey.toString().c_str());
     qsettings.setValue("HardlinkHotkey", settings.hardlinkHotkey.toString().c_str());
 

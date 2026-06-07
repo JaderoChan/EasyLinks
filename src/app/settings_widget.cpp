@@ -63,6 +63,7 @@ SettingsWidget::SettingsWidget(const Settings& settings, QWidget* parent)
     ui.autoRunOnStartUpCb->setChecked(settings_.autoRunOnStartUp);
     ui.keepDialogOnErrorOccurredCb->setChecked(settings_.linkConfig.keepDialogOnErrorOccurred);
     ui.removeToTrashCb->setChecked(settings_.linkConfig.removeToTrash);
+    ui.patternLinkModeComboBox->setCurrentIndex(settings_.patterns == SUPERFICIAL_PATTERNS ? 0 : 1);
     ui.renamePatternLe->setText(settings_.linkConfig.renamePattern);
     ui.symlinkHotkeyInputer->setKeyCombination(gbhkKcToQtKc(settings_.symlinkHotkey));
     ui.hardlinkHotkeyInputer->setKeyCombination(gbhkKcToQtKc(settings_.hardlinkHotkey));
@@ -73,6 +74,7 @@ SettingsWidget::SettingsWidget(const Settings& settings, QWidget* parent)
     connect(ui.autoRunOnStartUpCb, &QCheckBox::toggled, this, &SettingsWidget::onAutoRunOnStartUpChanged);
     connect(ui.keepDialogOnErrorOccurredCb, &QCheckBox::toggled, this, &SettingsWidget::onKeepDialogOnErrorOccurredChanged);
     connect(ui.removeToTrashCb, &QCheckBox::toggled, this, &SettingsWidget::onRemoveToTrashChanged);
+    connect(ui.patternLinkModeComboBox, &QComboBox::currentIndexChanged, this, &SettingsWidget::onPatternsChanged);
     connect(ui.symlinkHotkeyInputer, &KeyCombinationInputer::keyCombinationChanged, this, &SettingsWidget::onSymlinkHotkeyChanged);
     connect(ui.hardlinkHotkeyInputer, &KeyCombinationInputer::keyCombinationChanged, this, &SettingsWidget::onHardlinkHotkeyChanged);
 
@@ -89,6 +91,7 @@ void SettingsWidget::updateText()
     ui.autoRunOnStartUpCb->setText(EASYTR("SettingsWidget.CheckBox.AutoRunOnStartUp"));
     ui.keepDialogOnErrorOccurredCb->setText(EASYTR("SettingsWidget.CheckBox.KeepDialogOnErrorOccurred"));
     ui.removeToTrashCb->setText(EASYTR("SettingsWidget.CheckBox.RemoveToTrash"));
+    ui.patternLinkModeLabel->setText(EASYTR("SettingsWidget.Text.PatternsLinkLabel"));
     ui.renamePatternLe->setPlaceholderText(EASYTR("SettingsWidget.LineEdit.RenamePattern.Placeholder"));
     ui.renamePatternTips->setText(EASYTR("SettingsWidget.Text.RenamePatternTips"));
     ui.symlinkHotkeyText->setText(EASYTR("SettingsWidget.Text.SymlinkHotkey"));
@@ -98,6 +101,9 @@ void SettingsWidget::updateText()
 
     ui.languageComboBox->setItemText(0, EASYTR("SettingsWidget.ComboBox.ItemText.English"));
     ui.languageComboBox->setItemText(1, EASYTR("SettingsWidget.ComboBox.ItemText.Chinese"));
+
+    ui.patternLinkModeComboBox->setItemText(0, EASYTR("SettingsWidget.ComboBox.ItemText.Superficial"));
+    ui.patternLinkModeComboBox->setItemText(0, EASYTR("SettingsWidget.ComboBox.ItemText.Hash"));
 }
 
 void SettingsWidget::changeEvent(QEvent* event)
@@ -135,6 +141,22 @@ void SettingsWidget::onKeepDialogOnErrorOccurredChanged(bool enable)
 void SettingsWidget::onRemoveToTrashChanged(bool enable)
 {
     settings_.linkConfig.removeToTrash = enable;
+    emit settingsChanged(settings_);
+}
+
+void SettingsWidget::onPatternsChanged(int index)
+{
+    switch (index)
+    {
+        case 0:
+            settings_.patterns = SUPERFICIAL_PATTERNS;
+            break;
+        case 1:
+            settings_.patterns = HASH_PATTERNS;
+            break;
+        default:
+            return;
+    }
     emit settingsChanged(settings_);
 }
 
