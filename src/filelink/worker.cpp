@@ -1,6 +1,5 @@
 #include "worker.h"
 
-#include <filesystem>
 #include <mutex>
 #include <stdexcept>
 
