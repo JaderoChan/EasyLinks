@@ -14,6 +14,7 @@ public:
     void updateText();
 
 signals:
+    void patternLinkActionTriggered();
     void settingsActionTriggered();
     void aboutActionTriggered();
     void openLogDirActionTriggered();
@@ -24,6 +25,7 @@ protected:
 
 private:
     QMenu menu_;
+    QAction patternLinkAction_;
     QAction settingsAction_;
     QAction aboutAction_;
     QAction openLogDirAction_;

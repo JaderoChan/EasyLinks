@@ -8,6 +8,8 @@
 SystemTrayIcon::SystemTrayIcon(QObject* parent)
     : QSystemTrayIcon(getLogoIcon(), parent)
 {
+    menu_.addAction(&patternLinkAction_);
+    menu_.addSeparator();
     menu_.addActions({&settingsAction_, &aboutAction_, &openLogDirAction_});
     menu_.addSeparator();
     menu_.addAction(&exitAction_);
@@ -15,6 +17,7 @@ SystemTrayIcon::SystemTrayIcon(QObject* parent)
     setContextMenu(&menu_);
 
     connect(this, &QSystemTrayIcon::activated, this, &SystemTrayIcon::onActivated);
+    connect(&patternLinkAction_, &QAction::triggered, this, [=]() { emit patternLinkActionTriggered(); });
     connect(&settingsAction_, &QAction::triggered, this, [=]() { emit settingsActionTriggered(); });
     connect(&aboutAction_, &QAction::triggered, this, [=]() { emit aboutActionTriggered(); });
     connect(&openLogDirAction_, &QAction::triggered, this, [=]() { emit openLogDirActionTriggered(); });
@@ -27,6 +30,7 @@ SystemTrayIcon::SystemTrayIcon(QObject* parent)
 void SystemTrayIcon::updateText()
 {
     setToolTip(EASYTR("App.Title"));
+    patternLinkAction_.setText(EASYTR("SystemTrayIcon.Action.PatternLink"));
     settingsAction_.setText(EASYTR("SystemTrayIcon.Action.Settings"));
     aboutAction_.setText(EASYTR("SystemTrayIcon.Action.About"));
     openLogDirAction_.setText(EASYTR("SystemTrayIcon.Action.OpenLogDir"));
