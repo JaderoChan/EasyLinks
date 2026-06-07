@@ -40,12 +40,18 @@ void PatternLinkWorker::run()
     {
         emit reviewRequested(entryGroups_);
         pause();
-    }
 
-    if (processPauseAndCancel())
-    {
-        emit finished();
-        return;
+        if (processPauseAndCancel())
+        {
+            emit finished();
+            return;
+        }
+
+        stats_.totalEntries = 0;
+        for (const auto& entryGr : entryGroups_)
+            for (const auto& entry : entryGr)
+                stats_.totalEntries++;
+        tryUpdateProgress(true);
     }
 
     work();
