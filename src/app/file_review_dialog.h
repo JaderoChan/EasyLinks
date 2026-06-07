@@ -3,7 +3,6 @@
 #include <qdialog.h>
 #include <qfileinfo.h>
 #include <qlist.h>
-#include <qtreewidgetitem.h>
 
 #include "ui_file_review_dialog.h"
 

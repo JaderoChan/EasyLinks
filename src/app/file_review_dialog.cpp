@@ -1,8 +1,8 @@
 #include "file_review_dialog.h"
 
-#include <easy_translate.hpp>
-#include <qsignalblocker.h>
 #include <qtreewidget.h>
+
+#include <easy_translate.hpp>
 
 FileReviewDialog::FileReviewDialog(QList<QFileInfoList>& entryGroups, QWidget* parent)
     : QDialog(parent), entryGroups_(entryGroups)
@@ -169,13 +169,13 @@ void FileReviewDialog::updateSelectAllCheckState()
 
 void FileReviewDialog::applyConfirmedSelection()
 {
-    const int groupCount = std::min(entryGroups_.size(), ui.treeWidget->topLevelItemCount());
+    const int groupCount = std::min<int>(entryGroups_.size(), ui.treeWidget->topLevelItemCount());
 
     for (int groupIndex = groupCount - 1; groupIndex >= 0; --groupIndex)
     {
         auto& group = entryGroups_[groupIndex];
         auto* groupItem = ui.treeWidget->topLevelItem(groupIndex);
-        const int childCount = std::min(group.size(), groupItem->childCount());
+        const int childCount = std::min<int>(group.size(), groupItem->childCount());
 
         for (int childIndex = childCount - 1; childIndex >= 0; --childIndex)
         {
