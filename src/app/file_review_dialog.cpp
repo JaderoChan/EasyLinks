@@ -1,7 +1,6 @@
 #include "file_review_dialog.h"
 
 #include <qtreewidget.h>
-#include <qcheckbox.h>
 
 #include <easy_translate.hpp>
 
