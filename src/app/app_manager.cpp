@@ -27,6 +27,7 @@ AppManager::AppManager(QObject* parent)
 
     // 链接操作完成后发送通知。
     connect(hotkeyMgr_, &HotkeyManager::linkCompleted, this, &AppManager::onLinkCompleted);
+    connect(hotkeyMgr_, &HotkeyManager::patternLinkTriggered, this, &AppManager::triggerPatternLinkFromDir);
 
     setSettings(loadSettings());
 
@@ -96,6 +97,17 @@ void AppManager::openLogDirectory()
         );
         msgBox.exec();
     }
+}
+
+void AppManager::triggerPatternLinkFromDir(QString dir)
+{
+    if (dir.isEmpty())
+        return;
+
+    auto controller = new FileLinkController(
+        QStringList{dir}, settings_.patterns, settings_.needReview, settings_.linkConfig, this);
+    connect(controller, &FileLinkController::patternLinkFinished, this, &AppManager::onPatternLinkCompleted);
+    controller->start();
 }
 
 void AppManager::onLinkCompleted(LinkType lt, const QString& targetDir, const LinkStats& stats)

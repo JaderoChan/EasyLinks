@@ -23,9 +23,11 @@ Settings loadSettings()
 #ifdef Q_OS_MAC
     settings.symlinkHotkey = READ_KC(qsettings, "SymlinkHotkey", "Alt+S");
     settings.hardlinkHotkey = READ_KC(qsettings, "HardlinkHotkey", "Alt+H");
+    settings.patternLinkHotkey = READ_KC(qsettings, "PatternLinkHotkey", "Alt+P");
 #else
     settings.symlinkHotkey = READ_KC(qsettings, "SymlinkHotkey", "Ctrl+S");
     settings.hardlinkHotkey = READ_KC(qsettings, "HardlinkHotkey", "Ctrl+H");
+    settings.patternLinkHotkey = READ_KC(qsettings, "PatternLinkHotkey", "Ctrl+P");
 #endif // Q_OS_MAC
 
     qsettings.beginGroup("LinkConfig");
@@ -49,6 +51,7 @@ void saveSettings(const Settings& settings)
     qsettings.setValue("Patterns", settings.patterns);
     qsettings.setValue("SymlinkHotkey", settings.symlinkHotkey.toString().c_str());
     qsettings.setValue("HardlinkHotkey", settings.hardlinkHotkey.toString().c_str());
+    qsettings.setValue("PatternLinkHotkey", settings.patternLinkHotkey.toString().c_str());
 
     qsettings.beginGroup("LinkConfig");
     qsettings.setValue("KeepDialogOnErrorOccurred", settings.linkConfig.keepDialogOnErrorOccurred);

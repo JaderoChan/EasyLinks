@@ -61,6 +61,7 @@
     "SettingsWidget.RenamePatternGroupBox.Title": "重命名模式",
     "SettingsWidget.Text.RenamePatternTips": "可用占位符：\n@：原文件名\n#：数字编号\n\n示例：\n使用模式\"@-linked-#\"，对文件\"file.ext\"进行重命名时，可能的结果是\"file-linked-1.ext\"",
     "SettingsWidget.Text.HardlinkHotkey": "硬链接",
+    "SettingsWidget.Text.PatternLinkHotkey": "模式链接",
     "SettingsWidget.Text.Language": "语言",
     "SettingsWidget.Text.SymlinkHotkey": "符号链接",
     "SettingsWidget.WindowTitle": "设置",

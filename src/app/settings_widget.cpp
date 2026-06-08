@@ -67,6 +67,7 @@ SettingsWidget::SettingsWidget(const Settings& settings, QWidget* parent)
     ui.renamePatternLe->setText(settings_.linkConfig.renamePattern);
     ui.symlinkHotkeyInputer->setKeyCombination(gbhkKcToQtKc(settings_.symlinkHotkey));
     ui.hardlinkHotkeyInputer->setKeyCombination(gbhkKcToQtKc(settings_.hardlinkHotkey));
+    ui.patternLinkHotkeyInputer->setKeyCombination(gbhkKcToQtKc(settings_.patternLinkHotkey));
 
     ui.renamePatternLe->installEventFilter(this);
 
@@ -77,6 +78,7 @@ SettingsWidget::SettingsWidget(const Settings& settings, QWidget* parent)
     connect(ui.patternLinkModeComboBox, &QComboBox::currentIndexChanged, this, &SettingsWidget::onPatternsChanged);
     connect(ui.symlinkHotkeyInputer, &KeyCombinationInputer::keyCombinationChanged, this, &SettingsWidget::onSymlinkHotkeyChanged);
     connect(ui.hardlinkHotkeyInputer, &KeyCombinationInputer::keyCombinationChanged, this, &SettingsWidget::onHardlinkHotkeyChanged);
+    connect(ui.patternLinkHotkeyInputer, &KeyCombinationInputer::keyCombinationChanged, this, &SettingsWidget::onPatternLinkHotkeyChanged);
 
     updateText();
 }
@@ -96,8 +98,10 @@ void SettingsWidget::updateText()
     ui.renamePatternTips->setText(EASYTR("SettingsWidget.Text.RenamePatternTips"));
     ui.symlinkHotkeyText->setText(EASYTR("SettingsWidget.Text.SymlinkHotkey"));
     ui.hardlinkHotkeyText->setText(EASYTR("SettingsWidget.Text.HardlinkHotkey"));
+    ui.patternLinkHotkeyText->setText(EASYTR("SettingsWidget.Text.PatternLinkHotkey"));
     ui.symlinkHotkeyInputer->setToolTip(EASYTR("SettingsWidget.KeyCombinationInputer.ToolTip"));
     ui.hardlinkHotkeyInputer->setToolTip(EASYTR("SettingsWidget.KeyCombinationInputer.ToolTip"));
+    ui.patternLinkHotkeyInputer->setToolTip(EASYTR("SettingsWidget.KeyCombinationInputer.ToolTip"));
 
     ui.languageComboBox->setItemText(0, EASYTR("SettingsWidget.ComboBox.ItemText.English"));
     ui.languageComboBox->setItemText(1, EASYTR("SettingsWidget.ComboBox.ItemText.Chinese"));
@@ -184,7 +188,8 @@ void SettingsWidget::onRenamePatternChanged(QString renamePattern)
 void SettingsWidget::onSymlinkHotkeyChanged(QKeyCombination qkc)
 {
     // 由于使用的是Hook GHM，可以同时存在多个相同的全局热键，故需要要额外判断当前新热键是否已重复。
-    if (qkc == ui.hardlinkHotkeyInputer->keyCombination())
+    if (qkc == ui.hardlinkHotkeyInputer->keyCombination() ||
+        qkc == ui.patternLinkHotkeyInputer->keyCombination())
     {
         // Roll back
         ui.symlinkHotkeyInputer->setKeyCombination(gbhkKcToQtKc(settings_.symlinkHotkey));
@@ -198,7 +203,8 @@ void SettingsWidget::onSymlinkHotkeyChanged(QKeyCombination qkc)
 
 void SettingsWidget::onHardlinkHotkeyChanged(QKeyCombination qkc)
 {
-    if (qkc == ui.symlinkHotkeyInputer->keyCombination())
+    if (qkc == ui.symlinkHotkeyInputer->keyCombination() ||
+        qkc == ui.patternLinkHotkeyInputer->keyCombination())
     {
         // Roll back
         ui.hardlinkHotkeyInputer->setKeyCombination(gbhkKcToQtKc(settings_.hardlinkHotkey));
@@ -207,6 +213,21 @@ void SettingsWidget::onHardlinkHotkeyChanged(QKeyCombination qkc)
     }
 
     settings_.hardlinkHotkey = qtKcToGbhkKc(qkc);
+    emit settingsChanged(settings_);
+}
+
+void SettingsWidget::onPatternLinkHotkeyChanged(QKeyCombination qkc)
+{
+    if (qkc == ui.symlinkHotkeyInputer->keyCombination() ||
+        qkc == ui.hardlinkHotkeyInputer->keyCombination())
+    {
+        // Roll back
+        ui.patternLinkHotkeyInputer->setKeyCombination(gbhkKcToQtKc(settings_.patternLinkHotkey));
+        alertSameHotkey();
+        return;
+    }
+
+    settings_.patternLinkHotkey = qtKcToGbhkKc(qkc);
     emit settingsChanged(settings_);
 }
 

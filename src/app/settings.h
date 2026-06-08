@@ -19,6 +19,7 @@ struct Settings
     LinkConfig linkConfig;
     gbhk::KeyCombination symlinkHotkey;
     gbhk::KeyCombination hardlinkHotkey;
+    gbhk::KeyCombination patternLinkHotkey;
 
     Patterns   patterns;
     bool       needReview;

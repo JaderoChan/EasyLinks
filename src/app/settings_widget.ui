@@ -286,6 +286,66 @@
             </layout>
            </widget>
           </item>
+                    <item>
+                     <widget class="QWidget" name="widget_5_2" native="true">
+                        <property name="focusPolicy">
+                         <enum>Qt::FocusPolicy::ClickFocus</enum>
+                        </property>
+                        <layout class="QHBoxLayout" name="horizontalLayout_5">
+                         <property name="leftMargin">
+                            <number>0</number>
+                         </property>
+                         <property name="topMargin">
+                            <number>0</number>
+                         </property>
+                         <property name="rightMargin">
+                            <number>0</number>
+                         </property>
+                         <property name="bottomMargin">
+                            <number>0</number>
+                         </property>
+                         <item>
+                            <widget class="QLabel" name="patternLinkHotkeyText">
+                             <property name="focusPolicy">
+                                <enum>Qt::FocusPolicy::ClickFocus</enum>
+                             </property>
+                             <property name="text">
+                                <string>Pattern link hotkey</string>
+                             </property>
+                            </widget>
+                         </item>
+                         <item>
+                            <spacer name="horizontalSpacer_5">
+                             <property name="orientation">
+                                <enum>Qt::Orientation::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                                <size>
+                                 <width>46</width>
+                                 <height>20</height>
+                                </size>
+                             </property>
+                            </spacer>
+                         </item>
+                         <item>
+                            <widget class="KeyCombinationInputer" name="patternLinkHotkeyInputer">
+                             <property name="minimumSize">
+                                <size>
+                                 <width>160</width>
+                                 <height>0</height>
+                                </size>
+                             </property>
+                             <property name="maximumSize">
+                                <size>
+                                 <width>160</width>
+                                 <height>16777215</height>
+                                </size>
+                             </property>
+                            </widget>
+                         </item>
+                        </layout>
+                     </widget>
+                    </item>
          </layout>
         </widget>
        </item>

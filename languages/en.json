@@ -61,6 +61,7 @@
     "SettingsWidget.RenamePatternGroupBox.Title": "Rename Pattern",
     "SettingsWidget.Text.RenamePatternTips": "Placeholder available:\n@: The original file name\n#: The number\n\nExample:\nUse pattern \"@-linked-#\" rename the original file \"file.ext\" maybe produce \"file-linked-1.ext\"",
     "SettingsWidget.Text.HardlinkHotkey": "Hardlink",
+    "SettingsWidget.Text.PatternLinkHotkey": "Pattern Link",
     "SettingsWidget.Text.Language": "Language",
     "SettingsWidget.Text.SymlinkHotkey": "Symbolic Link",
     "SettingsWidget.WindowTitle": "Settings",

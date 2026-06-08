@@ -19,10 +19,13 @@ public:
 
 signals:
     void shouldLinks(LinkType linkType);
+    void shouldPatternLink();
     void linkCompleted(LinkType linkType, QString targetDir, LinkStats stats);
+    void patternLinkTriggered(QString dir);
 
 private:
     void links(LinkType linkType);
+    void patternLink();
 
     Settings settings_;
     gbhk::GlobalHotkeyManager& ghm_;

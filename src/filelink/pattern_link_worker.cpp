@@ -147,7 +147,17 @@ void PatternLinkWorker::run()
     stats_.totalEntries = computeTotalLinkTasks(entryGroups_);
     tryUpdateProgress(true);
 
-    if (needReview_)
+    // If canceled during collection, stop before review/work.
+    if (cancelled_)
+    {
+        entryGroups_.clear();
+        stats_ = LinkStats();
+        tryUpdateProgress(true);
+        emit finished();
+        return;
+    }
+
+    if (needReview_ && !entryGroups_.isEmpty())
     {
         emit reviewRequested(&entryGroups_);
         pause();

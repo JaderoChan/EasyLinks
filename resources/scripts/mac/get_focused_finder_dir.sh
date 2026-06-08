@@ -1,8 +1,8 @@
 osascript -e 'tell application "System Events"
-    set frontApp to name of first application process where it is frontmost
+    set frontAppBundleId to bundle identifier of first application process where it is frontmost
 end tell
 
-if frontApp is not "Finder" then
+if frontAppBundleId is not "com.apple.finder" then
     error "Front application is not Finder"
 end if
 

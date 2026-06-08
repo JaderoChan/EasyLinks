@@ -29,6 +29,7 @@ protected:
     void onRenamePatternChanged(QString renamePattern);
     void onSymlinkHotkeyChanged(QKeyCombination qkc);
     void onHardlinkHotkeyChanged(QKeyCombination qkc);
+    void onPatternLinkHotkeyChanged(QKeyCombination qkc);
 
 private:
     void alertSameHotkey();
