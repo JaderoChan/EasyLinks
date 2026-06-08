@@ -1,6 +1,7 @@
 #include "file_review_dialog.h"
 
 #include <qtreewidget.h>
+#include <qcheckbox.h>
 
 #include <easy_translate.hpp>
 
@@ -41,8 +42,15 @@ FileReviewDialog::FileReviewDialog(QList<QFileInfoList>& entryGroups, QWidget* p
         isSyncingCheckState_ = false;
     });
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
     connect(ui.selectAllCheckBox, &QCheckBox::checkStateChanged, this, [this](Qt::CheckState state)
     {
+#else
+    connect(ui.selectAllCheckBox, &QCheckBox::stateChanged, this, [this](int stateInt)
+    {
+        Qt::CheckState state = static_cast<Qt::CheckState>(stateInt);
+#endif
+
         if (isSyncingCheckState_ || state == Qt::PartiallyChecked)
             return;
 
