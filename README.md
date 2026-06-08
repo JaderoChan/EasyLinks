@@ -1,57 +1,91 @@
 # 随心链接 Easy Links
 
-**[中文 | [English](doc/README_EN.md)]**
+中文 | [English](doc/README_EN.md)
 
-易于使用的文件链接工具，通过可视化界面，全局快捷键，帮助您轻松创建文件/文件夹的符号链接与硬链接。
+随心链接是一个面向桌面文件管理器的链接工具，支持符号链接、硬链接与 Pattern Link。通过 GUI 与全局热键，快速整理文件并减少重复占用。
 
-支持 **Windows** 和 **MacOS**！
+支持平台：Windows、macOS
 
-## 初衷
+## 功能概览
 
-作为一个赛博仓鼠，我喜欢收集各种电子文件。当收集的文件数量多起来后我需要对它们进行分类。就目前而言，我使用文件夹作为标签，将每个文件放在它们应属的标签文件夹下。然而有许多文件可能同时具备多个标签，在此时如果仅仅对文件进行复制的话会造成大量的磁盘空间浪费。所以我开发了这款小工具用来解决我的问题。
+- 通过全局热键把剪贴板中的条目快速链接到目标目录
+- Pattern Link：递归扫描目录，按规则分组并批量硬链接
+- 支持执行前 Review 审核
+- 冲突策略：替换、跳过、保留并自动重命名
+- 可配置重命名模板、失败后窗口行为、删除时是否移动到回收站
+- 三个可配置全局热键：符号链接、硬链接、Pattern Link
 
-## 如何构建
+## 构建
 
-确保 `Qt` 被正确配置。
+请先确保 Qt 开发环境配置正确。
 
-```shell
-git clone https://github/jaderochan/EasyLinks
+```bash
+git clone https://github.com/jaderochan/EasyLinks
 cd EasyLinks
 git submodule update --init --recursive
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j --config Release
 ```
 
-## 应用使用
+## 使用说明
 
-在文件管理器中选中多个条目（文件/文件夹）并进行复制，在你想要链接至的目标目录中按下 `Ctrl+H` 或 `Ctrl+S`（**MacOS** 下使用 `Option+H`）进行硬链接或符号链接操作（快捷键可以进行更改）。
+### 符号链接 / 硬链接
 
-## 注意点
+1. 在文件管理器中选中并复制条目。
+2. 将焦点切换到目标目录窗口。
+3. 触发全局热键：
 
-- 文件夹不支持创建硬链接，所以当你尝试对一个文件夹进行硬链接时，程序会遍历文件夹下所有文件，并以相同的目录结构硬链接每个文件至目标路径。
-- 大多数文件系统不支持跨盘硬链接。对于符号链接，如果盘符发生改变可能导致符号链接失效。
+    - Windows 默认：Ctrl+S（符号链接）、Ctrl+H（硬链接）
+    - macOS 默认：Option+S（符号链接）、Option+H（硬链接）
 
-## 文件重命名模式
+说明：目录本身不支持硬链接。对目录执行硬链接时，程序会递归处理其内部文件并在目标目录重建对应层级。
 
-默认重命名模式为 `@ (#)`。
+### Pattern Link
 
-### 可用占位符
+两种入口：
 
-- `@`：原文件名
-- `#`：数字序号
+- 托盘菜单打开目录选择窗口后执行
+- 直接使用 Pattern Link 全局热键执行
 
-如果需要插入占位符，可使用反斜杠 `\` 对占位符转义。
+Pattern Link 默认热键：
 
-占位符 `@` 与 `#` 是必须的。
+- Windows：Ctrl+Alt+P
+- macOS：Option+Command+P
 
-### 示例
+在 macOS 上，通过 Pattern Link 热键触发时，会读取前台 Finder 窗口所在目录作为输入目录。
 
-原文件名为 `file.ext`，经过模式 `@-linked-#` 重命名后可能的文件名为 `file-linked-1.ext`。
+## Pattern 模式
+
+- 浅层匹配：按文件名、大小、权限分组
+- 哈希匹配：按文件内容哈希分组
+
+Review 阶段可手动筛选候选项，然后再执行链接。
+
+## 重命名模板
+
+默认模板：@ (#)
+
+可用占位符：
+
+- @：原文件名
+- #：数字序号
+
+注意：@ 与 # 均为必填占位符。需要输出字面量占位符时，可使用反斜杠进行转义。
+
+示例：
+
+- 输入文件：file.ext
+- 模板：@-linked-#
+- 可能输出：file-linked-1.ext
+
+## 注意事项
+
+- 硬链接通常不能跨文件系统或跨卷
+- 符号链接在源路径变化后可能失效
+- macOS 下 Pattern Link 热键要求前台应用为 Finder；若 Finder 无窗口会直接报错并终止
 
 ## 应用截图
 
-![progress_dialog](doc/screenshots/progress_dialog_zh.png)
-
-![conflict_entry_strategy](doc/screenshots/conflict_entry_strategy_zh.png)
-
-![conflict_decision_dialog](doc/screenshots/conflict_decision_dialog_zh.png)
+![progress_dialog](screenshots/progress_dialog_zh.png)
+![conflict_entry_strategy](screenshots/conflict_entry_strategy_zh.png)
+![conflict_decision_dialog](screenshots/conflict_decision_dialog_zh.png)

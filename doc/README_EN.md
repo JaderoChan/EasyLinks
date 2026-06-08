@@ -1,57 +1,91 @@
 # Easy Links
 
-**[[中文](README_ZH.md) | English]**
+[中文](README_ZH.md) | English
 
-An easy-to-use file linking tool, through a visual interface and global shortcut keys, helps you easily create symbolic links and hard links for files/folders.
+Easy Links is a desktop file-link utility for symbolic links, hard links, and Pattern Link workflows. It provides a GUI and global hotkeys to organize files with less duplication.
 
-Support **Windows** and **MacOS**!
+Supported platforms: Windows, macOS
 
-## Mind
+## Features
 
-As a cyber hamster, I enjoy collecting all kinds of electronic files. When the number of files I collect increases, I need to categorize them. For now, I use folders as tags and place each file under the tag folder it belongs to. However, many files may have multiple tags at the same time. At this point, merely copying files would result in a significant waste of disk space. Therefore, I developed this small tool to solve my problem.
+- Create symbolic links or hard links from clipboard-selected file manager entries
+- Pattern Link: recursively scan directories, group files by rules, then batch hard-link
+- Optional review step before execution
+- Conflict strategies: replace, skip, keep and auto-rename
+- Configurable rename pattern, error dialog behavior, and remove-to-trash behavior
+- Three configurable global hotkeys: symlink, hardlink, Pattern Link
 
-## How to build?
+## Build
 
-Make sure `Qt` is configured correctly.
+Ensure Qt is configured correctly.
 
-```shell
-git clone https://github/jaderochan/EasyLinks
+```bash
+git clone https://github.com/jaderochan/EasyLinks
 cd EasyLinks
 git submodule update --init --recursive
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j --config Release
 ```
 
-## Application Usage
+## Usage
 
-In the file Manager, select multiple entries (files/folders) and copy them. In the target directory you want to link to, press `Ctrl+H` or `Ctrl+S` (`Option+H` on **MacOS**) to perform hard link or symbolic link operations (the shortcut keys can be changed).
+### Symlink / Hardlink
+
+1. Select and copy entries in your file manager.
+2. Focus the target directory window.
+3. Trigger global hotkeys:
+
+    - Windows defaults: Ctrl+S (symlink), Ctrl+H (hardlink)
+    - macOS defaults: Option+S (symlink), Option+H (hardlink)
+
+Note: directories cannot be hard-linked directly. For directory hardlink workflow, Easy Links recursively hard-links files and recreates structure in target.
+
+### Pattern Link
+
+Two entry points:
+
+- Tray menu and directory picker
+- Global hotkey directly
+
+Pattern Link hotkey defaults:
+
+- Windows: Ctrl+Alt+P
+- macOS: Option+Command+P
+
+On macOS, Pattern Link hotkey reads the focused Finder window path as input directory.
+
+## Pattern Modes
+
+- Superficial mode: group by file name, size, permissions
+- Hash mode: group by file content hash
+
+During review, you can keep or exclude candidates before execution.
+
+## Rename Pattern
+
+Default: @ (#)
+
+Placeholders:
+
+- @: for original filename
+- #: for numeric sequence
+
+Both placeholders are required. Use backslash to escape placeholder characters when needed.
+
+Example:
+
+- Input: file.ext
+- Pattern: @-linked-#
+- Possible output: file-linked-1.ext
 
 ## Notes
 
-- Folders do not support creating hard links. So when you try to create a hard link to a folder, the program will traverse all the files under the folder and hard link each file to the target path with the same directory structure.
-- Most file systems do not support hard linking across disks. For symbolic links, if the drive letter changes, it may cause the symbolic link to become invalid.
+- Hard links usually cannot cross file systems or volumes
+- Symbolic links may break if source paths change
+- On macOS, Pattern Link hotkey requires Finder to be frontmost; if no Finder window exists, operation aborts with error
 
-## File Rename Pattern
-
-The default pattern is `@ (#)`.
-
-### Available placeholders
-
-- `@`: Original file name
-- `#`: A number
-
-If you need to insert a placeholder, you can use a backslash `\` to escape the placeholder.
-
-The placeholders `@` and `#` are necessary.
-
-### Example
-
-Original file `file.ext` rename via pattern `@-linked-#` maybe produce new file name `file-linked-1.ext`
-
-## Application Screenshots
+## Screenshots
 
 ![progress_dialog](screenshots/progress_dialog_en.png)
-
 ![conflict_entry_strategy](screenshots/conflict_entry_strategy_en.png)
-
 ![conflict_decision_dialog](screenshots/conflict_decision_dialog_en.png)
