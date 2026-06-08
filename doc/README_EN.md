@@ -17,7 +17,7 @@ Supported platforms: Windows, macOS
 
 ## Build
 
-Ensure Qt is configured correctly.
+Ensure Qt is configured correctly and Qt version greater than or equal to 6.0.
 
 ```bash
 git clone https://github.com/jaderochan/EasyLinks

@@ -17,7 +17,7 @@
 
 ## 构建
 
-请先确保 Qt 开发环境配置正确。
+请确保 Qt 开发环境配置正确且 Qt 版本大于等于 6.0。
 
 ```bash
 git clone https://github.com/jaderochan/EasyLinks
