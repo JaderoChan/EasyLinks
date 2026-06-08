@@ -9,10 +9,6 @@
 #include <qhash.h>
 #include <quuid.h>
 
-#ifndef Q_OS_WIN
-#include <sys/stat.h>
-#endif
-
 #include <utils/file_io.h>
 #include "utils.h"
 
@@ -42,21 +38,7 @@ static int computeTotalLinkTasks(const QList<QFileInfoList>& entryGroups)
 
 static QString makeEntryKey(const QFileInfo& entry)
 {
-#ifndef Q_OS_WIN
-    struct stat st;
-    const QByteArray entryPath = QFile::encodeName(entry.absoluteFilePath());
-    if (::stat(entryPath.constData(), &st) == 0)
-    {
-        return QString("%1:%2")
-            .arg(static_cast<qulonglong>(st.st_dev))
-            .arg(static_cast<qulonglong>(st.st_ino));
-    }
-#endif
-
-    QString key = entry.canonicalFilePath();
-    if (key.isEmpty())
-        key = entry.absoluteFilePath();
-    return QDir::cleanPath(key);
+    return QDir::cleanPath(entry.absoluteFilePath());
 }
 
 static bool isSubPathOf(const QString& childPath, const QString& parentPath)
@@ -400,4 +382,5 @@ void PatternLinkWorker::collectEntryGroups()
     for (const auto& dir : dirs_)
         collectEntryGroups(dir);
     entryIdToGroupIdxMap_.clear();
+    scannedEntryKeys_.clear();
 }
