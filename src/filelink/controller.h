@@ -7,6 +7,7 @@
 #include "types.h"
 #include "link_config.h"
 #include "worker.h"
+#include "pattern_link_worker.h"
 #include "progress_widget.h"
 
 class FileLinkController : public QObject
@@ -20,6 +21,12 @@ public:
         const QString& targetDir,
         const LinkConfig& config = LinkConfig(),
         QObject* parent = nullptr);
+    FileLinkController(
+        const QStringList& dirs,
+        Patterns patterns,
+        bool needReview,
+        const LinkConfig& config = LinkConfig(),
+        QObject* parent = nullptr);
     ~FileLinkController();
 
     void start();
@@ -28,11 +35,13 @@ public:
 signals:
     void operate();
     void linkFinished(LinkType linkType, QString targetDir, LinkStats stats);
+    void patternLinkFinished(LinkStats stats);
 
 private:
     QThread workerThread_;
     LinkConfig config_;
     FileLinkWorker* worker_ = nullptr;
+    PatternLinkWorker* patWorker_ = nullptr;
     ProgressWidget* progress_ = nullptr;
 
     LinkType linkType_ = LT_SYMLINK;

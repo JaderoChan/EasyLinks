@@ -6,9 +6,16 @@
 #include <qstringlist.h>
 #include <qobject.h>
 #include <qelapsedtimer.h>
+#include <qset.h>
 
 #include "types.h"
 #include "pattern.h"
+
+struct FileInfoPair
+{
+    QFileInfo master;
+    QFileInfo slave;
+};
 
 /**
  * @brief 模式匹配文件硬链接工作。
@@ -24,7 +31,7 @@ public:
     explicit PatternLinkWorker(QObject* parent = nullptr);
     ~PatternLinkWorker();
 
-    void setParameters(const QStringList& dirList, Patterns patterns, bool needReview);
+    void setParameters(const QStringList& dirList, Patterns patterns, bool needReview, bool removeToTrash);
     void run();
 
     void pause();
@@ -33,9 +40,9 @@ public:
     void finishReview();
 
 signals:
-    void progressUpdated(QFileInfo currentEntry, LinkStats stats);
-    void reviewRequested(QList<QFileInfoList>& entryGroups);
-    void errorOccurred(QFileInfo entry, QString errorMsg);
+    void progressUpdated(FileInfoPair fiPair, LinkStats stats);
+    void reviewRequested(QList<QFileInfoList>* entryGroups);
+    void errorOccurred(FileInfoPair fiPair, QString errorMsg);
     void finished();
 
 protected:
@@ -53,6 +60,7 @@ private:
 
     QList<QFileInfoList>    entryGroups_;
     QMap<uint64_t, size_t>  entryIdToGroupIdxMap_;
+    QSet<QString>           scannedEntryKeys_;
     LinkStats               stats_;
 
     bool                    paused_ = false;
@@ -62,6 +70,6 @@ private:
 
     bool                    removeToTrash_ = false;
 
-    QFileInfo               currentEntry_;
+    FileInfoPair            currentFiPair_;
     QElapsedTimer           progressUpdateTimer_;
 };

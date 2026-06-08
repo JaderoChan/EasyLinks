@@ -67,5 +67,21 @@
     "SystemTrayIcon.Action.About": "About",
     "SystemTrayIcon.Action.Exit": "Exit",
     "SystemTrayIcon.Action.OpenLogDir": "Open Log Directory",
-    "SystemTrayIcon.Action.Settings": "Settings"
+    "SystemTrayIcon.Action.Settings": "Settings",
+    "SystemTrayIcon.Action.PatternLink": "Pattern Link",
+    "DirectorySelectDialog.WindowTitle": "Select Directories",
+    "DirectorySelectDialog.Text.TipText": "Selected %1 directories",
+    "DirectorySelectDialog.ToolTip.TipIcon": "Add directories for pattern link",
+    "DirectorySelectDialog.Button.Start": "Start",
+    "FileReviewDialog.WindowTitle": "Review Link Candidates",
+    "FileReviewDialog.Text.Tip": "Selected %1 files in %2 groups",
+    "FileReviewDialog.CheckBox.SelectAll": "Select All",
+    "FileReviewDialog.Button.Confirm": "Confirm",
+    "Notification.PatternLinkCompleted.SuccessOnly": "Successfully linked %1 entries",
+    "Notification.PatternLinkCompleted.FailedOnly": "Failed to link %1 entries",
+    "Notification.PatternLinkCompleted.SuccessFailed": "Successfully linked %1 entries, %2 failed",
+    "SettingsWidget.Text.PatternsLinkLabel": "Pattern Link Mode",
+    "SettingsWidget.ComboBox.ItemText.Superficial": "Superficial",
+    "SettingsWidget.ComboBox.ItemText.Hash": "Hash",
+    "Add directory": "Add directory"
 }

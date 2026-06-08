@@ -13,6 +13,7 @@ public:
     explicit ErrorLogDialog(QWidget* parent = nullptr);
 
     void appendLog(LinkType linkType, const EntryPair& entryPair, const QString& errorMsg);
+    void appendLog(LinkType linkType, const QFileInfo& source, const QFileInfo& target, const QString& errorMsg);
 
 protected:
     virtual void updateText();

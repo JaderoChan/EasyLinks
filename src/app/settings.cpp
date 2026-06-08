@@ -17,6 +17,9 @@ Settings loadSettings()
     settings.autoRunOnStartUp = qsettings.value("AutoRunOnStartUp", false).toBool();
     settings.needReview = qsettings.value("NeedReview", true).toBool();
     settings.patterns = qsettings.value("Patterns", DEFAULT_PATTERNS).toInt();
+    // Legacy compatibility: old enum used 0x03 for both PERM and HASH.
+    if (settings.patterns == 0x03)
+        settings.patterns = SUPERFICIAL_PATTERNS;
 #ifdef Q_OS_MAC
     settings.symlinkHotkey = READ_KC(qsettings, "SymlinkHotkey", "Alt+S");
     settings.hardlinkHotkey = READ_KC(qsettings, "HardlinkHotkey", "Alt+H");

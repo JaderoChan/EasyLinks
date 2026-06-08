@@ -71,6 +71,8 @@ void FileReviewDialog::done(int result)
 {
     if (result == QDialog::Accepted)
         applyConfirmedSelection();
+    else
+        entryGroups_.clear();
 
     emit reviewFinished();
     QDialog::done(result);
@@ -180,9 +182,12 @@ void FileReviewDialog::applyConfirmedSelection()
         for (int childIndex = childCount - 1; childIndex >= 0; --childIndex)
         {
             auto* fileItem = groupItem->child(childIndex);
-            if (fileItem->checkState(0) == Qt::Checked)
+            if (fileItem->checkState(0) != Qt::Checked)
                 group.removeAt(childIndex);
         }
+
+        if (group.size() < 2)
+            entryGroups_.removeAt(groupIndex);
     }
 }
 

@@ -67,5 +67,21 @@
     "SystemTrayIcon.Action.About": "关于",
     "SystemTrayIcon.Action.Exit": "退出",
     "SystemTrayIcon.Action.OpenLogDir": "打开日志目录",
-    "SystemTrayIcon.Action.Settings": "设置"
+    "SystemTrayIcon.Action.Settings": "设置",
+    "SystemTrayIcon.Action.PatternLink": "模式链接",
+    "DirectorySelectDialog.WindowTitle": "选择目录",
+    "DirectorySelectDialog.Text.TipText": "已选择 %1 个目录",
+    "DirectorySelectDialog.ToolTip.TipIcon": "添加用于模式链接的目录",
+    "DirectorySelectDialog.Button.Start": "开始",
+    "FileReviewDialog.WindowTitle": "审核链接候选项",
+    "FileReviewDialog.Text.Tip": "在 %2 个分组中选择了 %1 个文件",
+    "FileReviewDialog.CheckBox.SelectAll": "全选",
+    "FileReviewDialog.Button.Confirm": "确认",
+    "Notification.PatternLinkCompleted.SuccessOnly": "成功链接 %1 个条目",
+    "Notification.PatternLinkCompleted.FailedOnly": "链接失败 %1 个条目",
+    "Notification.PatternLinkCompleted.SuccessFailed": "成功链接 %1 个条目，失败 %2 个",
+    "SettingsWidget.Text.PatternsLinkLabel": "模式链接方式",
+    "SettingsWidget.ComboBox.ItemText.Superficial": "浅层匹配",
+    "SettingsWidget.ComboBox.ItemText.Hash": "哈希匹配",
+    "Add directory": "添加目录"
 }

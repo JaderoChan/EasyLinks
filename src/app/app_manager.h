@@ -19,11 +19,13 @@ public:
     void setSettings(const Settings& settings);
 
 protected:
+    void showPatternsLinkDialog();
     void showAboutDialog();
     void showSettingsWidget();
     void openLogDirectory();
 
     void onLinkCompleted(LinkType lt, const QString& targetDir, const LinkStats& stats);
+    void onPatternLinkCompleted(const LinkStats& stats);
 
 private:
     Settings settings_;

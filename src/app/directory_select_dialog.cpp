@@ -1,6 +1,7 @@
 #include "directory_select_dialog.h"
 
 #include <qfiledialog.h>
+#include <qitemselectionmodel.h>
 #include <qmimedata.h>
 
 #include <easy_translate.hpp>
@@ -10,6 +11,12 @@ DirectorySelectDialog::DirectorySelectDialog(QWidget* parent)
 {
     ui.setupUi(this);
     ui.listWidget->installEventFilter(this);
+    ui.listWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    ui.listWidget->setSelectionBehavior(QAbstractItemView::SelectItems);
+
+    connect(ui.listWidget, &QListWidget::itemSelectionChanged, this, &DirectorySelectDialog::updateUi);
+    connect(ui.listWidget->selectionModel(), &QItemSelectionModel::selectionChanged, this,
+        [this](const QItemSelection&, const QItemSelection&) { updateUi(); });
 
     // Add button
     connect(ui.addButton, &QPushButton::clicked, this, [this]()
@@ -190,8 +197,6 @@ void DirectorySelectDialog::updateText()
     setWindowTitle(EASYTR("DirectorySelectDialog.WindowTitle"));
     ui.tipTextLabel->setText(QString(EASYTR("DirectorySelectDialog.Text.TipText")).arg(dirs_.count()));
     ui.tipIconLabel->setToolTip(EASYTR("DirectorySelectDialog.ToolTip.TipIcon"));
-    ui.addButton->setText(EASYTR("DirectorySelectDialog.Button.Add"));
-    ui.removeButton->setText(EASYTR("DirectorySelectDialog.Button.Remove"));
     ui.startButton->setText(EASYTR("DirectorySelectDialog.Button.Start"));
 }
 

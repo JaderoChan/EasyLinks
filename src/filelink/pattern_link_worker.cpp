@@ -2,9 +2,15 @@
 
 #include <mutex>
 #include <stdexcept>
+#include <algorithm>
 
 #include <qdir.h>
+#include <qfile.h>
 #include <qhash.h>
+
+#ifndef Q_OS_WIN
+#include <sys/stat.h>
+#endif
 
 #include <utils/file_io.h>
 #include "utils.h"
@@ -12,6 +18,102 @@
 #define THROW_RTERR(errorMsg) throw std::runtime_error(errorMsg)
 
 constexpr unsigned int PROGRESS_UPDATE_INTERVAL_MS = 20;
+
+static void removeSingleEntryGroups(QList<QFileInfoList>& entryGroups)
+{
+    for (int i = entryGroups.size() - 1; i >= 0; --i)
+    {
+        if (entryGroups[i].size() < 2)
+            entryGroups.removeAt(i);
+    }
+}
+
+static int computeTotalLinkTasks(const QList<QFileInfoList>& entryGroups)
+{
+    int total = 0;
+    for (const auto& group : entryGroups)
+    {
+        if (group.size() > 1)
+            total += (group.size() - 1);
+    }
+    return total;
+}
+
+static QString makeEntryKey(const QFileInfo& entry)
+{
+#ifndef Q_OS_WIN
+    struct stat st;
+    const QByteArray entryPath = QFile::encodeName(entry.absoluteFilePath());
+    if (::stat(entryPath.constData(), &st) == 0)
+    {
+        return QString("%1:%2")
+            .arg(static_cast<qulonglong>(st.st_dev))
+            .arg(static_cast<qulonglong>(st.st_ino));
+    }
+#endif
+
+    QString key = entry.canonicalFilePath();
+    if (key.isEmpty())
+        key = entry.absoluteFilePath();
+    return QDir::cleanPath(key);
+}
+
+static bool isSubPathOf(const QString& childPath, const QString& parentPath)
+{
+    if (childPath == parentPath)
+        return true;
+
+    QString parentPrefix = parentPath;
+    if (!parentPrefix.endsWith('/'))
+        parentPrefix += '/';
+    return childPath.startsWith(parentPrefix);
+}
+
+static QStringList reduceRootDirs(const QStringList& dirList)
+{
+    QStringList normalized;
+    normalized.reserve(dirList.size());
+    for (const auto& dir : dirList)
+    {
+        if (dir.isEmpty())
+            continue;
+
+        QFileInfo fi(dir);
+        QString normalizedPath = fi.canonicalFilePath();
+        if (normalizedPath.isEmpty())
+            normalizedPath = fi.absoluteFilePath();
+        normalizedPath = QDir::cleanPath(normalizedPath);
+
+        if (!normalizedPath.isEmpty() && !normalized.contains(normalizedPath))
+            normalized.append(normalizedPath);
+    }
+
+    std::sort(normalized.begin(), normalized.end(), [](const QString& a, const QString& b)
+    {
+        if (a.size() != b.size())
+            return a.size() < b.size();
+        return a < b;
+    });
+
+    QStringList reduced;
+    for (const auto& path : normalized)
+    {
+        bool covered = false;
+        for (const auto& kept : reduced)
+        {
+            if (isSubPathOf(path, kept))
+            {
+                covered = true;
+                break;
+            }
+        }
+
+        if (!covered)
+            reduced.append(path);
+    }
+
+    return reduced;
+}
 
 PatternLinkWorker::PatternLinkWorker(QObject* parent)
     : QObject(parent)
@@ -22,23 +124,31 @@ PatternLinkWorker::~PatternLinkWorker()
     cancel();
 }
 
-void PatternLinkWorker::setParameters(const QStringList& dirList, Patterns patterns, bool needReview)
+void PatternLinkWorker::setParameters(
+    const QStringList& dirList, Patterns patterns, bool needReview, bool removeToTrash)
 {
-    dirs_       = dirList;
+    dirs_       = reduceRootDirs(dirList);
     patterns_   = patterns;
     needReview_ = needReview;
+    removeToTrash_ = removeToTrash;
 }
 
 void PatternLinkWorker::run()
 {
     progressUpdateTimer_.restart();
+    stats_ = LinkStats();
+    entryGroups_.clear();
+    entryIdToGroupIdxMap_.clear();
+    scannedEntryKeys_.clear();
 
     collectEntryGroups();
+    removeSingleEntryGroups(entryGroups_);
+    stats_.totalEntries = computeTotalLinkTasks(entryGroups_);
     tryUpdateProgress(true);
 
     if (needReview_)
     {
-        emit reviewRequested(entryGroups_);
+        emit reviewRequested(&entryGroups_);
         pause();
 
         if (processPauseAndCancel())
@@ -47,10 +157,8 @@ void PatternLinkWorker::run()
             return;
         }
 
-        stats_.totalEntries = 0;
-        for (const auto& entryGr : entryGroups_)
-            for (const auto& entry : entryGr)
-                stats_.totalEntries++;
+        removeSingleEntryGroups(entryGroups_);
+        stats_.totalEntries = computeTotalLinkTasks(entryGroups_);
         tryUpdateProgress(true);
     }
 
@@ -104,12 +212,12 @@ void PatternLinkWorker::tryUpdateProgress(bool forced)
 {
     if (forced)
     {
-        emit progressUpdated(currentEntry_, stats_);
+        emit progressUpdated(currentFiPair_, stats_);
     }
     else if (progressUpdateTimer_.elapsed() > PROGRESS_UPDATE_INTERVAL_MS)
     {
         progressUpdateTimer_.restart();
-        emit progressUpdated(currentEntry_, stats_);
+        emit progressUpdated(currentFiPair_, stats_);
     }
 }
 
@@ -120,28 +228,28 @@ void PatternLinkWorker::work()
         if (entrys.empty())
             continue;
 
-        auto master = entrys.front();
+        currentFiPair_.master = entrys.front();
         entrys.pop_front();
         while (!entrys.empty())
         {
             if (processPauseAndCancel())
                 return;
 
-            currentEntry_ = entrys.front();
+            currentFiPair_.slave = entrys.front();
             entrys.pop_front();
             stats_.processedEntries++;
 
             try
             {
-                currentEntry_.refresh();
-                if (currentEntry_.isFile() || isWindowsSymlink(currentEntry_))
+                currentFiPair_.slave.refresh();
+                if (currentFiPair_.slave.isFile() || isWindowsSymlink(currentFiPair_.slave))
                 {
                     bool ok = (removeToTrash_ ?
-                        QFile::moveToTrash(currentEntry_.filePath()) :
-                        QFile::remove(currentEntry_.filePath()));
+                        QFile::moveToTrash(currentFiPair_.slave.filePath()) :
+                        QFile::remove(currentFiPair_.slave.filePath()));
                     if (!ok)
                         THROW_RTERR("Failed to remove the file.");
-                    createLink(LT_HARDLINK, currentEntry_, master);
+                    createLink(LT_HARDLINK, currentFiPair_.master, currentFiPair_.slave);
                 }
                 else
                 {
@@ -151,7 +259,7 @@ void PatternLinkWorker::work()
             catch (std::exception& e)
             {
                 stats_.failedEntries++;
-                emit errorOccurred(currentEntry_, e.what());
+                emit errorOccurred(currentFiPair_, e.what());
             }
 
             tryUpdateProgress();
@@ -202,13 +310,34 @@ void PatternLinkWorker::collectEntryGroups(const QString& dir)
             return;
 
         if (entry.isDir())
-            collectEntryGroups(entry.path());
+        {
+            collectEntryGroups(entry.filePath());
+            continue;
+        }
 
-        currentEntry_ = entry;
+        if (!(entry.isFile() || isWindowsSymlink(entry)))
+            continue;
+
+        const QString entryKey = makeEntryKey(entry);
+        if (scannedEntryKeys_.contains(entryKey))
+            continue;
+        scannedEntryKeys_.insert(entryKey);
+
+        currentFiPair_ = {entry, entry};
+        uint64_t id = 0;
+        try
+        {
+            id = makeEntryId(entry, patterns_);
+        }
+        catch (const std::exception& e)
+        {
+            emit errorOccurred(currentFiPair_, e.what());
+            continue;
+        }
+
         stats_.totalEntries++;
         tryUpdateProgress();
 
-        const uint64_t id = makeEntryId(entry, patterns_);
         auto it = entryIdToGroupIdxMap_.find(id);
         if (it == entryIdToGroupIdxMap_.end())
         {

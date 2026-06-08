@@ -53,6 +53,13 @@ ProgressWidget::ProgressWidget(
     updateText();
 }
 
+ProgressWidget::ProgressWidget(const QStringList& dirs, bool keepWhenErrorOccurred, QWidget* parent)
+    : ProgressWidget(LT_HARDLINK, "", "", keepWhenErrorOccurred, parent)
+{
+    Q_UNUSED(dirs);
+    ui.headerWgt->hide();
+}
+
 ProgressWidget::~ProgressWidget()
 {
     cancel();
@@ -94,6 +101,18 @@ void ProgressWidget::decideConflicts(const LinkTasks& conflicts)
     conflicts_ = conflicts;
     showAndActivate(this);
     pageToEcsWidget();
+}
+
+void ProgressWidget::updatePatternLinkProgress(const FileInfoPair& currentFiPair, const LinkStats& stats)
+{
+    stats_ = stats;
+    updateCurrentEntryDisplay(currentFiPair);
+    updateStatsDisplay();
+}
+
+void ProgressWidget::appendErrorLog(const FileInfoPair& fiPair, const QString& errorMsg)
+{
+    errorLogDlg_.appendLog(LT_HARDLINK, fiPair.slave, fiPair.master, errorMsg);
 }
 
 void ProgressWidget::onWorkFinished()
@@ -276,6 +295,25 @@ void ProgressWidget::updateCurrentEntryDisplay(const EntryPair& currentEntryPair
     else if (fileinfo.isFile())
         ui.fileText->show();
     else if (fileinfo.isDir())
+        ui.directoryText->show();
+    else ; // pass
+}
+
+void ProgressWidget::updateCurrentEntryDisplay(const FileInfoPair& currentFiPair)
+{
+    const auto& source = currentFiPair.slave;
+    ui.currentEntryValue->setText(source.absoluteFilePath());
+    ui.currentEntryValue->setToolTip(source.absoluteFilePath());
+
+    ui.fileText->hide();
+    ui.directoryText->hide();
+    ui.symbolText->hide();
+
+    if (source.isSymbolicLink() || source.isShortcut() || source.isBundle() || source.isJunction())
+        ui.symbolText->show();
+    else if (source.isFile())
+        ui.fileText->show();
+    else if (source.isDir())
         ui.directoryText->show();
     else ; // pass
 }

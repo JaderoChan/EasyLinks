@@ -103,7 +103,7 @@ void SettingsWidget::updateText()
     ui.languageComboBox->setItemText(1, EASYTR("SettingsWidget.ComboBox.ItemText.Chinese"));
 
     ui.patternLinkModeComboBox->setItemText(0, EASYTR("SettingsWidget.ComboBox.ItemText.Superficial"));
-    ui.patternLinkModeComboBox->setItemText(0, EASYTR("SettingsWidget.ComboBox.ItemText.Hash"));
+    ui.patternLinkModeComboBox->setItemText(1, EASYTR("SettingsWidget.ComboBox.ItemText.Hash"));
 }
 
 void SettingsWidget::changeEvent(QEvent* event)

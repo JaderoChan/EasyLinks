@@ -25,16 +25,21 @@ ErrorLogDialog::ErrorLogDialog(QWidget* parent)
 
 void ErrorLogDialog::appendLog(LinkType linkType, const EntryPair& entryPair, const QString& errorMsg)
 {
+    appendLog(linkType, entryPair.source.fileinfo, entryPair.target.fileinfo, errorMsg);
+}
+
+void ErrorLogDialog::appendLog(LinkType linkType, const QFileInfo& source, const QFileInfo& target, const QString& errorMsg)
+{
     if (logCount_ > MAX_LOG_COUNT)
         return;
 
     auto log = QString(ERROR_LOG_FORMAT_STRING).arg(
         currentTimeString(),
         linkType == LT_SYMLINK ? "Symlink" : "Hardlink",
-        entryPair.source.fileinfo.absolutePath(),
-        entryPair.source.fileinfo.absoluteFilePath(),
-        entryPair.target.fileinfo.absolutePath(),
-        entryPair.target.fileinfo.absoluteFilePath(),
+        source.absolutePath(),
+        source.absoluteFilePath(),
+        target.absolutePath(),
+        target.absoluteFilePath(),
         errorMsg);
     ui.log->append(log);
     logCount_++;

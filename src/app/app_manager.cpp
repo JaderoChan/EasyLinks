@@ -10,6 +10,8 @@
 #include "logo_icon.h"
 #include "platforms/auto_run_on_startup.h"
 #include "utils/qwidget_utils.h"
+#include "directory_select_dialog.h"
+#include "filelink/controller.h"
 
 AppManager::AppManager(QObject* parent)
     : QObject(parent)
@@ -17,6 +19,7 @@ AppManager::AppManager(QObject* parent)
     hotkeyMgr_ = new HotkeyManager(this);
     sti_ = new SystemTrayIcon(this);
 
+    connect(sti_, &SystemTrayIcon::patternLinkActionTriggered, this, &AppManager::showPatternsLinkDialog);
     connect(sti_, &SystemTrayIcon::settingsActionTriggered, this, &AppManager::showSettingsWidget);
     connect(sti_, &SystemTrayIcon::aboutActionTriggered, this, &AppManager::showAboutDialog);
     connect(sti_, &SystemTrayIcon::openLogDirActionTriggered, this, &AppManager::openLogDirectory);
@@ -50,6 +53,21 @@ void AppManager::setSettings(const Settings& settings)
     saveSettings(settings_);
     // 让HotkeyManager处理潜在的热键更新。
     hotkeyMgr_->setSettings(settings_);
+}
+
+void AppManager::showPatternsLinkDialog()
+{
+    auto selectDirDlg = new DirectorySelectDialog();
+    selectDirDlg->setAttribute(Qt::WA_DeleteOnClose);
+    showAndActivate(selectDirDlg);
+
+    connect(selectDirDlg, &DirectorySelectDialog::selectFinished, this, [this](QStringList dirs)
+    {
+        auto controller = new FileLinkController(
+            dirs, settings_.patterns, settings_.needReview, settings_.linkConfig, this);
+        connect(controller, &FileLinkController::patternLinkFinished, this, &AppManager::onPatternLinkCompleted);
+        controller->start();
+    });
 }
 
 void AppManager::showAboutDialog()
@@ -108,6 +126,23 @@ void AppManager::onLinkCompleted(LinkType lt, const QString& targetDir, const Li
             .arg(dirName)
             .arg(stats.failedEntries);
     }
+
+    sti_->showMessage(QString(EASYTR("App.Title")), text, getLogoIcon(), 3000);
+}
+
+void AppManager::onPatternLinkCompleted(const LinkStats& stats)
+{
+    int successEntries = stats.processedEntries - stats.failedEntries;
+    QString text;
+
+    if (successEntries == stats.processedEntries)           // All success
+        text = QString(EASYTR("Notification.PatternLinkCompleted.SuccessOnly")).arg(successEntries);
+    else if (stats.failedEntries == stats.processedEntries) // All failed
+        text = QString(EASYTR("Notification.PatternLinkCompleted.FailedOnly")).arg(stats.failedEntries);
+    else
+        text = QString(EASYTR("Notification.PatternLinkCompleted.SuccessFailed"))
+            .arg(successEntries)
+            .arg(stats.failedEntries);
 
     sti_->showMessage(QString(EASYTR("App.Title")), text, getLogoIcon(), 3000);
 }

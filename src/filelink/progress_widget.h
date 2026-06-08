@@ -6,6 +6,7 @@
 
 #include "ui_progress_widget.h"
 #include "error_log_dialog.h"
+#include "pattern_link_worker.h"
 #include "types.h"
 
 class ProgressWidget : public QWidget
@@ -19,6 +20,7 @@ public:
         const QString& targetDir,   // For header area info display.
         bool keepWhenErrorOccurred,
         QWidget* parent = nullptr);
+    ProgressWidget(const QStringList& dirs, bool keepWhenErrorOccurred, QWidget* parent = nullptr);
     ~ProgressWidget();
 
     void pause();
@@ -28,6 +30,9 @@ public:
     void updateProgress(const EntryPair& currentEntryPair, const LinkStats& stats);
     void appendErrorLog(LinkType linkType, const EntryPair& entryPair, const QString& errorMsg);
     void decideConflicts(const LinkTasks& conflicts);
+
+    void updatePatternLinkProgress(const FileInfoPair& currentFiPair, const LinkStats& stats);
+    void appendErrorLog(const FileInfoPair& fiPair, const QString& errorMsg);
 
     void onWorkFinished();
 
@@ -62,6 +67,7 @@ private:
     void updateProgressDisplay();
     void updateSpeedRemainingTimeDisplay();
     void updateCurrentEntryDisplay(const EntryPair& currentEntryPair);
+    void updateCurrentEntryDisplay(const FileInfoPair& currentFiPair);
     void updateRemainingEntriesDisplay();
     void updateFailedCountDisplay();
 
