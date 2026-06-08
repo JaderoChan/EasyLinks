@@ -1,6 +1,6 @@
 #pragma once
 
-#include <qstring>
+#include <qstring.h>
 
 /// @return 如果Pattern不包含路径非法字符并且包含未转义的@与#返回true，否则返回false。
 bool isLegalRenamePattern(const QString& renamePattern);

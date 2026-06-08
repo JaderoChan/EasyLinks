@@ -2,7 +2,7 @@
 
 #include <qdialog.h>
 #include <qevent.h>
-#include <qstring>
+#include <qstring.h>
 
 #include "ui_error_log_dialog.h"
 #include "types.h"
