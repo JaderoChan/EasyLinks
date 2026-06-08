@@ -86,6 +86,6 @@ Review 阶段可手动筛选候选项，然后再执行链接。
 
 ## 应用截图
 
-![progress_dialog](screenshots/progress_dialog_zh.png)
-![conflict_entry_strategy](screenshots/conflict_entry_strategy_zh.png)
-![conflict_decision_dialog](screenshots/conflict_decision_dialog_zh.png)
+![progress_dialog](doc/screenshots/progress_dialog_zh.png)
+![conflict_entry_strategy](doc/screenshots/conflict_entry_strategy_zh.png)
+![conflict_decision_dialog](doc/screenshots/conflict_decision_dialog_zh.png)
