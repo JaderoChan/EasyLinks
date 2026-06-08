@@ -6,7 +6,7 @@
 
 #include "ui_directory_select_dialog.h"
 
-class DirectorySelectDialog : QDialog
+class DirectorySelectDialog : public QDialog
 {
     Q_OBJECT
 

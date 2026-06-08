@@ -17,9 +17,11 @@ struct Settings
     bool       autoRunOnStartUp;
     Language   language;
     LinkConfig linkConfig;
-    Patterns   patterns;
     gbhk::KeyCombination symlinkHotkey;
     gbhk::KeyCombination hardlinkHotkey;
+
+    Patterns   patterns;
+    bool       needReview;
 };
 
 Settings loadSettings();

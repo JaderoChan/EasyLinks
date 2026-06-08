@@ -6,7 +6,7 @@
 
 #include "ui_file_review_dialog.h"
 
-class FileReviewDialog : QDialog
+class FileReviewDialog : public QDialog
 {
     Q_OBJECT
 
