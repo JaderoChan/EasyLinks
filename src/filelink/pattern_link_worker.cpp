@@ -7,6 +7,7 @@
 #include <qdir.h>
 #include <qfile.h>
 #include <qhash.h>
+#include <quuid.h>
 
 #ifndef Q_OS_WIN
 #include <sys/stat.h>
@@ -244,12 +245,43 @@ void PatternLinkWorker::work()
                 currentFiPair_.slave.refresh();
                 if (currentFiPair_.slave.isFile() || isWindowsSymlink(currentFiPair_.slave))
                 {
-                    bool ok = (removeToTrash_ ?
-                        QFile::moveToTrash(currentFiPair_.slave.filePath()) :
-                        QFile::remove(currentFiPair_.slave.filePath()));
-                    if (!ok)
-                        THROW_RTERR("Failed to remove the file.");
-                    createLink(LT_HARDLINK, currentFiPair_.master, currentFiPair_.slave);
+                    const QString targetPath = currentFiPair_.slave.filePath();
+
+                    if (removeToTrash_)
+                    {
+                        QString pathInTrash;
+                        if (!QFile::moveToTrash(targetPath, &pathInTrash))
+                            THROW_RTERR("Failed to move the target file to trash.");
+
+                        try
+                        {
+                            createLink(LT_HARDLINK, currentFiPair_.master, currentFiPair_.slave);
+                        }
+                        catch (const std::exception&)
+                        {
+                            QFile::rename(pathInTrash, targetPath);
+                            throw;
+                        }
+                    }
+                    else
+                    {
+                        const QString backupPath = targetPath + ".easylinks.bak." +
+                            QUuid::createUuid().toString(QUuid::WithoutBraces);
+
+                        if (!QFile::rename(targetPath, backupPath))
+                            THROW_RTERR("Failed to move the target file to backup path.");
+
+                        try
+                        {
+                            createLink(LT_HARDLINK, currentFiPair_.master, currentFiPair_.slave);
+                            QFile::remove(backupPath);
+                        }
+                        catch (const std::exception&)
+                        {
+                            QFile::rename(backupPath, targetPath);
+                            throw;
+                        }
+                    }
                 }
                 else
                 {

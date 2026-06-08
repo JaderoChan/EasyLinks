@@ -20,7 +20,7 @@
     "LinkType.Symlink": "符号链接",
     "Notification.LinkCompleted.SuccessOnly": "成功 %1 %2 项至 %3",
     "Notification.LinkCompleted.FailedOnly": "无法 %1 %2 项至 %3",
-    "Notification.LinkCompleted.SuccessFailed": "成功 %1 %2 项至 %3，失败 %1 项",
+    "Notification.LinkCompleted.SuccessFailed": "成功 %1 %2 项至 %3，失败 %4 项",
     "ProgressDialog.Button.DecideAll": "决定所有条目",
     "ProgressDialog.Button.Details": "详情",
     "ProgressDialog.Button.KeepAll": "保留所有条目",

@@ -110,9 +110,9 @@ void DirectorySelectDialog::removeDir(const QStringList& dirs)
     QSet<QString> dirSet(dirs.begin(), dirs.end());
 
     QList<QListWidgetItem*> items;
-    for (size_t i = 0; i < ui.listWidget->count(); ++i)
+    for (int i = ui.listWidget->count() - 1; i >= 0; --i)
     {
-        const auto dir = ui.listWidget->item(static_cast<int>(i))->text();
+        const auto dir = ui.listWidget->item(i)->text();
         if (dirSet.contains(dir))
             items.append(ui.listWidget->takeItem(i));
     }
