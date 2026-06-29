@@ -12,7 +12,7 @@ bool PermissionManager::hasPermission()
 
 void PermissionManager::requestPermission()
 {
-    // MacOS下需要“辅助功能”权限以支持Hook全局热键。
+    // macOS下需要“辅助功能”权限以支持Hook全局热键。
     CFStringRef keys[] = {kAXTrustedCheckOptionPrompt};
     CFTypeRef values[] = {kCFBooleanTrue};
     CFDictionaryRef options = CFDictionaryCreate(

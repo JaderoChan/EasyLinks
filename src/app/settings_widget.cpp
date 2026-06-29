@@ -15,7 +15,7 @@ static inline QKeyCombination swapCtrlMeta(const QKeyCombination& kc) noexcept
 {
     Qt::KeyboardModifiers mod = kc.keyboardModifiers();
 
-    // 在MacOS上如果用户按下了Control/Meta键（其为`Qt::Modifier::META`/`Qt::Modifier::CTRL`），
+    // 在macOS上如果用户按下了Control/Meta键（其为`Qt::Modifier::META`/`Qt::Modifier::CTRL`），
     // 则映射至`Qt::Modifier::CTRL`/`Qt::Modifier::META`。
     if ((mod & Qt::Modifier::META) && !(mod & Qt::Modifier::CTRL))
         mod = Qt::KeyboardModifiers((mod & ~Qt::Modifier::META) | Qt::Modifier::CTRL);
@@ -37,7 +37,7 @@ static QKeyCombination gbhkKcToQtKc(const gbhk::KeyCombination& kc)
     if (qks.count() == 0)
         return QKeyCombination();
 #ifdef Q_OS_MAC
-    // MacOS下交换Ctrl与Meta修饰键。
+    // macOS下交换Ctrl与Meta修饰键。
     return fix::swapCtrlMeta(qks[0]);
 #else
     return qks[0];

@@ -217,8 +217,8 @@ add_custom_command(
     $<$<PLATFORM_ID:Darwin>:-codesign=->
 )
 
-# MacOS DMG打包
-option(CREATE_DMG "Create DMG for MacOS, create-dmg is required." OFF)
+# macOS DMG打包
+option(CREATE_DMG "Create DMG for macOS, create-dmg is required." OFF)
 if(APPLE AND CREATE_DMG)
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
